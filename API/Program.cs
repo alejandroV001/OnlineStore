@@ -36,6 +36,7 @@ builder.Services.AddScoped(typeof(IGenericRepository<>), (typeof(GenericReposito
 builder.Services.AddScoped<IBasketRepository, BasketRepository>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IPaymentService, PaymentService>();
 
 builder.Services.AddAutoMapper(typeof(MappingProfiles));
 builder.Services.Configure<ApiBehaviorOptions>(options => 

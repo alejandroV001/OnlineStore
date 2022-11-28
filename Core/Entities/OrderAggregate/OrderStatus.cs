@@ -10,9 +10,9 @@ namespace Core.Entities.OrderAggregate
     {
         [EnumMember(Value = "Pending")]
         Pending,
-        [EnumMember(Value = "PaymentRecevied")]
+        [EnumMember(Value = "Payment Recevied")]
         PaymentRecevied,
-        [EnumMember(Value = "PaymentFailed")]
+        [EnumMember(Value = "Payment Failed")]
         PaymentFailed
     }
 }
