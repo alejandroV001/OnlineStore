@@ -142,5 +142,13 @@
       "PictureUrl": "images/products/boot-ang1.png",
       "ProductTypeId": 3,
       "ProductBrandId": 1
+    },
+    {
+      "Name": "Tricou GYMSHARK",
+      "Description": "Tricou de calitate superioara cu un material de calitate",
+      "Price": 35,
+      "PictureUrl": "images/products/tricou_negru_1.jpg",
+      "ProductTypeId": 3,
+      "ProductBrandId": 1
     }
   ]
