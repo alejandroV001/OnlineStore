@@ -14,5 +14,8 @@ namespace API.Dtos
         public string PictureUrl { get; set; }
         public string ProductType { get; set; }
         public string ProductBrand { get; set; }
+        public string ProductSize { get; set; }
+        public string ProductFit { get; set; }
+        public string ProductColor { get; set; }
     }
 }

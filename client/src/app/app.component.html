@@ -8,9 +8,27 @@ type = "square-loader"
 </p>
 </ngx-spinner>
 
-<app-nav-bar></app-nav-bar>
-<app-section-header></app-section-header>
-
-<div>
-  <router-outlet></router-outlet>
-</div>
+<!-- Here is the navbar component-->
+<body>
+  <div>
+    <app-nav-bar></app-nav-bar>
+  </div>
+  
+  <!-- The ad text that stays below the nav-bar -->
+  <div>
+    <app-ad-section></app-ad-section>
+  </div>
+  
+  <!-- The Header where it shows in which page you are with breadcrumbs-->>
+  <app-section-header></app-section-header>
+  
+  <!-- Loading of the product page-->
+  <div>
+    <router-outlet></router-outlet>
+  </div>
+  
+  <div style="border-top: 2px solid grey ;margin-top: 5%;"></div>
+  
+  <!-- The footer section is loading here-->
+  <app-footer></app-footer>
+</body>

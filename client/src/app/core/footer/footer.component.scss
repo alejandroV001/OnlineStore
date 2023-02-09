@@ -1,0 +1,30 @@
+footer {
+    margin-top: 1%;
+    width: 70%;
+    margin-left: 15%;
+    margin-right: 15%;
+}
+div.payment {
+    margin-top: 50px;
+    text-align: right;
+    justify-content: space-between;
+    align-items: flex-end;
+    display: flex;
+    flex-direction: row;
+}
+ul li {
+    display: inline;
+}
+
+img {
+  height: 2.0rem;
+  margin-left: 8px;
+}
+a {
+  height: 2.0rem;
+  margin-left: 8px;
+  text-decoration: none;
+  color: #120404;
+  font-weight: 500;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
