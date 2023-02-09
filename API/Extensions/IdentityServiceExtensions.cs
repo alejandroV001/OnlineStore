@@ -14,12 +14,18 @@ namespace API.Extensions
     public static class IdentityServiceExtensions
     {
         public static IServiceCollection AddIdentityServices(this IServiceCollection services, IConfiguration config){
-            var builder = services.AddIdentityCore<AppUser>();
+            services.AddIdentityCore<AppUser>().AddRoles<AppRole>()
+                        .AddRoleManager<RoleManager<AppRole>>()
+                        .AddSignInManager<SignInManager<AppUser>>()
+                        .AddRoleValidator<RoleValidator<AppRole>>()
+                        .AddEntityFrameworkStores<AppIdentityDbContext>()
+                        .AddSignInManager<SignInManager<AppUser>>();
+                
 
-            builder = new IdentityBuilder(builder.UserType, builder.Services);
+            //builder = new IdentityBuilder(builder.UserType, builder.Services);
 
-            builder.AddEntityFrameworkStores<AppIdentityDbContext>();
-            builder.AddSignInManager<SignInManager<AppUser>>();
+            // services.AddEntityFrameworkStores<AppIdentityDbContext>();
+            // services.AddSignInManager<SignInManager<AppUser>>();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options => {
@@ -33,6 +39,11 @@ namespace API.Extensions
                     };
                 });
             
+            services.AddAuthorization(opt => {
+                opt.AddPolicy("RequieredAdminRole", policy => policy.RequireRole("Admin"));
+                opt.AddPolicy("ModeratePhotoRole", policy => policy.RequireRole("Admin", "Moderator"));
+
+            });
             return services;
         }   
     }

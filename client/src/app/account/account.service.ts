@@ -14,6 +14,17 @@ export class AccountService {
   private currentUserSource = new ReplaySubject<IUser>(1);
   currentUser$ = this.currentUserSource.asObservable();
 
+  private roleSubject = new ReplaySubject<string>();
+  role$ = this.roleSubject.asObservable();
+
+  setRole(role: string) {
+    localStorage.setItem('role', role);
+    this.roleSubject.next(role);
+  }
+
+  getRole() {
+    return localStorage.getItem('role');
+  }
   constructor(private http: HttpClient, private router: Router) { }
 
 
@@ -38,6 +49,7 @@ export class AccountService {
       map((user: IUser) => {
         if(user){
           localStorage.setItem('token', user.token);
+          this.setRole(user.roles);
           this.currentUserSource.next(user);
         }
       })
@@ -49,6 +61,7 @@ export class AccountService {
       map((user: IUser) => {
         if(user) {
           localStorage.setItem('token', user.token);
+          this.setRole(user.roles);
           this.currentUserSource.next(user);
         }
       })
@@ -57,7 +70,9 @@ export class AccountService {
 
   logout() {
     localStorage.removeItem('token');
+    localStorage.removeItem('role');
     this.currentUserSource.next(null!);
+    this.roleSubject.next(null!);
     this.router.navigateByUrl('/');
   }
 

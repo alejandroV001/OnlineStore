@@ -81,13 +81,16 @@ namespace API.Controllers
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
 
+            var role = await _userManager.GetRolesAsync(user);
+
             if(!result.Succeeded) return Unauthorized(new ApiResponse(401));
 
             return new UserDto
             {
                 Email = user.Email,
                 Token = _tokenService.CreateToken(user),
-                DisplayName = user.DisplayName
+                DisplayName = user.DisplayName,
+                Roles = role.First()
             };
         }
 
@@ -106,6 +109,8 @@ namespace API.Controllers
             };
 
             var result = await _userManager.CreateAsync(user, registerDto.Password);
+            await _userManager.AddToRoleAsync(user, "Member");
+
 
             if(!result.Succeeded) return BadRequest(new ApiResponse(400));
 
