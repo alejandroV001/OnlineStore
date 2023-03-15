@@ -1,3 +1,5 @@
+import { PhotoPicture } from "./photoPicture";
+
 export interface IProduct {
     id: number;
     name: string;
@@ -6,4 +8,9 @@ export interface IProduct {
     pictureUrl: string;
     productType: string;
     productBrand: string;
+    productSize: string;
+    productFit: string;
+    productColor: string;
+    productGender: string;
+    pictures: PhotoPicture[];
 }

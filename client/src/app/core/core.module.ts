@@ -11,8 +11,8 @@ import { BreadcrumbModule } from 'xng-breadcrumb';
 import { SharedModule } from '../shared/shared.module';
 import { AdSectionComponent } from './ad-section/ad-section.component';
 import { FooterComponent } from './footer/footer.component';
-import { AdminGuard } from './guards/admin.guard';
-
+import { BrowserModule } from '@angular/platform-browser';
+import { FileUploadModule } from 'ng2-file-upload';
 
 @NgModule({
   declarations: [
@@ -22,12 +22,14 @@ import { AdminGuard } from './guards/admin.guard';
     ServerErrorComponent,
     SectionHeaderComponent,
     AdSectionComponent,
-    FooterComponent
+    FooterComponent,
   ],
   imports: [
     CommonModule,
     RouterModule,
+    BrowserModule,
     BreadcrumbModule,
+    FileUploadModule,
     SharedModule,
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',
@@ -38,7 +40,7 @@ import { AdminGuard } from './guards/admin.guard';
     NavBarComponent,
     SectionHeaderComponent,
     AdSectionComponent,
-    FooterComponent
+    FooterComponent,
   ]
 })
 export class CoreModule { }

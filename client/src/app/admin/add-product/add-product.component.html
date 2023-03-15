@@ -1,0 +1,85 @@
+<div class="container mt-4">
+  <form [formGroup]="productForm" style="width: 65%;">
+    <div class="form-group">
+      <label for="name">Name:</label>
+      <input type="text" required minlength="4" id="name" formControlName="name" class="form-control">
+    </div>
+    <div class="form-group mt-3">
+      <label for="description">Description:</label>
+      <textarea id="description" required minlength="12" formControlName="description" class="form-control"></textarea>
+    </div>
+    <div class="form-group mt-3">
+      <label for="price">Price:</label>
+      <input type="number" min="1" id="price" formControlName="price" class="form-control">
+    </div>
+    <div class="form-group mt-3">
+      <label for="quantity">Quantity:</label>
+      <input type="number" min="1" id="quantity" formControlName="quantity" class="form-control">
+    </div>
+    <!-- <div class="form-group mt-3">
+      <label for="mainPicture">Main Picture:</label>
+      <input type="file" id="mainPicture" (change)="selectImagesMain($event)" formControlName="mainPicture" multiple
+        class="form-control-file">
+    </div>
+    <div *ngFor="let image of image">
+      <img style="width: 200px;height: 130px;" [src]="image">
+    </div>
+    <div>
+      <app-photo-editor [photos]="images"></app-photo-editor>
+    </div> -->
+    <!-- <div class="form-group mt-3">
+      <label for="pictures">Pictures:</label>
+      <input type="file" id="pictures" multiple (change)="selectImages($event)" formControlName="pictures" multiple
+        class="form-control-file">
+    </div>
+    <div *ngFor="let image of images">
+      <img style="width: 200px;height: 130px;" [src]="image">
+    </div> -->
+    <div class="form-group mt-3">
+      <label for="brand">Brand:</label>
+      <select id="brand" (change)="selectBrand($event.target.value)" formControlName="brand" class="form-control">
+        <option [value]="brand.id" *ngFor="let brand of brands">{{ brand.name }}</option>
+      </select>
+    </div>
+    <div class="form-group mt-3">
+      <label for="type">Type:</label>
+      <select id="type" (change)="selectType($event.target.value)"  formControlName="type" class="form-control">
+        <option [value]="type.id" *ngFor="let type of types">{{ type.name }}</option>
+      </select>
+    </div>
+    <div class="form-group mt-3">
+      <label for="size">Size:</label>
+      <select id="size" (change)="selectSize($event.target.value)" formControlName="size" class="form-control">
+        <option [value]="size.id" *ngFor="let size of sizes">{{ size.name }}</option>
+      </select>
+    </div>
+    <div class="form-group mt-3">
+      <label for="color">Color:</label>
+      <select id="color" (change)="selectColor($event.target.value)" formControlName="color" class="form-control">
+        <option [value]="color.id" *ngFor="let color of colors" >{{ color.name }}</option>
+      </select>
+    </div>
+    <div class="form-group mt-3">
+      <label for="fit">Fit:</label>
+      <select id="fit" (change)="selectFit($event.target.value)" formControlName="fit" class="form-control">
+        <option [value]="fit.id" *ngFor="let fit of fits">{{ fit.name }}</option>
+      </select>
+    </div>
+    <div class="form-group mb-3 mt-3">
+      <label for="gender">Gender:</label>
+      <div class="form-check">
+        <input (change)="selectGender($event.target.value)" type="radio" id="male" formControlName="gender" value="1" class="form-check-input">
+        <label for="male" class="form-check-label">Male</label>
+      </div>
+      <div class="form-check">
+        <input (change)="selectGender($event.target.value)" type="radio" id="female" formControlName="gender" value="2" class="form-check-input">
+        <label for="female" class="form-check-label">Female</label>
+      </div>
+    </div>
+    <div class="container-button">
+      <button type="submit" (click)="onSubmit()" class="center-button btn btn-primary">Submit</button>
+    </div>
+  </form>
+
+      
+</div>

@@ -17,7 +17,15 @@ namespace API.Helpers
             CreateMap<Product, ProductToReturnDto>()
                 .ForMember(d => d.ProductBrand, o => o.MapFrom(s => s.ProductBrand.Name))
                 .ForMember(d => d.ProductType, o => o.MapFrom(s => s.ProductType.Name))
-                .ForMember(d => d.PictureUrl, o => o.MapFrom<ProductUrlResolver>());
+                .ForMember(d => d.ProductSize, o => o.MapFrom(s => s.ProductSize.Name))
+                .ForMember(d => d.ProductFit, o => o.MapFrom(s => s.ProductFit.Name))
+                .ForMember(d => d.ProductColor, o => o.MapFrom(s => s.ProductColor.Name))
+                .ForMember(d => d.ProductGender, o => o.MapFrom(s => s.ProductGender.Name))
+                .ForMember(d => d.Pictures, o => o.MapFrom(s => s.Photos))
+                .ForMember(d => d.PictureUrl, o => o.MapFrom(s => s.Photos.Where(p =>p.IsMain == true).FirstOrDefault().Url));
+
+             CreateMap<ProductDto, Product>();
+
 
             CreateMap<Core.Entities.Identity.Address, AddressDto>().ReverseMap();
             CreateMap<CustomerBasketDto, CustomerBasket>();
@@ -30,8 +38,11 @@ namespace API.Helpers
             CreateMap<OrderItem, OrderItemDto>()
                 .ForMember(d => d.ProductId, o => o.MapFrom(s => s.ItemOrdered.ProductItemId))
                 .ForMember(d => d.ProductName, o => o.MapFrom(s => s.ItemOrdered.ProductName))
-                .ForMember(d => d.PictureUrl, o => o.MapFrom(s => s.ItemOrdered.PictureUrl))
-                .ForMember(d => d.PictureUrl, o => o.MapFrom<OrderItemResolver>());
+                .ForMember(d => d.PictureUrl, o => o.MapFrom(s => s.ItemOrdered.PictureUrl));
+                // .ForMember(d => d.PictureUrl, o => o.MapFrom<OrderItemResolver>());
+
+            CreateMap<PhotoForCreationDto, ProductPictures>();
+            CreateMap<ProductPictures, PhotoForReturnDto>();
 
         }
     }

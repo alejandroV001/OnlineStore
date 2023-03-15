@@ -1,5 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { BasketService } from 'src/app/basket/basket.service';
+import { Photo } from 'src/app/shared/models/photo';
+import { PhotoPicture } from 'src/app/shared/models/photoPicture';
 import { IProduct } from 'src/app/shared/models/product';
 
 @Component({
@@ -9,10 +11,12 @@ import { IProduct } from 'src/app/shared/models/product';
 })
 export class ProductItemComponent implements OnInit {
   @Input() product!: IProduct;
+  mainPhoto!: PhotoPicture;
 
   constructor(private basketService: BasketService) { }
 
   ngOnInit(): void {
+    // this.mainPhoto = this.product.photos.filter(ph =>ph.isMain == true);
   }
 
   addItemToBasket(){

@@ -14,10 +14,10 @@ namespace API.Helpers
 
         public string Resolve(Product source, ProductToReturnDto destination, string destMember, ResolutionContext context)
         {
-            if(!string.IsNullOrEmpty(source.MainPicture))
-            {
-                return _config["ApiUrl"] + source.MainPicture;
-            }
+            // if(!string.IsNullOrEmpty(source.))
+            // {
+            //     return _config["ApiUrl"] + source.MainPicture;
+            // }
             
             return null;
         }

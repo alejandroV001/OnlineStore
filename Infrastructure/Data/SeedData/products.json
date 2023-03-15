@@ -1,23 +1,26 @@
 [
-
     {
       "Name": "Angular Blue Boots",
       "Description": "Suspendisse ifend. Ut nonummy.",
       "Price": 180,
+      "Quantity": 25,
       "ProductTypeId": 3,
       "ProductBrandId": 1,
       "ProductFitId": 1,
-      "MainPicture": "images/products/boot-ang1.png",
+      "ProductColorId": 1,
+      "ProductSizeId": 1,
       "ProductGenderId": 1
     },
     {
       "Name": "T-Shirt GYMSHARK",
       "Description": "Tricou de calitate superioara cu un material de calitate",
       "Price": 35,
+      "Quantity": 45,
       "ProductTypeId": 1,
       "ProductBrandId": 1,
       "ProductFitId": 1,
-      "MainPicture": "images/products/hanorac_negru.jpg",
+      "ProductColorId": 2,
+      "ProductSizeId": 2,
       "ProductGenderId": 1
 
     },
@@ -25,11 +28,12 @@
       "Name": "Joggers GYMSHARK",
       "Description": "waitting",
       "Price": 45,
+      "Quantity": 35,
       "ProductTypeId": 5,
       "ProductBrandId": 1,
       "ProductFitId": 3,
-      "MainPicture": "images/products/pantaloni_black.jpg",
+      "ProductColorId": 2,
+      "ProductSizeId": 3,
       "ProductGenderId": 2
-
     }
   ]

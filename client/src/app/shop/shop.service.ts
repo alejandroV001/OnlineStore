@@ -4,7 +4,9 @@ import { map, mapTo, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { IBrand } from '../shared/models/brand';
 import { IPagination, Pagination } from '../shared/models/pagination';
+import { PhotoPicture } from '../shared/models/photoPicture';
 import { IProduct } from '../shared/models/product';
+import { IProductAdd } from '../shared/models/productToAdd';
 import { IType } from '../shared/models/productType';
 import { ShopParams } from '../shared/models/shopParams';
 
@@ -16,6 +18,7 @@ export class ShopService {
   products: IProduct[] = [];
   brands: IBrand[] = [];
   types: IType[] = [];
+  photos: PhotoPicture[] = [];
   pagination = new Pagination();
   shopParams = new ShopParams();
   productCache = new Map();
@@ -82,7 +85,9 @@ export class ShopService {
     }
     return this.http.get<IProduct>(this.baseUrl + 'products/' + id);
   }
-
+  getPhotosForProduct(id: number) {
+    return this.http.get<PhotoPicture[]>(this.baseUrl + 'photos/' + id);
+  }
   getBrands(){
     if(this.brands.length > 0){
       return of(this.brands);
@@ -94,6 +99,7 @@ export class ShopService {
       })
     )
   }
+
   getTypes(){
     if(this.types.length > 0){
       return of(this.types);
@@ -104,6 +110,27 @@ export class ShopService {
         return response;
       })
     )
+  }
+
+  addProduct(values: any) {
+    return this.http.post<IProductAdd>(this.baseUrl + 'Products/add-product', values).pipe(
+      map(response => {
+        return response;
+      })
+    );
+  }
+
+  deleteProduct(id: number) {
+    console.log(id);
+    return this.http.delete(this.baseUrl + 'products/'+ id);
+  }
+
+  updateProduct(values:any) {
+    return this.http.put<IProductAdd>(this.baseUrl + 'Products/update-product',values).pipe(
+      map(response => {
+        return response;
+      })
+    );
   }
 }
 

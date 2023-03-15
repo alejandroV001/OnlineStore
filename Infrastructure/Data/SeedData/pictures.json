@@ -1,0 +1,20 @@
+[
+    {
+      "ProductId": 1,
+      "IsMain": true,
+      "PublicId": "frjwox4khfsfsjf3iysw",
+      "Url": "http://res.cloudinary.com/alejandroscloud/image/upload/v1678012398/frjwox4khfsfsjf3iysw.jpg"
+    },
+    {
+        "ProductId": 2,
+        "IsMain": true,
+        "PublicId": "frjwox4khfsfsjf3iysw",
+        "Url": "http://res.cloudinary.com/alejandroscloud/image/upload/v1678012398/frjwox4khfsfsjf3iysw.jpg"
+    },
+    {
+        "ProductId": 3,
+        "IsMain": true,
+        "PublicId": "kwkwcvbqbzs4wjqfxwwp",
+        "Url": "http://res.cloudinary.com/alejandroscloud/image/upload/v1678012518/kwkwcvbqbzs4wjqfxwwp.jpg"
+    }
+  ]

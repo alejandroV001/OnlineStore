@@ -9,6 +9,8 @@ namespace Core.Entities
     {
         public Product Product { get; set; }
         public int ProductId { get; set; }
-        public string PictureUrl { get; set; }
+        public bool IsMain { get; set; }
+        public string PublicId { get; set; }
+        public string Url { get; set; }
     }
 }

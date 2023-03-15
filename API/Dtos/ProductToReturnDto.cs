@@ -17,5 +17,8 @@ namespace API.Dtos
         public string ProductSize { get; set; }
         public string ProductFit { get; set; }
         public string ProductColor { get; set; }
+        public string ProductGender { get; set; }
+        public ICollection<PhotoForReturnDto> Pictures { get; set; }
+
     }
 }

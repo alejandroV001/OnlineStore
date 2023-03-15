@@ -16,6 +16,13 @@ namespace Infrastructure.Data
             _context = context;
         }
 
+        public async Task<List<ProductPictures>> GetPhotosByProductIdAsync(int id)
+        {
+            var photos =await _context.ProductPictures.Where(p => p.ProductId == id).ToListAsync();
+
+            return photos;
+        }
+
         public async Task<IReadOnlyList<ProductBrand>> GetProductBrandsAsync()
         {
             return await _context.ProductBrands.ToListAsync();
@@ -26,6 +33,10 @@ namespace Infrastructure.Data
             return await _context.Products
             .Include(p => p.ProductType)
             .Include(p => p.ProductBrand)
+            .Include(p => p.ProductFit)
+            .Include(p => p.ProductSize)
+            .Include(p => p.ProductColor)
+            .Include(p => p.ProductGender)
             .FirstOrDefaultAsync(p => p.Id == id);
         }
 
@@ -34,12 +45,21 @@ namespace Infrastructure.Data
             return await _context.Products
             .Include(p => p.ProductType)
             .Include(p => p.ProductBrand)
+            .Include(p => p.ProductFit)
+            .Include(p => p.ProductSize)
+            .Include(p => p.ProductColor)
+            .Include(p => p.ProductGender)
             .ToListAsync();
         }
 
         public async Task<IReadOnlyList<ProductType>> GetProductTypesAsync()
         {
             return await _context.ProductTypes.ToListAsync();
+        }
+
+        public async Task<bool> SaveAll()
+        {
+            return await _context.SaveChangesAsync() > 0;
         }
     }
 }

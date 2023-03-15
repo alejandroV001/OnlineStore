@@ -22,8 +22,6 @@ namespace Infrastructure.Data
         public DbSet <ProductFit> ProductFits { get; set;}
         public DbSet <ProductSize> ProductSizes { get; set;}
         public DbSet <ProductGender> ProductGenders { get; set;}
-
-        public DbSet <ProductSpecification> ProductSpecifications {get; set;}
         public DbSet <ProductPictures> ProductPictures {get; set;}
 
         public DbSet <Order> Orders { get; set;}
@@ -34,7 +32,6 @@ namespace Infrastructure.Data
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-
         }
     }
 }

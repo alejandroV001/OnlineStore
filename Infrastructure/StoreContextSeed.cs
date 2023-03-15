@@ -98,6 +98,16 @@ namespace Infrastructure
                     }
                     await context.SaveChangesAsync();
                 }
+                if(!context.ProductPictures.Any())
+                {
+                    var picturesData = File.ReadAllText(path + @"/Data/SeedData/pictures.json");
+                    var pictures = JsonSerializer.Deserialize<List<ProductPictures>>(picturesData);
+                    foreach (var item in pictures)
+                    {
+                        context.ProductPictures.Add(item);
+                    }
+                    await context.SaveChangesAsync();
+                }
                 
             }catch(Exception ex)
             {

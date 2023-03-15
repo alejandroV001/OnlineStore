@@ -10,8 +10,7 @@ namespace Core.Entities
         public string Name { get; set; }
         public string Description { get; set; }
         public decimal Price { get; set; }
-        public string MainPicture { get; set; }
-
+        public int Quantity { get; set; }
         public ProductType ProductType { get; set; }
         public int ProductTypeId { get; set; }
         public ProductBrand ProductBrand { get; set; }
@@ -21,6 +20,14 @@ namespace Core.Entities
         public int ProductFitId { get; set; }
         public ProductGender ProductGender { get; set; }
         public int ProductGenderId { get; set; }
-
+        public ProductColor ProductColor { get; set; }
+        public int ProductColorId { get; set; }
+        public ProductSize ProductSize { get; set; }
+        public int ProductSizeId { get; set; }
+        public List<ProductPictures> Photos { get; set; } 
+        public Product()
+        {
+            Photos = new List<ProductPictures>();
+        }
     }
 }

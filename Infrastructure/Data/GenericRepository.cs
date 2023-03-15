@@ -22,6 +22,11 @@ namespace Infrastructure.Data
             return await _context.Set<T>().FindAsync(id);
         }
 
+        public async Task<T> GetById(int id)
+        {
+            return await _context.Set<T>().FirstOrDefaultAsync(m => m.Id == id);
+        }
+
         public async Task<IReadOnlyList<T>> ListAllSync()
         {
             return await _context.Set<T>()
@@ -61,6 +66,17 @@ namespace Infrastructure.Data
         public void Delete(T entity)
         {
             _context.Set<T>().Remove(entity);
+        }
+
+        public async Task<bool> Complete()
+        {
+            return await _context.SaveChangesAsync() > 0;
+        }
+
+        public async Task<bool> SaveAll()
+        {
+            return await _context.SaveChangesAsync() > 0;
+        
         }
     }
 }

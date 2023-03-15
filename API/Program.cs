@@ -31,6 +31,8 @@ builder.Services.AddSingleton<IConnectionMultiplexer>(c => {
     return ConnectionMultiplexer.Connect(configuration);
 });
 
+builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
+
 builder.Services.AddSingleton<IResponseCacheService, ResponseCacheService>();
 
 builder.Services.AddScoped<ITokenService, TokenService>();
@@ -60,13 +62,14 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 
 builder.Services.AddIdentityServices(builder.Configuration);
 
-builder.Services.AddCors(opt =>
-{
-    opt.AddPolicy("CorsPolicy", policy => 
-    {
-        policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200");
-    });
-});
+// builder.Services.AddCors(opt =>
+// {
+//     opt.AddPolicy("CorsPolicy", policy => 
+//     {
+//         policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200","https://localhost:5001");
+
+//     });
+// });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c => {
@@ -136,8 +139,14 @@ app.UseStaticFiles(new StaticFileOptions
 });
 
 
-app.UseCors("CorsPolicy");
-
+// app.UseCors("CorsPolicy");
+app.UseCors( builder =>
+{
+    builder.WithOrigins("https://localhost:4200")
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+        .AllowCredentials();
+});
 app.UseAuthentication();
 
 app.UseAuthorization();

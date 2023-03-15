@@ -41,6 +41,9 @@ MIT
 @angular/router
 MIT
 
+ng2-file-upload
+MIT
+
 ngx-bootstrap/carousel
 MIT
 
