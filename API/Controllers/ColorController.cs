@@ -22,5 +22,35 @@ namespace API.Controllers
         {
             return Ok(await _productsColorRepo.ListAllSync());
         }
+
+        [HttpPost()]
+        public async Task<ActionResult> Add(ProductColor color)
+        {
+            _productsColorRepo.Add(color);
+
+            if(await _productsColorRepo.SaveAll())
+            {
+                return Ok();
+            }
+
+            return BadRequest();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var color = await _productsColorRepo.GetById(id);
+
+            if(color == null) return BadRequest("Color not found");
+
+            _productsColorRepo.Delete(color);
+
+            if(await _productsColorRepo.SaveAll())
+            {
+                return Ok();
+            }
+
+            return BadRequest("Could not delete the color");
+        }
     }
 }

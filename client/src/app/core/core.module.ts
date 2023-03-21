@@ -13,6 +13,7 @@ import { AdSectionComponent } from './ad-section/ad-section.component';
 import { FooterComponent } from './footer/footer.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { FileUploadModule } from 'ng2-file-upload';
+import { AdminModule } from '../admin/admin.module';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { FileUploadModule } from 'ng2-file-upload';
     CommonModule,
     RouterModule,
     BrowserModule,
+    AdminModule,
     BreadcrumbModule,
     FileUploadModule,
     SharedModule,

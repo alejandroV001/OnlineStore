@@ -22,5 +22,35 @@ namespace API.Controllers
         {
             return Ok(await _productsSizeRepo.ListAllSync());
         }
+
+        [HttpPost()]
+        public async Task<ActionResult<ProductSize>> AddSize(ProductSize size)
+        {
+            _productsSizeRepo.Add(size);
+
+            if(await _productsSizeRepo.SaveAll())
+            {
+                return Ok();
+            }
+
+            return BadRequest();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteSize(int id)
+        {
+            var size = await _productsSizeRepo.GetById(id);
+
+            if(size == null) return BadRequest("Size not found");
+
+            _productsSizeRepo.Delete(size);
+
+            if(await _productsSizeRepo.SaveAll())
+            {
+                return Ok();
+            }
+
+            return BadRequest("Could not delete the size");
+        }
     }
 }

@@ -11,6 +11,7 @@ import { ErrorInterceptor } from './core/interceptors/error.interceptor';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { LoadingInterceptor } from './core/interceptors/loading.interceptors';
 import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
+import { AdminModule } from './admin/admin.module';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
     CoreModule,
     HomeModule,
     NgxSpinnerModule,
+    AdminModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},

@@ -22,5 +22,35 @@ namespace API.Controllers
         {
             return Ok(await _productsBrandRepo.ListAllSync());
         }
+
+        [HttpPost()]
+        public async Task<ActionResult> Add(ProductBrand brand)
+        {
+            _productsBrandRepo.Add(brand);
+
+            if(await _productsBrandRepo.SaveAll())
+            {
+                return Ok();
+            }
+
+            return BadRequest();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var brand = await _productsBrandRepo.GetById(id);
+
+            if(brand == null) return BadRequest("Brand not found");
+
+            _productsBrandRepo.Delete(brand);
+
+            if(await _productsBrandRepo.SaveAll())
+            {
+                return Ok();
+            }
+
+            return BadRequest("Could not delete the brand");
+        }
     }
 }

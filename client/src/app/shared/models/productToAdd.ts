@@ -4,12 +4,10 @@ export interface IProductAdd {
     description: string;
     price: number;
     quantity: number;
-    mainPicture: string;
-    pictures: string[];
-    productType: string;
-    productBrand: string;
-    productSize: string;
-    productColor: string;
-    productFit: string;
-    productGender: string;
+    productTypeId: string;
+    productBrandId: string;
+    productSizeId: string;
+    productColorId: string;
+    productFitId: string;
+    productGenderId: string;
 }

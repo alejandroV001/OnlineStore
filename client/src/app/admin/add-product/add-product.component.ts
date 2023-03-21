@@ -61,57 +61,31 @@ export class AddProductComponent implements OnInit {
       description: [null, [Validators.required]],
       price: [null, [Validators.required,Validators.min(0)]],
       quantity: [null, [Validators.required,Validators.min(1)]],
-      pictures: this.fb.array([]),
-      mainPicture: [null, [Validators.required]],
       size: [null, [Validators.required]],
-      productSize: [null, [Validators.required]],
-      productColor: [null, [Validators.required]],
+      productSizeId: [null, [Validators.required]],
+      productColorId: [null, [Validators.required]],
       color: [null, [Validators.required]],
       gender: [null, [Validators.required]],
-      productGender: [null, [Validators.required]],
+      productGenderId: [null, [Validators.required]],
       fit: [null, [Validators.required]],
-      productfit: [null, [Validators.required]],
+      productfitId: [null, [Validators.required]],
       type: [null, [Validators.required]],
-      producttype: [null, [Validators.required]],
+      producttypeId: [null, [Validators.required]],
 
       brand: [null, [Validators.required]],
-      productbrand: [null, [Validators.required]],
+      productbrandId: [null, [Validators.required]],
 
     });
   }
 
-  selectImages(event: { target: { files: any; }; }) {
-    const files = event.target.files;
-    for (let i = 0; i < files.length; i++) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        //this.images.push(reader.result as string);
-        const newControl = this.fb.control(reader.result as string);
-        (this.productForm.get('pictures') as FormArray).push(newControl);
-      };
-      reader.readAsDataURL(files[i]);
-    }
-  }
-  selectImagesMain(event: { target: { files: any; }; }) {
-    const files = event.target.files;
-    for (let i = 0; i < files.length; i++) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        this.image.push(reader.result as string);
-      };
-      reader.readAsDataURL(files[i]);
-    }
-  }
+
   
   onSubmit(){
     var formVal = this.productForm.value;
-    const photos = this.productForm.get('pictures')!.value;
-
     console.log(formVal);
 
-
     this.shopService.addProduct(this.productForm.value).subscribe(response => {
-      this.router.navigateByUrl('/product-management');
+      this.router.navigateByUrl('/admin');
     }, error => {
       console.log(error);
       this.errors = error.errors;
@@ -119,21 +93,21 @@ export class AddProductComponent implements OnInit {
   }
 
   selectColor(id: number) {
-    this.productForm.controls['productColor'].setValue(id);
+    this.productForm.controls['productColorId'].setValue(id);
   }
   selectSize(id: number) {
-    this.productForm.controls['productSize'].setValue(id);
+    this.productForm.controls['productSizeId'].setValue(id);
   }
   selectFit(id: number) {
-    this.productForm.controls['productfit'].setValue(id);
+    this.productForm.controls['productfitId'].setValue(id);
   }
   selectType(id: number) {
-    this.productForm.controls['producttype'].setValue(id);
+    this.productForm.controls['producttypeId'].setValue(id);
   }
   selectBrand(id: number) {
-    this.productForm.controls['productbrand'].setValue(id);
+    this.productForm.controls['productbrandId'].setValue(id);
   }
   selectGender(id: number) {
-    this.productForm.controls['productGender'].setValue(id);
+    this.productForm.controls['productGenderId'].setValue(id);
   }
 }

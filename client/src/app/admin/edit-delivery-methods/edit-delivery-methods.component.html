@@ -1,0 +1,57 @@
+<div class="row">
+    <section class="col-8">
+        <div class="container">
+            <table class="table table-striped" style="margin-top: 4%;">
+                <thead>
+                  <tr>
+                    <th>ShortName</th>
+                    <th>DeliveryTime</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                    <th class="actions">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let type of types">
+                    <td>{{ type.shortName }}</td>
+                    <td>{{ type.deliveryTime }}</td>
+                    <td>{{ type.description }}</td>
+                    <td>{{ type.price }}</td>
+
+                    <td class="actions">
+                      <button (click)="deleteType(type.id)" class="btn btn-sm btn-danger" >Delete</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+        </div>
+    </section>
+    <section class="col-4" style="margin-top: 1.5%;">
+        <h2>Add Delivery Method</h2>
+        <form [formGroup]="typeForm" style="width: 45%;">
+            <div class="form-group">
+              <label for="shortname">Short Name:</label>
+              <input type="text" id="shortname" formControlName="shortname" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="deliverytime">Delivery Time:</label>
+                <input type="text" id="deliverytime" formControlName="deliverytime" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <input type="text" id="description" formControlName="description" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="price">Price:</label>
+                <input type="number" min="0" id="price" formControlName="price" class="form-control">
+            </div>
+            <div class="container-button" style="margin-top: 2%;">
+                <button type="submit" (click)="onSubmit()" class="center-button btn btn-primary">Submit</button>
+              </div>
+        </form>
+
+    </section>
+</div>
+
+
+

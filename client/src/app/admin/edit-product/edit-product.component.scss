@@ -1,0 +1,42 @@
+.col-sm-2 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center;
+  }
+  .col-md-6 {
+    margin-bottom: 20px
+  }
+
+img {
+    height: 320px;
+    width: 230px;
+    margin-bottom: 2px;
+    text-align: center;
+    margin-top: 10px;
+  }
+
+button{
+    margin-left: 2px;
+}
+  
+  .nv-file-over {
+    border: dotted 3px red;
+  }
+  
+  input[type=file] {
+    color: transparent;
+  }
+  
+  .not-approved {
+      opacity: 0.2;
+  }
+  
+  .img-wrapper {
+    position: relative;
+  }
+  
+  .img-text {
+    position: absolute;
+    bottom: 30%;
+  }

@@ -28,8 +28,6 @@ namespace Core.Specifications
             AddInclude(x => x.ProductFit);
             AddInclude(x => x.Photos);
 
-
-
             AddOrderBy(x => x.Name);
             ApplyPaging(productParams.PageSize * (productParams.PageIndex - 1),
                 productParams.PageSize);

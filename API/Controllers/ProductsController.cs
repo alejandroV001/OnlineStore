@@ -94,10 +94,13 @@ namespace API.Controllers
                 Name = product.Name,
                 Description = product.Description,
                 Price = product.Price,
+                Quantity = product.Quantity,
                 ProductTypeId = product.ProductTypeId,
                 ProductBrandId = product.ProductBrandId,
                 ProductFitId = product.ProductFitId,
                 ProductGenderId = product.ProductGenderId,
+                ProductColorId = product.ProductColorId,
+                ProductSizeId = product.ProductSizeId
             };
 
             _productsRepo.Add(prod);
@@ -121,14 +124,14 @@ namespace API.Controllers
 
             if(await _productsRepo.SaveAll())
             {
-                return Ok("Product deleted with success!");
+                return Ok();
             }
 
             return BadRequest("Could not delete the product");
         }
 
         [HttpPut("update-product")]
-        public async Task<ActionResult<Product>> UpdateProduct(ProductDto product)
+        public async Task<ActionResult> UpdateProduct(ProductDto product)
         {            
             var productMapped = _mapper.Map<ProductDto, Product>(product);
 
@@ -136,7 +139,7 @@ namespace API.Controllers
 
             if(await _productsRepo.SaveAll())
             {
-                return Ok("Product Updated with succes");
+                return Ok();
             }
 
             return BadRequest("Could not add the product");

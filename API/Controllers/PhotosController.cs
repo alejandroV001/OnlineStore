@@ -19,15 +19,17 @@ namespace API.Controllers
     public class PhotosController : BaseApiController
     {
         private readonly IProductRepository _productRepository;
+        private readonly IGenericRepository<ProductPictures> _picturesRepo;
         private readonly IMapper _mapper;
         private readonly IOptions<CloudinarySettings> _cloudinaryConfig;
         private readonly Cloudinary _cloudinary;
         public PhotosController(IProductRepository productRepository, IMapper mapper,
-            IOptions<CloudinarySettings> cloudinaryConfig)
+            IOptions<CloudinarySettings> cloudinaryConfig, IGenericRepository<ProductPictures> picturesRepo)
         {
             _productRepository = productRepository;
             _mapper = mapper;
             _cloudinaryConfig = cloudinaryConfig;
+            _picturesRepo = picturesRepo;
 
             Account acc = new Account(
                 _cloudinaryConfig.Value.CloudName,
@@ -52,7 +54,9 @@ namespace API.Controllers
         public async Task<IActionResult> AddPhotoForProduct([FromForm]PhotoForCreationDto photo, int productId)
         {
             var product = await _productRepository.GetproductByIdAsync(productId);
-
+            var photos = await _productRepository.GetPhotosByProductIdAsync(productId);
+            product.Photos = photos;
+            
             if(product == null)
                 return BadRequest("Product not found");
 
@@ -95,6 +99,45 @@ namespace API.Controllers
             }
 
             return BadRequest("Could not add the photo");
+        }
+
+
+         [HttpDelete("{id}")]
+        public async Task<IActionResult> DeletePhoto(int id)
+        {
+
+            var photoFromRepo = await _picturesRepo.GetById(id);
+
+            if (photoFromRepo.IsMain) {
+                return BadRequest("You cannot  delete your main photo");
+            }            
+
+            if (photoFromRepo.PublicId != null)
+            {
+                var deleteParams = new DeletionParams(photoFromRepo.PublicId);
+
+                var result = _cloudinary.Destroy(deleteParams);
+
+                if (result.Result == "ok") 
+                {
+                    _picturesRepo.Delete(photoFromRepo);
+                } 
+                else 
+                {
+                    return BadRequest("Failed to delete the photo (issue with Cloud)");
+                }
+            } 
+            else 
+            {
+                _picturesRepo.Delete(photoFromRepo);
+            }
+
+            if (await _picturesRepo.SaveAll()) 
+            {
+                return Ok();
+            }            
+            return BadRequest("Failed to delete the photo");
+
         }
     }
 }

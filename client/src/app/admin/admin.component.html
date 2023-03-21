@@ -1,5 +1,31 @@
 <div class="container mt-3">
     <div class="row">
+        <button  class="btn btn-sm btn-primary "
+                         style="width: 140px; height: 45px; border-radius: 5%; margin-left: 4%;"
+                         routerLink="/admin/edit-sizes">
+                          Edit Sizes</button>
+        <button  class="btn btn-sm btn-primary "
+                          style="width: 140px; height: 45px; border-radius: 5%; margin-left: 4%;"
+                          routerLink="/admin/edit-types">
+                           Edit Types</button>
+        <button  class="btn btn-sm btn-primary "
+                           style="width: 140px; height: 45px; border-radius: 5%; margin-left: 4%;"
+                           routerLink="/admin/edit-brands">
+                           Edit Brands</button>
+        <button  class="btn btn-sm btn-primary "
+                            style="width: 180px; height: 45px; border-radius: 5%; margin-left: 4%;"
+                            routerLink="/admin/edit-delivery-methods">
+                            Edit Delivery Methods</button>
+        <button  class="btn btn-sm btn-primary "
+                            style="width: 120px; height: 45px; border-radius: 5%; margin-left: 4%;"
+                            routerLink="/admin/edit-colors">
+                            Edit Colors</button>
+        <button  class="btn btn-sm btn-primary "
+                             style="width: 120px; height: 45px; border-radius: 5%; margin-left: 4%;"
+                             routerLink="/admin/edit-fits">
+                             Edit Fits</button>
+    </div>
+    <div class="row" style="margin-top: 1.5%;">
         <section class="col-2">
             <ng-container *ngIf="types && brands">
                 <h5 class="text-warning ml-3 mt-4 mb-3">Sort</h5>
@@ -60,6 +86,7 @@
                       <th>Name</th>
                       <th>Description</th>
                       <th>Price</th>
+                      <th>Quantity</th>
                       <th>Actions</th>
                     </tr>
                   </thead>
@@ -68,8 +95,9 @@
                       <td>{{ product.name }}</td>
                       <td>{{ product.description }}</td>
                       <td>{{ product.price }}</td>
+                      <td>{{ product.quantity }}</td>
                       <td>
-                        <button routerLink="/admin/edit-product/{{product.id}}" class="btn btn-sm btn-primary me-2" >Edit</button>
+                        <button routerLink="/admin/edit-product/{{product.id}}" routerLinkActive="active"class="btn btn-sm btn-primary me-2" >Edit</button>
                         <button (click)="deleteProduct(product.id)" routerLink="/product-management" routerLinkActive="active" class="btn btn-sm btn-danger" >Delete</button>
                       </td>
                     </tr>

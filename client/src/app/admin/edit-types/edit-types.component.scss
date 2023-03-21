@@ -1,0 +1,26 @@
+table {
+    width: 30%;
+    margin-left: 25%;
+}
+  th.actions{
+    text-align: right;
+  }
+  td.actions {
+    text-align: right;
+  }
+
+  .container-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .center-button {
+    width: 200px; /* Set the width of the button */
+    height: 50px; /* Set the height of the button */
+  }

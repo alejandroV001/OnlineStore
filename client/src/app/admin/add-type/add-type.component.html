@@ -1,0 +1,14 @@
+<div class="container mt-4">
+    <form [formGroup]="typeForm" style="width: 65%;">
+      <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" required minlength="4" id="name" formControlName="name" class="form-control">
+      </div>
+
+      <div class="container-button">
+        <button type="submit" (click)="onSubmit()" class="center-button btn btn-primary">Submit</button>
+      </div>
+    </form>
+  
+        
+  </div>

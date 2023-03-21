@@ -3,12 +3,16 @@ import { Injectable } from '@angular/core';
 import { map, mapTo, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { IBrand } from '../shared/models/brand';
+import { IColor } from '../shared/models/color';
+import { IDeliveryMethod } from '../shared/models/deliveryMethod';
+import { IFit } from '../shared/models/fit';
 import { IPagination, Pagination } from '../shared/models/pagination';
 import { PhotoPicture } from '../shared/models/photoPicture';
 import { IProduct } from '../shared/models/product';
 import { IProductAdd } from '../shared/models/productToAdd';
 import { IType } from '../shared/models/productType';
 import { ShopParams } from '../shared/models/shopParams';
+import { ISize } from '../shared/models/size';
 
 @Injectable({
   providedIn: 'root'
@@ -73,16 +77,16 @@ export class ShopService {
   }
 
   getProduct(id: number) {
-    let product!: IProduct;
+    // let product!: IProduct;
 
-    this.productCache.forEach((products: IProduct[]) => {
-      product = products.find(p => p.id=== id)!;
-    })
+    // this.productCache.forEach((products: IProduct[]) => {
+    //   product = products.find(p => p.id=== id)!;
+    // })
 
-    if(product)
-    {
-      return of(product);
-    }
+    // if(product)
+    // {
+    //   return of(product);
+    // }
     return this.http.get<IProduct>(this.baseUrl + 'products/' + id);
   }
   getPhotosForProduct(id: number) {
@@ -131,6 +135,82 @@ export class ShopService {
         return response;
       })
     );
+  }
+
+  addSize(values: any) {
+    return this.http.post<ISize>(this.baseUrl + 'Size', values).pipe(
+      map(response => {
+        return response;
+      })
+    );
+  }
+
+  deleteSize(id: number) {
+    return this.http.delete(this.baseUrl + 'size/'+ id);
+  }
+
+  addType(values: any) {
+    return this.http.post<ISize>(this.baseUrl + 'Type', values).pipe(
+      map(response => {
+        return response;
+      })
+    );
+  }
+
+  deleteType(id: number) {
+    return this.http.delete(this.baseUrl + 'type/'+ id);
+  }
+
+  addBrand(values: any) {
+    return this.http.post<IBrand>(this.baseUrl + 'Brand', values).pipe(
+      map(response => {
+        return response;
+      })
+    );
+  }
+
+  deleteBrand(id: number) {
+    return this.http.delete(this.baseUrl + 'brand/'+ id);
+  }
+
+  addColors(values: any) {
+    return this.http.post<IColor>(this.baseUrl + 'Color', values).pipe(
+      map(response => {
+        return response;
+      })
+    );
+  }
+
+  deleteColors(id: number) {
+    return this.http.delete(this.baseUrl + 'color/'+ id);
+  }
+
+  addFits(values: any) {
+    return this.http.post<IFit>(this.baseUrl + 'Fit', values).pipe(
+      map(response => {
+        return response;
+      })
+    );
+  }
+
+  deleteFits(id: number) {
+    return this.http.delete(this.baseUrl + 'fit/'+ id);
+  }
+
+  addDeliveryMethods(values: any) {
+    return this.http.post<IDeliveryMethod>(this.baseUrl + 'DeliveryMethod', values).pipe(
+      map(response => {
+        return response;
+      })
+    );
+  }
+
+  deleteDeliveryMethods(id: number) {
+    return this.http.delete(this.baseUrl + 'deliverymethod/'+ id);
+  }
+
+  deletePhoto(id: number) {
+    return this.http.delete(this.baseUrl + 'photos/'+ 1 +'/photos/' + id);
   }
 }
 

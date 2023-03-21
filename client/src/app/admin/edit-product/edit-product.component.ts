@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FileItem, FileUploader } from 'ng2-file-upload';
+import { ToastrService } from 'ngx-toastr';
 import { IBrand } from 'src/app/shared/models/brand';
 import { IColor } from 'src/app/shared/models/color';
 import { IFit } from 'src/app/shared/models/fit';
@@ -41,64 +42,80 @@ export class EditProductComponent implements OnInit {
 
   constructor(private shopService: ShopService, private activateRoute: ActivatedRoute, 
     private bcService: BreadcrumbService,private fb: FormBuilder,
-    private http:HttpClient, private router: Router) {}
+    private http:HttpClient, private router: Router, private toastr: ToastrService) {
+      this.http.get<IColor>(this.baseUrl +'Color/colors').subscribe((colors: any) => {
+        this.colors = colors;
+      });
+      this.http.get<ISize>(this.baseUrl +'size/sizes').subscribe((sizes: any) => {
+        this.sizes = sizes;
+      });
+      
+      this.http.get<IFit>(this.baseUrl +'Fit/fits').subscribe((fits: any) => {
+        this.fits = fits;
+      });
+  
+      this.http.get<IBrand>(this.baseUrl +'brand/brands').subscribe((brands: any) => {
+        this.brands = brands;
+      });
+      this.http.get<IType>(this.baseUrl +'type/types').subscribe((types: any) => {
+        this.types = types;
+      });
+      this.http.get<IGender>(this.baseUrl +'Gender/gender').subscribe((genders: any) => {
+        this.genders = genders;
+      });
+    }
 
   ngOnInit(): void {
-    this.http.get<IColor>(this.baseUrl +'Color/colors').subscribe((colors: any) => {
-      this.colors = colors;
-    });
-    this.http.get<ISize>(this.baseUrl +'size/sizes').subscribe((sizes: any) => {
-      this.sizes = sizes;
-    });
-    
-    this.http.get<IFit>(this.baseUrl +'Fit/fits').subscribe((fits: any) => {
-      this.fits = fits;
-    });
-
-    this.http.get<IBrand>(this.baseUrl +'brand/brands').subscribe((brands: any) => {
-      this.brands = brands;
-    });
-    this.http.get<IType>(this.baseUrl +'type/types').subscribe((types: any) => {
-      this.types = types;
-    });
-    this.http.get<IGender>(this.baseUrl +'Gender/gender').subscribe((genders: any) => {
-      this.genders = genders;
-    });
     this.createAddProductForm();
     this.loadProduct();
-
-
   }
 
 
   loadProduct() {
-    console.log(+this.activateRoute.snapshot.paramMap.get('id')!);
-    this.shopService.getProduct(+this.activateRoute.snapshot.paramMap.get('id')!).subscribe(product => {
+    var id = +this.activateRoute.snapshot.paramMap.get('id')!;
+    this.shopService.getProduct(id).subscribe(product => {
       console.log(product);
       this.product = product;
       this.photos = product.pictures;
       console.log(this.photos);
       this.bcService.set('@productDetails', product.name)
-      this.uploader = new FileUploader({
-        url: this.baseUrl + 'photos/'+product.id  + '/photos',
-        authToken: 'Bearer ' + localStorage.getItem('token'),
-        isHTML5: true,
-        allowedFileType: ['image'],
-        removeAfterUpload: true,
-        autoUpload: false,
-        maxFileSize: 10 * 1024 * 1024 
-      });
-      this.productForm.setValue({name: product.name, 
-        description: product.description,
-        id:product.id
-      ,price: product.price, quantity:15, 
-      size:product.productSize  ,productSizeId: this.sizes.find(p => p.name == product.productSize)!.id  
-      ,color: product.productColor, productColorId: this.colors.find(p => p.name == product.productColor)!.id 
-     ,gender : product.productGender, productGenderId: this.genders.find(p => p.name == product.productGender)!.id,
-       fit: product.productFit, productfitId:this.fits.find(p => p.name == product.productFit)!.id,
-      type: product.productType, producttypeId: this.types.find(p => p.name == product.productType)!.id,
-    brand:product.productBrand, productbrandId: this.brands.find(p => p.name == product.productBrand)!.id});
+      if(product)
+      {
+        this.uploader = new FileUploader({
+          url: this.baseUrl + 'photos/'+product.id  + '/photos',
+          authToken: 'Bearer ' + localStorage.getItem('token'),
+          isHTML5: true,
+          allowedFileType: ['image'],
+          removeAfterUpload: true,
+          autoUpload: false,
+          maxFileSize: 10 * 1024 * 1024 
+        });
+        this.uploader.onSuccessItem = (item, response, status, header) => {
+          if (response) {
+            const res: PhotoPicture = JSON.parse(response);
+            const photo = {
+              id: res.id,
+              productId: res.productId,
+              publicId: res.publicId,
+              url: res.url,
+              isMain: res.isMain,
+            };
+            this.photos.push(photo);
+          }
+        };
 
+        this.productForm.setValue({name: product.name, 
+          description: product.description,
+          id:product.id
+          ,price: product.price, 
+          quantity:product.quantity, 
+          size:product.productSize  ,productSizeId: this.sizes.find(p => p.name == product.productSize)?.id  
+          ,color: product.productColor, productColorId: this.colors.find(p => p.name == product.productColor)!.id 
+          ,gender : product.productGender, productGenderId: this.genders.find(p => p.name == product.productGender)!.id,
+          fit: product.productFit, productfitId:this.fits.find(p => p.name == product.productFit)!.id,
+          type: product.productType, producttypeId: this.types.find(p => p.name == product.productType)!.id,
+          brand:product.productBrand, productbrandId: this.brands.find(p => p.name == product.productBrand)!.id});
+      }
     }, error => {
       console.log(error);
     });
@@ -124,6 +141,7 @@ export class EditProductComponent implements OnInit {
       brand: [null, [Validators.required]],
       productbrandId: [null],
     });
+    
   }
   public fileOverBase(e: any): void {
     this.hasBaseDropZoneOver = e;
@@ -153,11 +171,21 @@ export class EditProductComponent implements OnInit {
     console.log(formVal);
 
     this.shopService.updateProduct(this.productForm.value).subscribe(response => {
-      this.router.navigateByUrl('/product-management');
+      this.router.navigateByUrl('/admin');
     }, error => {
       console.log(error);
       this.errors = error.errors;
     });
   }
 
+  deletePhoto(id: number) {
+    if (confirm('Are you sure you want to delete this photo?')) {
+      this.shopService.deletePhoto(id).subscribe(() => {
+        this.photos.splice(this.photos.findIndex(p => p.id === id), 1);
+      }, error => {
+        this.toastr.error("Photo is main");
+      });
+    }
+
+}
 }

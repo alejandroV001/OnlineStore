@@ -22,5 +22,35 @@ namespace API.Controllers
         {
             return Ok(await _productsFitRepo.ListAllSync());
         }
+        
+        [HttpPost()]
+        public async Task<ActionResult> Add(ProductFit fit)
+        {
+            _productsFitRepo.Add(fit);
+
+            if(await _productsFitRepo.SaveAll())
+            {
+                return Ok();
+            }
+
+            return BadRequest();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var fit = await _productsFitRepo.GetById(id);
+
+            if(fit == null) return BadRequest("Fit not found");
+
+            _productsFitRepo.Delete(fit);
+
+            if(await _productsFitRepo.SaveAll())
+            {
+                return Ok();
+            }
+
+            return BadRequest("Could not delete the fit");
+        }
     }
 }

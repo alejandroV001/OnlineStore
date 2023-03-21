@@ -1,4 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { IBrand } from '../shared/models/brand';
 import { IProduct } from '../shared/models/product';
 import { IType } from '../shared/models/productType';
@@ -24,7 +25,7 @@ export class AdminComponent implements OnInit {
     {name: 'price: High to Low', value: 'priceDesc'}
   ];
 
-  constructor(private shopService: ShopService) { 
+  constructor(private shopService: ShopService, private router: Router) { 
     this.shopParams = this.shopService.getShopParams();
   }
 
@@ -113,6 +114,7 @@ export class AdminComponent implements OnInit {
   deleteProduct(id: number){
     if (confirm('Are you sure you want to delete this product?')) {
     this.shopService.deleteProduct(id).subscribe(() => {
+      this.router.navigateByUrl('/admin');
     }, error => {
     });
   }
