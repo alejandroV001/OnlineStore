@@ -12,7 +12,6 @@ import { ShopService } from '../shop/shop.service';
   styleUrls: ['./admin.component.scss']
 })
 export class AdminComponent implements OnInit {
-
   @ViewChild('search', {static: false}) searchTerm!: ElementRef;
   products: IProduct[] = [];
   brands: IBrand[] = [];
@@ -38,7 +37,7 @@ export class AdminComponent implements OnInit {
   getProducts(useCache = false) {
     this.shopService.getProducts(useCache).subscribe(response => {
       this.products = response!.data;
-      console.log(this.products.length);
+      console.log(this.products);
       this.totalCount = response!.count ;
     }, error => {
       console.log(error);

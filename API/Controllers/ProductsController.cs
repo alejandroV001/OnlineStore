@@ -91,7 +91,7 @@ namespace API.Controllers
         public async Task<ActionResult<Product>> AddProduct(ProductDto product)
         {
             var prod  = new Product{
-                Name = product.Name,
+                ProductNameId = product.ProductNameId,
                 Description = product.Description,
                 Price = product.Price,
                 Quantity = product.Quantity,

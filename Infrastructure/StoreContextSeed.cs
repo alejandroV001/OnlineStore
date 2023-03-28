@@ -5,6 +5,8 @@ using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Core.Entities;
+using Core.Entities.Collection;
+using Core.Entities.Discount;
 using Core.Entities.OrderAggregate;
 using Infrastructure.Data;
 using Microsoft.Extensions.Logging;
@@ -85,6 +87,36 @@ namespace Infrastructure
                     foreach (var item in gender)
                     {
                         context.ProductGenders.Add(item);
+                    }
+                    await context.SaveChangesAsync();
+                }
+                if(!context.Discounts.Any())
+                {
+                    var dmData = File.ReadAllText(path + @"/Data/SeedData/discount.json");
+                    var discounts = JsonSerializer.Deserialize<List<Discount>>(dmData);
+                    foreach (var item in discounts)
+                    {
+                        context.Discounts.Add(item);
+                    }
+                    await context.SaveChangesAsync();
+                }
+                if(!context.Collections.Any())
+                {
+                    var dmData = File.ReadAllText(path + @"/Data/SeedData/collection.json");
+                    var collections = JsonSerializer.Deserialize<List<Collection>>(dmData);
+                    foreach (var item in collections)
+                    {
+                        context.Collections.Add(item);
+                    }
+                    await context.SaveChangesAsync();
+                }
+                if(!context.ProductNames.Any())
+                {
+                    var dmData = File.ReadAllText(path + @"/Data/SeedData/name.json");
+                    var names = JsonSerializer.Deserialize<List<ProductName>>(dmData);
+                    foreach (var item in names)
+                    {
+                        context.ProductNames.Add(item);
                     }
                     await context.SaveChangesAsync();
                 }

@@ -31,7 +31,7 @@ namespace Infrastructure.Services
             {
                 var productItem = await _unitOfWork.Repository<Product>().GetByIdAsync(item.Id);
                 var mainPhoto = productItem.Photos.Where(photo => photo.IsMain == true).FirstOrDefault();
-                var itemOrdered = new ProductItemOrdered(productItem.Id, productItem.Name, mainPhoto.Url);
+                var itemOrdered = new ProductItemOrdered(productItem.Id, productItem.ProductName.Name, mainPhoto.Url);
                 var orderItem = new OrderItem(itemOrdered, productItem.Price, item.Quantity);
 
                 items.Add(orderItem);

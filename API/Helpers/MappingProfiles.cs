@@ -22,6 +22,7 @@ namespace API.Helpers
                 .ForMember(d => d.ProductColor, o => o.MapFrom(s => s.ProductColor.Name))
                 .ForMember(d => d.ProductGender, o => o.MapFrom(s => s.ProductGender.Name))
                 .ForMember(d => d.Pictures, o => o.MapFrom(s => s.Photos))
+                .ForMember(d => d.ProductName, o => o.MapFrom(s => s.ProductName.Name))
                 .ForMember(d => d.PictureUrl, o => o.MapFrom(s => s.Photos.Where(p =>p.IsMain == true).FirstOrDefault().Url));
 
              CreateMap<ProductDto, Product>();

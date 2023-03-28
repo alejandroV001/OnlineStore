@@ -15,10 +15,12 @@ export class BasketSummaryComponent implements OnInit {
   @Input() items!: any[] ;
   @Input() isOrder = true;
 
+  mainPhoto: string;
   
   constructor() { }
 
   ngOnInit(): void {
+   
   }
 
   decrementItemQuantity(item: IBasketItem){

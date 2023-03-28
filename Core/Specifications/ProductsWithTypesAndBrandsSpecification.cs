@@ -11,7 +11,7 @@ namespace Core.Specifications
     {
         public ProductsWithTypesAndBrandsSpecification(ProductSpecParams productParams)
             :base(x => 
-                (string.IsNullOrEmpty(productParams.Search) || x.Name.ToLower().Contains(productParams.Search)) &&
+                (string.IsNullOrEmpty(productParams.Search) || x.ProductName.Name.ToLower().Contains(productParams.Search)) &&
                 (!productParams.BrandId.HasValue || x.ProductBrandId == productParams.BrandId) &&
                 (!productParams.GenderId.HasValue || x.ProductGenderId == productParams.GenderId) &&
                 (!productParams.SizeId.HasValue || x.ProductSizeId == productParams.SizeId) &&
@@ -27,8 +27,9 @@ namespace Core.Specifications
             AddInclude(x => x.ProductGender);
             AddInclude(x => x.ProductFit);
             AddInclude(x => x.Photos);
+            AddInclude(x => x.ProductName);
 
-            AddOrderBy(x => x.Name);
+            AddOrderBy(x => x.ProductName.Name);
             ApplyPaging(productParams.PageSize * (productParams.PageIndex - 1),
                 productParams.PageSize);
 
@@ -43,7 +44,7 @@ namespace Core.Specifications
                         AddOrderByDescending(p => p.Price);
                         break;
                     default:
-                        AddOrderBy(n => n.Name);
+                        AddOrderBy(n => n.ProductName.Name);
                         break;
 
                 }
@@ -54,6 +55,7 @@ namespace Core.Specifications
             : base(x =>x.Id ==id)
         {
             AddInclude(x => x.ProductType);
+            AddInclude(x => x.ProductName);
             AddInclude(x => x.ProductBrand);
             AddInclude(x => x.ProductColor);
             AddInclude(x => x.ProductSize);

@@ -78,7 +78,7 @@ export class EditProductComponent implements OnInit {
       this.product = product;
       this.photos = product.pictures;
       console.log(this.photos);
-      this.bcService.set('@productDetails', product.name)
+      this.bcService.set('@productDetails', product.productName)
       if(product)
       {
         this.uploader = new FileUploader({
@@ -104,17 +104,18 @@ export class EditProductComponent implements OnInit {
           }
         };
 
-        this.productForm.setValue({name: product.name, 
+        this.productForm.setValue({name: product.productName, 
           description: product.description,
-          id:product.id
-          ,price: product.price, 
+          id:product.id,
+          price: product.price, 
           quantity:product.quantity, 
-          size:product.productSize  ,productSizeId: this.sizes.find(p => p.name == product.productSize)?.id  
-          ,color: product.productColor, productColorId: this.colors.find(p => p.name == product.productColor)!.id 
-          ,gender : product.productGender, productGenderId: this.genders.find(p => p.name == product.productGender)!.id,
-          fit: product.productFit, productfitId:this.fits.find(p => p.name == product.productFit)!.id,
-          type: product.productType, producttypeId: this.types.find(p => p.name == product.productType)!.id,
-          brand:product.productBrand, productbrandId: this.brands.find(p => p.name == product.productBrand)!.id});
+          size:(product.productSize) ? product.productSize : null  ,productSizeId: (product.productSize) ? this.sizes.find(p => p.name == product.productSize)!.id : null  ,
+          color: (product.productColor) ? product.productColor : null, productColorId:(product.productColor) ? this.colors.find(p => p.name == product.productColor)!.id : null, 
+          gender : (product.productGender) ? product.productGender : null, productGenderId: (product.productGender) ? this.genders.find(p => p.name == product.productGender)!.id : null,
+          fit: (product.productFit) ? product.productFit : null, productfitId: (product.productFit) ? this.fits.find(p => p.name == product.productFit)!.id : null,
+          type: (product.productType) ? product.productType : null, producttypeId: (product.productType) ? this.types.find(p => p.name == product.productType)!.id : null,
+          brand:(product.productBrand) ? product.productBrand : null, productbrandId: (product.productBrand) ? this.brands.find(p => p.name == product.productBrand)!.id : null
+        });
       }
     }, error => {
       console.log(error);
@@ -147,22 +148,28 @@ export class EditProductComponent implements OnInit {
     this.hasBaseDropZoneOver = e;
   }
 
-  selectColor(id: number) {
+  selectColor(name: any) {
+    var id = this.colors.find(p => p.name == name)!.id;
     this.productForm.controls['productColorId'].setValue(id);
   }
-  selectSize(id: number) {
+  selectSize(name: any) {
+    var id = this.sizes.find(p => p.name == name)!.id;
     this.productForm.controls['productSizeId'].setValue(id);
   }
-  selectFit(id: number) {
+  selectFit(name: any) {
+    var id = this.fits.find(p => p.name == name)!.id;
     this.productForm.controls['productfitId'].setValue(id);
   }
-  selectType(id: number) {
+  selectType(name: any) {
+    var id = this.types.find(p => p.name == name)!.id;
     this.productForm.controls['producttypeId'].setValue(id);
   }
-  selectBrand(id: number) {
+  selectBrand(name: any) {
+    var id = this.brands.find(p => p.name == name)!.id;
     this.productForm.controls['productbrandId'].setValue(id);
   }
-  selectGender(id: number) {
+  selectGender(name: any) {
+    var id = this.genders.find(p => p.name == name)!.id;
     this.productForm.controls['productGenderId'].setValue(id);
   }
 

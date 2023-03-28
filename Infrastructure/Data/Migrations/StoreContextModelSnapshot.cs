@@ -22,6 +22,90 @@ namespace Infrastructure.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("Core.Entities.Collection.Collection", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Collections");
+                });
+
+            modelBuilder.Entity("Core.Entities.Collection.ProductCollection", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int?>("CollectionId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CollectionId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductCollections");
+                });
+
+            modelBuilder.Entity("Core.Entities.Discount.Discount", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("Value")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Discounts");
+                });
+
+            modelBuilder.Entity("Core.Entities.Discount.ProductDiscount", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int?>("DiscountId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("StartingDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DiscountId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductDiscounts");
+                });
+
             modelBuilder.Entity("Core.Entities.OrderAggregate.DeliveryMethod", b =>
                 {
                     b.Property<int>("Id")
@@ -118,30 +202,28 @@ namespace Infrastructure.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("ProductBrandId")
+                    b.Property<int?>("ProductBrandId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ProductColorId")
+                    b.Property<int?>("ProductColorId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ProductFitId")
+                    b.Property<int?>("ProductFitId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ProductGenderId")
+                    b.Property<int?>("ProductGenderId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ProductSizeId")
+                    b.Property<int?>("ProductNameId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ProductTypeId")
+                    b.Property<int?>("ProductSizeId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ProductTypeId")
                         .HasColumnType("int");
 
                     b.Property<int>("Quantity")
@@ -156,6 +238,8 @@ namespace Infrastructure.Data.Migrations
                     b.HasIndex("ProductFitId");
 
                     b.HasIndex("ProductGenderId");
+
+                    b.HasIndex("ProductNameId");
 
                     b.HasIndex("ProductSizeId");
 
@@ -228,6 +312,22 @@ namespace Infrastructure.Data.Migrations
                     b.ToTable("ProductGenders");
                 });
 
+            modelBuilder.Entity("Core.Entities.ProductName", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ProductNames");
+                });
+
             modelBuilder.Entity("Core.Entities.ProductPictures", b =>
                 {
                     b.Property<int>("Id")
@@ -285,6 +385,36 @@ namespace Infrastructure.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ProductTypes");
+                });
+
+            modelBuilder.Entity("Core.Entities.Collection.ProductCollection", b =>
+                {
+                    b.HasOne("Core.Entities.Collection.Collection", "Collection")
+                        .WithMany()
+                        .HasForeignKey("CollectionId");
+
+                    b.HasOne("Core.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId");
+
+                    b.Navigation("Collection");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("Core.Entities.Discount.ProductDiscount", b =>
+                {
+                    b.HasOne("Core.Entities.Discount.Discount", "Discount")
+                        .WithMany()
+                        .HasForeignKey("DiscountId");
+
+                    b.HasOne("Core.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId");
+
+                    b.Navigation("Discount");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Core.Entities.OrderAggregate.Order", b =>
@@ -366,38 +496,37 @@ namespace Infrastructure.Data.Migrations
                     b.HasOne("Core.Entities.ProductBrand", "ProductBrand")
                         .WithMany()
                         .HasForeignKey("ProductBrandId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("Core.Entities.ProductColor", "ProductColor")
                         .WithMany()
                         .HasForeignKey("ProductColorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("Core.Entities.ProductFit", "ProductFit")
                         .WithMany()
                         .HasForeignKey("ProductFitId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("Core.Entities.ProductGender", "ProductGender")
                         .WithMany()
                         .HasForeignKey("ProductGenderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("Core.Entities.ProductName", "ProductName")
+                        .WithMany()
+                        .HasForeignKey("ProductNameId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("Core.Entities.ProductSize", "ProductSize")
                         .WithMany()
                         .HasForeignKey("ProductSizeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("Core.Entities.ProductType", "ProductType")
                         .WithMany()
                         .HasForeignKey("ProductTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("ProductBrand");
 
@@ -406,6 +535,8 @@ namespace Infrastructure.Data.Migrations
                     b.Navigation("ProductFit");
 
                     b.Navigation("ProductGender");
+
+                    b.Navigation("ProductName");
 
                     b.Navigation("ProductSize");
 

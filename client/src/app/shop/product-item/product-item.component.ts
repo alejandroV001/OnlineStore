@@ -11,12 +11,13 @@ import { IProduct } from 'src/app/shared/models/product';
 })
 export class ProductItemComponent implements OnInit {
   @Input() product!: IProduct;
-  mainPhoto!: PhotoPicture;
+  mainPhoto: string;
 
   constructor(private basketService: BasketService) { }
 
   ngOnInit(): void {
-    // this.mainPhoto = this.product.photos.filter(ph =>ph.isMain == true);
+    var mainPhotoData = this.product.pictures.filter(ph =>ph.isMain == true);
+    this.mainPhoto = mainPhotoData[0].url;
   }
 
   addItemToBasket(){

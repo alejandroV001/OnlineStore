@@ -147,7 +147,7 @@ export class BasketService {
   private mapProductItemToBasketItem(item: IProduct, quantity: number): IBasketItem {
     return {
       id: item.id,
-      name: item.name,
+      name: item.productName,
       price: item.price,
       pictureUrl: item.pictureUrl,
       quantity,

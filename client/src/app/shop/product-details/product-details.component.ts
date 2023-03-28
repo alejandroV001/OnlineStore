@@ -39,7 +39,9 @@ export class ProductDetailsComponent implements OnInit {
   loadProduct() {
     this.shopService.getProduct(+this.activateRoute.snapshot.paramMap.get('id')!).subscribe(product => {
       this.product = product;
-      this.bcService.set('@productDetails', product.name)
+      var mainPhotoData = this.product.pictures.filter(ph =>ph.isMain == true);
+      this.product.pictureUrl = mainPhotoData[0].url;
+      this.bcService.set('@productDetails', product.productName)
     }, error => {
       console.log(error);
     });
