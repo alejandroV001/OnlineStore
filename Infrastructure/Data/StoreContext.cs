@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Core.Entities;
-using Core.Entities.Collection;
 using Core.Entities.Discount;
 using Core.Entities.OrderAggregate;
 using Microsoft.EntityFrameworkCore;
@@ -26,7 +25,7 @@ namespace Infrastructure.Data
         public DbSet <ProductGender> ProductGenders { get; set;}
         public DbSet <ProductPictures> ProductPictures {get; set;}
         public DbSet <ProductName> ProductNames { get; set; }
-        public DbSet <Collection> Collections { get; set; }
+        public DbSet <ProductCollection> Collections { get; set; }
         public DbSet <ProductCollection> ProductCollections { get; set; }
         public DbSet <Discount> Discounts { get; set; }
         public DbSet <ProductDiscount> ProductDiscounts { get; set; }
@@ -78,6 +77,12 @@ namespace Infrastructure.Data
                 .HasOne(p => p.ProductName)
                 .WithMany()
                 .HasForeignKey(p => p.ProductNameId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            modelBuilder.Entity<Product>()
+                .HasOne(p => p.ProductCollection)
+                .WithMany()
+                .HasForeignKey(p => p.CollectionId)
                 .OnDelete(DeleteBehavior.SetNull);
 
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

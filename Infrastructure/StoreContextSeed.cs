@@ -5,7 +5,6 @@ using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Core.Entities;
-using Core.Entities.Collection;
 using Core.Entities.Discount;
 using Core.Entities.OrderAggregate;
 using Infrastructure.Data;
@@ -103,7 +102,7 @@ namespace Infrastructure
                 if(!context.Collections.Any())
                 {
                     var dmData = File.ReadAllText(path + @"/Data/SeedData/collection.json");
-                    var collections = JsonSerializer.Deserialize<List<Collection>>(dmData);
+                    var collections = JsonSerializer.Deserialize<List<ProductCollection>>(dmData);
                     foreach (var item in collections)
                     {
                         context.Collections.Add(item);

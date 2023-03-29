@@ -18,7 +18,6 @@ import { AdminModule } from '../admin/admin.module';
     CommonModule,
     SharedModule,
     ShopRoutingModule,
-    AdminModule
   ]
 })
 export class ShopModule { }

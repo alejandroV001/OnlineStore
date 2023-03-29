@@ -1,0 +1,37 @@
+<div class="row">
+    <section class="col-6">
+        <div class="container">
+            <table class="table table-striped" style="margin-top: 4%;">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th class="actions">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let name of names">
+                    <td>{{ name.name }}</td>
+                    <td class="actions">
+                      <button (click)="deleteName(name.id)" class="btn btn-sm btn-danger" >Delete</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+        </div>
+    </section>
+    <section class="col-6" style="margin-top: 2.5%;">
+        <h2>Add Name For Products</h2>
+        <form [formGroup]="nameForm" style="width: 35%;">
+            <div class="form-group">
+              <label for="name">Name:</label>
+              <input type="text" id="name" formControlName="name" class="form-control">
+            </div>
+            <div class="container-button" style="margin-top: 2%;">
+                <button type="submit" (click)="onSubmit()" class="center-button btn btn-primary">Submit</button>
+              </div>
+        </form>
+
+    </section>
+</div>
+
+

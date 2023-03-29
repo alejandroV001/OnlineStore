@@ -1,7 +1,6 @@
 <div class="container">
-  <div class="row">
-    <div class="col-sm-2" *ngFor="let photo of photos">
-        <img class="thumbnail" src="{{photo.url}}" alt="">
+    <!-- <div class="col-sm-2" *ngFor="let photo of photos">
+
         <div class="text-center">
             <button type="button" class="btn btn-xs btn-primary">Main</button>
             <button type="button" (click)="deletePhoto(photo.id)" class="btn btn-xs btn-danger"><i class="fa fa-trash-o"></i></button>
@@ -19,11 +18,11 @@
               <div ng2FileDrop
                    [ngClass]="{'nv-file-over': hasBaseDropZoneOver}"
                    (fileOver)="fileOverBase($event)"
-                   [uploader]="uploader"
+                   [uploader]="uploader!"
                    class="well my-drop-zone">
               </div>
               Multiple
-              <input type="file" ng2FileSelect [uploader]="uploader" multiple  /><br/>
+              <input type="file" ng2File<div class="row">Select [uploader]="uploader" multiple  /><br/>
 
           </div>
    
@@ -40,7 +39,7 @@
                   </tr>
                   </thead>
                   <tbody>
-                  <tr *ngFor="let item of uploader.queue">
+                  <tr *ngFor="let item of uploader!.queue!">
                       <td><strong>{{ item?.file?.name }}</strong></td>
                       <td *ngIf="uploader.options.isHTML5" nowrap>{{ item?.file?.size/1024/1024 | number:'.2' }} MB</td>
                       <td *ngIf="uploader.options.isHTML5">
@@ -81,13 +80,76 @@
           </div>
       </div>
       <br><br>
+  </div> 
+</div> -->
+<div class="row">
+  <div class="col-sm-2" *ngFor="let photo of photos">
+    <img class="thumbnail" src="{{photo.url}}" alt="">
+    <div class="text-center">
+        <button type="button" class="btn btn-xs btn-primary">Main</button>
+        <button type="button" (click)="deletePhoto(photo.id)" class="btn btn-xs btn-danger"><i class="fa fa-trash-o"></i></button>
+    </div>
   </div>
 </div>
+
+<div class="row">
+  <div class="col-8">
+    <label class="btn btn-default p-0">
+      <input type="file" multiple (change)="selectFiles($event)" />
+    </label>
+  </div>
+
+  <div class="col-4">
+    <button
+      class="btn btn-success btn-sm"
+      [disabled]="!selectedFiles"
+      (click)="uploadFiles()"
+    >
+      Upload
+    </button>
+  </div>
+</div>
+
+<div *ngFor="let progressInfo of progressInfos" class="mb-2">
+  <span>{{ progressInfo.fileName }}</span>
+  <div class="progress">
+    <div
+      class="progress-bar progress-bar-info"
+      role="progressbar"
+      attr.aria-valuenow="{{ progressInfo.value }}"
+      aria-valuemin="0"
+      aria-valuemax="100"
+      [ngStyle]="{ width: progressInfo.value + '%' }"
+    >
+      {{ progressInfo.value }}%
+    </div>
+  </div>
+</div>
+
+<div *ngIf="message.length" class="alert alert-secondary my-3" role="alert">
+  <ul *ngFor="let msg of message; let i = index">
+    <li>{{ msg }}</li>
+  </ul>
+</div>
+
+<div class="card mt-3">
+  <div class="card-header">List of Files</div>
+  <ul class="list-group list-group-flush">
+    <li *ngFor="let file of fileInfos | async" class="list-group-item">
+      <a href="{{ file.url }}">{{ file.name }}</a>
+    </li>
+  </ul>
+</div>
+
+
 <div class="row" style="align-items: center;">
     <form [formGroup]="productForm" style="width: 65%;">
         <div class="form-group">
           <label for="name">Name:</label>
-          <input type="text" required minlength="4" id="name" formControlName="name" class="form-control">
+          <select id="name" (change)="selectName($event.target.value)"  formControlName="name" class="form-control">
+            <option [value]="''"></option>
+            <option [value]="name.name" *ngFor="let name of names">{{ name.name }}</option>
+          </select>
         </div>
         <div class="form-group mt-3">
           <label for="description">Description:</label>
@@ -104,31 +166,43 @@
         <div class="form-group mt-3">
           <label for="brand">Brand:</label>
           <select id="brand" (change)="selectBrand($event.target.value)" formControlName="brand" class="form-control">
+            <option [value]="''"></option>
             <option [value]="brand.name" *ngFor="let brand of brands">{{ brand.name }}</option>
           </select>
         </div>
         <div class="form-group mt-3">
           <label for="type">Type:</label>
           <select id="type" (change)="selectType($event.target.value)"  formControlName="type" class="form-control">
+            <option [value]="''"></option>
             <option [value]="type.name" *ngFor="let type of types">{{ type.name }}</option>
           </select>
         </div>
         <div class="form-group mt-3">
           <label for="size">Size:</label>
           <select id="size" (change)="selectSize($event.target.value)" formControlName="size" class="form-control">
+            <option [value]="''"></option>
             <option [value]="size.name" *ngFor="let size of sizes">{{ size.name }}</option>
           </select>
         </div>
         <div class="form-group mt-3">
           <label for="color">Color:</label>
           <select id="color" (change)="selectColor($event.target.value)" formControlName="color" class="form-control">
+            <option [value]="''"></option>
             <option [value]="color.name" *ngFor="let color of colors" >{{ color.name }}</option>
           </select>
         </div>
         <div class="form-group mt-3">
           <label for="fit">Fit:</label>
           <select id="fit" (change)="selectFit($event.target.value)" formControlName="fit" class="form-control">
+            <option [value]="''"></option>
             <option [value]="fit.name" *ngFor="let fit of fits">{{ fit.name }}</option>
+          </select>
+        </div>
+        <div class="form-group mt-3">
+          <label for="collection">Collection:</label>
+          <select id="collection" (change)="selectCollection($event.target.value)" formControlName="collection" class="form-control">
+            <option [value]="''"></option>
+            <option [value]="coll.name" *ngFor="let coll of collections">{{ coll.name }}</option>
           </select>
         </div>
         <div class="form-group mb-3 mt-3">

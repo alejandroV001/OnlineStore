@@ -12,7 +12,6 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./edit-types.component.scss']
 })
 export class EditTypesComponent implements OnInit {
-
   baseUrl = environment.apiUrl;
   types: IType[] = [];
   typeForm!:FormGroup;

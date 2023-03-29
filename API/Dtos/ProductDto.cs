@@ -19,7 +19,7 @@ namespace API.Dtos
         public int ProductColorId { get; set; }
         public int ProductGenderId { get; set; }
         public int ProductNameId { get; set; }
-
+        public int CollectionId { get; set; }
 
     }
 }

@@ -3,8 +3,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IBrand } from 'src/app/shared/models/brand';
+import { ICollection } from 'src/app/shared/models/collection';
 import { IColor } from 'src/app/shared/models/color';
 import { IFit } from 'src/app/shared/models/fit';
+import { IName } from 'src/app/shared/models/name';
 import { Photo } from 'src/app/shared/models/photo';
 import { IType } from 'src/app/shared/models/productType';
 import { ISize } from 'src/app/shared/models/size';
@@ -29,6 +31,8 @@ export class AddProductComponent implements OnInit {
   fits: IFit[] = [];
   types: IType[] = [];
   brands: IBrand[] = [];
+  names : IName[] = [];
+  collections : ICollection[]= [];
 
   constructor(private fb: FormBuilder, private shopService: ShopService,
       private router: Router, private http:HttpClient) { }
@@ -53,37 +57,43 @@ export class AddProductComponent implements OnInit {
     this.http.get<IType>(this.baseUrl +'type/types').subscribe((types: any) => {
       this.types = types;
     });
+
+    this.http.get<IName>(this.baseUrl +'Name/names').subscribe((names: any) => {
+      this.names = names;
+    });
+    this.http.get<ICollection>(this.baseUrl +'Collection/collections').subscribe((collections: any) => {
+      this.collections = collections;
+    });
   }
 
   createAddProductForm(){
     this.productForm = this.fb.group({
       name: [null, [Validators.required]],
-      description: [null, [Validators.required]],
-      price: [null, [Validators.required,Validators.min(0)]],
-      quantity: [null, [Validators.required,Validators.min(1)]],
+      productNameId: [0, [Validators.required]],
+      description: ["", [Validators.required]],
+      price: [0, [Validators.required,Validators.min(0)]],
+      quantity: [1, [Validators.required,Validators.min(1)]],
       size: [null, [Validators.required]],
-      productSizeId: [null, [Validators.required]],
-      productColorId: [null, [Validators.required]],
+      productSizeId: [0, [Validators.required]],
+      productColorId: [0, [Validators.required]],
       color: [null, [Validators.required]],
       gender: [null, [Validators.required]],
-      productGenderId: [null, [Validators.required]],
+      productGenderId: [0, [Validators.required]],
       fit: [null, [Validators.required]],
-      productfitId: [null, [Validators.required]],
+      productfitId: [0, [Validators.required]],
       type: [null, [Validators.required]],
-      producttypeId: [null, [Validators.required]],
-
+      producttypeId: [0, [Validators.required]],
       brand: [null, [Validators.required]],
-      productbrandId: [null, [Validators.required]],
-
+      productbrandId: [0, [Validators.required]],
+      collection: [null, [Validators.required]],
+      collectionId: [0, [Validators.required]],
     });
   }
 
 
   
   onSubmit(){
-    var formVal = this.productForm.value;
-    console.log(formVal);
-
+    console.log(this.productForm.value);
     this.shopService.addProduct(this.productForm.value).subscribe(response => {
       this.router.navigateByUrl('/admin');
     }, error => {
@@ -92,7 +102,14 @@ export class AddProductComponent implements OnInit {
     });
   }
 
-  selectColor(id: number) {
+  selectColor(id: any) {
+    console.log(id);
+    if(id === null)
+    {
+      console.log(id);
+      this.productForm.controls['productColorId'].setValue(0);
+    }
+    else
     this.productForm.controls['productColorId'].setValue(id);
   }
   selectSize(id: number) {
@@ -102,12 +119,18 @@ export class AddProductComponent implements OnInit {
     this.productForm.controls['productfitId'].setValue(id);
   }
   selectType(id: number) {
-    this.productForm.controls['producttypeId'].setValue(id);
+      this.productForm.controls['producttypeId'].setValue(id);
   }
   selectBrand(id: number) {
     this.productForm.controls['productbrandId'].setValue(id);
   }
   selectGender(id: number) {
     this.productForm.controls['productGenderId'].setValue(id);
+  }
+  selectName(id: number) {
+    this.productForm.controls['productNameId'].setValue(id);
+  }
+  selectCollection(id: number) {
+    this.productForm.controls['collectionId'].setValue(id);
   }
 }

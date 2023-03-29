@@ -1,11 +1,13 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpParams, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, mapTo, of } from 'rxjs';
+import { map, mapTo, Observable, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { IBrand } from '../shared/models/brand';
+import { ICollection } from '../shared/models/collection';
 import { IColor } from '../shared/models/color';
 import { IDeliveryMethod } from '../shared/models/deliveryMethod';
 import { IFit } from '../shared/models/fit';
+import { IName } from '../shared/models/name';
 import { IPagination, Pagination } from '../shared/models/pagination';
 import { PhotoPicture } from '../shared/models/photoPicture';
 import { IProduct } from '../shared/models/product';
@@ -117,6 +119,7 @@ export class ShopService {
   }
 
   addProduct(values: any) {
+    console.log(values);
     return this.http.post<IProductAdd>(this.baseUrl + 'Products/add-product', values).pipe(
       map(response => {
         return response;
@@ -125,7 +128,6 @@ export class ShopService {
   }
 
   deleteProduct(id: number) {
-    console.log(id);
     return this.http.delete(this.baseUrl + 'products/'+ id);
   }
 
@@ -209,8 +211,46 @@ export class ShopService {
     return this.http.delete(this.baseUrl + 'deliverymethod/'+ id);
   }
 
+  addCollection(values: any) {
+    return this.http.post<ICollection>(this.baseUrl + 'Collection', values).pipe(
+      map(response => {
+        return response;
+      })
+    );
+  }
+
+  deleteCollection(id: number) {
+    return this.http.delete(this.baseUrl + 'collection/'+ id);
+  }
+
+  addName(values: any) {
+    return this.http.post<IName>(this.baseUrl + 'Name', values).pipe(
+      map(response => {
+        return response;
+      })
+    );
+  }
+
+  deleteName(id: number) {
+    return this.http.delete(this.baseUrl + 'Name/'+ id);
+  }
+
   deletePhoto(id: number) {
     return this.http.delete(this.baseUrl + 'photos/'+ 1 +'/photos/' + id);
   }
+
+  upload(file: File, id: number): Observable<HttpEvent<any>> {
+    const formData: FormData = new FormData();
+
+    formData.append('file', file);
+
+    const req = new HttpRequest('POST', `${this.baseUrl}photos/`+id+`/photos`, formData, {
+      reportProgress: true,
+      responseType: 'json'
+    });
+
+    return this.http.request(req);
+  }
+
 }
 

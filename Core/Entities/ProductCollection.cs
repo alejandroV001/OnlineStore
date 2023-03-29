@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Core.Entities.Collection
+namespace Core.Entities
 {
-    public class Collection : BaseEntity
+    public class ProductCollection : BaseEntity
     {
         public string Name { get; set; }
     }

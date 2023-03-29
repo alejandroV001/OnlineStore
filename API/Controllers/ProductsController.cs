@@ -91,16 +91,17 @@ namespace API.Controllers
         public async Task<ActionResult<Product>> AddProduct(ProductDto product)
         {
             var prod  = new Product{
-                ProductNameId = product.ProductNameId,
+                ProductNameId = (product.ProductNameId != 0) ? product.ProductNameId : null,
                 Description = product.Description,
                 Price = product.Price,
                 Quantity = product.Quantity,
-                ProductTypeId = product.ProductTypeId,
-                ProductBrandId = product.ProductBrandId,
-                ProductFitId = product.ProductFitId,
-                ProductGenderId = product.ProductGenderId,
-                ProductColorId = product.ProductColorId,
-                ProductSizeId = product.ProductSizeId
+                ProductTypeId = (product.ProductTypeId != 0) ? product.ProductTypeId : null,
+                ProductBrandId = (product.ProductBrandId != 0) ? product.ProductBrandId : null,
+                ProductFitId = (product.ProductFitId != 0) ? product.ProductFitId : null,
+                ProductGenderId = (product.ProductGenderId != 0) ? product.ProductGenderId : null,
+                ProductColorId = (product.ProductColorId != 0) ? product.ProductColorId : null,
+                ProductSizeId =(product.ProductSizeId != 0) ? product.ProductSizeId : null,
+                CollectionId = (product.CollectionId != 0) ? product.CollectionId : null,
             };
 
             _productsRepo.Add(prod);
@@ -133,9 +134,22 @@ namespace API.Controllers
         [HttpPut("update-product")]
         public async Task<ActionResult> UpdateProduct(ProductDto product)
         {            
-            var productMapped = _mapper.Map<ProductDto, Product>(product);
-
-            _productsRepo.Update(productMapped);
+            //var productMapped = _mapper.Map<ProductDto, Product>(product);
+            var prod  = new Product{
+                Id = product.Id,
+                ProductNameId = (product.ProductNameId != 0) ? product.ProductNameId : null,
+                Description = product.Description,
+                Price = product.Price,
+                Quantity = product.Quantity,
+                ProductTypeId = (product.ProductTypeId != 0) ? product.ProductTypeId : null,
+                ProductBrandId = (product.ProductBrandId != 0) ? product.ProductBrandId : null,
+                ProductFitId = (product.ProductFitId != 0) ? product.ProductFitId : null,
+                ProductGenderId = (product.ProductGenderId != 0) ? product.ProductGenderId : null,
+                ProductColorId = (product.ProductColorId != 0) ? product.ProductColorId : null,
+                ProductSizeId =(product.ProductSizeId != 0) ? product.ProductSizeId : null,
+                CollectionId = (product.CollectionId != 0) ? product.CollectionId : null,
+            };
+            _productsRepo.Update(prod);
 
             if(await _productsRepo.SaveAll())
             {
@@ -144,5 +158,6 @@ namespace API.Controllers
 
             return BadRequest("Could not add the product");
         }
+
     }
 }

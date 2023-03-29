@@ -24,6 +24,8 @@ namespace Core.Entities
         public int? ProductColorId { get; set; }
         public ProductSize ProductSize { get; set; }
         public int? ProductSizeId { get; set; }
+        public ProductCollection ProductCollection { get; set; }
+        public int? CollectionId { get; set; }
         public List<ProductPictures> Photos { get; set; } 
         public Product()
         {

@@ -10,4 +10,5 @@ export interface IProductAdd {
     productColorId: string;
     productFitId: string;
     productGenderId: string;
+    collectionId: string;
 }

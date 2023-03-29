@@ -2,7 +2,9 @@
   <form [formGroup]="productForm" style="width: 65%;">
     <div class="form-group">
       <label for="name">Name:</label>
-      <input type="text" required minlength="4" id="name" formControlName="name" class="form-control">
+      <select id="name" (change)="selectName($event.target.value)" formControlName="name" class="form-control">
+        <option [value]="name.id" *ngFor="let name of names">{{ name.name }}</option>
+      </select>
     </div>
     <div class="form-group mt-3">
       <label for="description">Description:</label>
@@ -44,6 +46,12 @@
       <label for="fit">Fit:</label>
       <select id="fit" (change)="selectFit($event.target.value)" formControlName="fit" class="form-control">
         <option [value]="fit.id" *ngFor="let fit of fits">{{ fit.name }}</option>
+      </select>
+    </div>
+    <div class="form-group mt-3">
+      <label for="collection">Collection:</label>
+      <select id="collection" (change)="selectCollection($event.target.value)" formControlName="collection" class="form-control">
+        <option [value]="coll.id" *ngFor="let coll of collections">{{ coll.name }}</option>
       </select>
     </div>
     <div class="form-group mb-3 mt-3">

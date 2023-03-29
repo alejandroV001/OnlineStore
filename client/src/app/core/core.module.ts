@@ -12,7 +12,6 @@ import { SharedModule } from '../shared/shared.module';
 import { AdSectionComponent } from './ad-section/ad-section.component';
 import { FooterComponent } from './footer/footer.component';
 import { BrowserModule } from '@angular/platform-browser';
-import { FileUploadModule } from 'ng2-file-upload';
 import { AdminModule } from '../admin/admin.module';
 
 @NgModule({
@@ -29,9 +28,7 @@ import { AdminModule } from '../admin/admin.module';
     CommonModule,
     RouterModule,
     BrowserModule,
-    AdminModule,
     BreadcrumbModule,
-    FileUploadModule,
     SharedModule,
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',

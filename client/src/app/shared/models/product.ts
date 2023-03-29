@@ -13,5 +13,7 @@ export interface IProduct {
     productFit: string;
     productColor: string;
     productGender: string;
+    productCollection: string;
+
     pictures: PhotoPicture[];
 }
