@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    [Migration("20230328135744_Initial")]
+    [Migration("20230329173105_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -245,7 +245,7 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductCollection");
+                    b.ToTable("ProductCollections");
                 });
 
             modelBuilder.Entity("Core.Entities.ProductColor", b =>
@@ -462,7 +462,7 @@ namespace Infrastructure.Data.Migrations
 
             modelBuilder.Entity("Core.Entities.Product", b =>
                 {
-                    b.HasOne("Core.Entities.ProductCollection", "Collection")
+                    b.HasOne("Core.Entities.ProductCollection", "ProductCollection")
                         .WithMany()
                         .HasForeignKey("CollectionId")
                         .OnDelete(DeleteBehavior.SetNull);
@@ -502,9 +502,9 @@ namespace Infrastructure.Data.Migrations
                         .HasForeignKey("ProductTypeId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.Navigation("Collection");
-
                     b.Navigation("ProductBrand");
+
+                    b.Navigation("ProductCollection");
 
                     b.Navigation("ProductColor");
 

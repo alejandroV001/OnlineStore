@@ -3,6 +3,7 @@ import { BasketService } from 'src/app/basket/basket.service';
 import { Photo } from 'src/app/shared/models/photo';
 import { PhotoPicture } from 'src/app/shared/models/photoPicture';
 import { IProduct } from 'src/app/shared/models/product';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-product-item',
@@ -17,7 +18,17 @@ export class ProductItemComponent implements OnInit {
 
   ngOnInit(): void {
     var mainPhotoData = this.product.pictures.filter(ph =>ph.isMain == true);
-    this.mainPhoto = mainPhotoData[0].url;
+    if(mainPhotoData.length > 0)
+    {
+      this.mainPhoto = mainPhotoData[0].url;
+      this.product.pictureUrl = mainPhotoData[0].url;
+    }
+    else
+      {
+      this.mainPhoto = environment.imageALt;
+      this.product.pictureUrl = environment.imageALt;
+    }
+
   }
 
   addItemToBasket(){

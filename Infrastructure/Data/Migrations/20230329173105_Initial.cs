@@ -52,7 +52,7 @@ namespace Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProductCollection",
+                name: "ProductCollections",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -61,7 +61,7 @@ namespace Infrastructure.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductCollection", x => x.Id);
+                    table.PrimaryKey("PK_ProductCollections", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -199,9 +199,9 @@ namespace Infrastructure.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
-                        name: "FK_Products_ProductCollection_CollectionId",
+                        name: "FK_Products_ProductCollections_CollectionId",
                         column: x => x.CollectionId,
-                        principalTable: "ProductCollection",
+                        principalTable: "ProductCollections",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
@@ -407,7 +407,7 @@ namespace Infrastructure.Data.Migrations
                 name: "ProductBrands");
 
             migrationBuilder.DropTable(
-                name: "ProductCollection");
+                name: "ProductCollections");
 
             migrationBuilder.DropTable(
                 name: "ProductColors");

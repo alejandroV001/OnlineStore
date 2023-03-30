@@ -5,7 +5,6 @@ using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Core.Entities;
-using Core.Entities.Discount;
 using Core.Entities.OrderAggregate;
 using Infrastructure.Data;
 using Microsoft.Extensions.Logging;
@@ -99,13 +98,13 @@ namespace Infrastructure
                     }
                     await context.SaveChangesAsync();
                 }
-                if(!context.Collections.Any())
+                if(!context.ProductCollections.Any())
                 {
                     var dmData = File.ReadAllText(path + @"/Data/SeedData/collection.json");
                     var collections = JsonSerializer.Deserialize<List<ProductCollection>>(dmData);
                     foreach (var item in collections)
                     {
-                        context.Collections.Add(item);
+                        context.ProductCollections.Add(item);
                     }
                     await context.SaveChangesAsync();
                 }

@@ -84,9 +84,17 @@ export class EditProductComponent implements OnInit {
     this.http.get<ICollection>(this.baseUrl +'Collection/collections').subscribe((collections: any) => {
       this.collections = collections;
     });
+    console.log(this.names);
+    console.log(this.collections);
+    console.log(this.genders);
+    console.log(this.types);
+    console.log(this.brands);
+    console.log(this.fits);
+    console.log(this.sizes);
+    console.log(this.colors);
+
     this.createAddProductForm();
     this.loadProduct();
-
   }
 
 
@@ -96,47 +104,25 @@ export class EditProductComponent implements OnInit {
       console.log(product);
       this.product = product;
       this.photos = product.pictures;
-      console.log(this.photos);
       this.bcService.set('@productDetails', product.productName)
-      if(this.product)
+      if(product)
       {
-        this.uploader = new FileUploader({
-          url: this.baseUrl + 'photos/'+product.id  + '/photos',
-          authToken: 'Bearer ' + localStorage.getItem('token'),
-          isHTML5: true,
-          allowedFileType: ['image'],
-          removeAfterUpload: true,
-          autoUpload: false,
-          maxFileSize: 10 * 1024 * 1024 
-        });
-        this.uploader.onSuccessItem = (item, response, status, header) => {
-          if (response) {
-            const res: PhotoPicture = JSON.parse(response);
-            const photo = {
-              id: res.id,
-              productId: res.productId,
-              publicId: res.publicId,
-              url: res.url,
-              isMain: res.isMain,
-            };
-            this.photos.push(photo);
-          }
-        };
         console.log(product);
+        console.log(this.names);
+
         this.productForm.setValue({ 
           description: product.description,
           id:product.id,
           price: product.price, 
           quantity:product.quantity,
-          name:(product.productName) ? product.productName : null, productNameId: (product.productName) ? this.names.find(p => p.name == product.productName)!.id : 0  ,
-          size:(product.productSize) ? product.productSize : null  ,productSizeId: (product.productSize) ? this.sizes.find(p => p.name == product.productSize)!.id : 0  ,
-          color: (product.productColor) ? product.productColor : null, productColorId:(product.productColor) ? this.colors.find(p => p.name == product.productColor)!.id : 0, 
-          gender : (product.productGender) ? product.productGender : null, productGenderId: (product.productGender) ? this.genders.find(p => p.name == product.productGender)!.id : 0,
-          fit: (product.productFit) ? product.productFit : null, productfitId: (product.productFit) ? this.fits.find(p => p.name == product.productFit)!.id : 0,
-          type: (product.productType) ? product.productType : null, producttypeId: (product.productType) ? this.types.find(p => p.name == product.productType)!.id : 0,
-          brand:(product.productBrand) ? product.productBrand : null, productbrandId: (product.productBrand) ? this.brands.find(p => p.name == product.productBrand)!.id : 0,
-          collection:(product.productCollection) ? product.productCollection : null, collectionId: (product.productCollection) ? this.collections.find(p => p.name == product.productCollection)!.id : 0
-
+          name:(product.productName) ? product.productName : null, productNameId: (product.productName) ? this.names.find(p => p.name == product.productName)?.id : 0  ,
+          size:(product.productSize) ? product.productSize : null  ,productSizeId: (product.productSize) ? this.sizes.find(p => p.name == product.productSize)?.id : 0  ,
+          color: (product.productColor) ? product.productColor : null, productColorId:(product.productColor) ? this.colors.find(p => p.name == product.productColor)?.id : 0, 
+          gender : (product.productGender) ? product.productGender : null, productGenderId: (product.productGender) ? this.genders.find(p => p.name == product.productGender)?.id : 0,
+          fit: (product.productFit) ? product.productFit : null, productfitId: (product.productFit) ? this.fits.find(p => p.name == product.productFit)?.id : 0,
+          type: (product.productType) ? product.productType : null, producttypeId: (product.productType) ? this.types.find(p => p.name == product.productType)?.id : 0,
+          brand:(product.productBrand) ? product.productBrand : null, productbrandId: (product.productBrand) ? this.brands.find(p => p.name == product.productBrand)?.id : 0,
+          collection:(product.productCollection) ? product.productCollection : null, collectionId: (product.productCollection) ? this.collections.find(p => p.name == product.productCollection)?.id : 0
         });
       }
     }, error => {
@@ -170,6 +156,24 @@ export class EditProductComponent implements OnInit {
     
   }
 
+  initialiseFormValues(product: IProduct)
+  {
+    console.log(product);
+    this.productForm.setValue({ 
+      description: product.description,
+      id:product.id,
+      price: product.price, 
+      quantity:product.quantity,
+      name:(product.productName) ? product.productName : null, productNameId: (product.productName) ? this.names.find(p => p.name == product.productName)!.id : 0  ,
+      size:(product.productSize) ? product.productSize : null  ,productSizeId: (product.productSize) ? this.sizes.find(p => p.name == product.productSize)!.id : 0  ,
+      color: (product.productColor) ? product.productColor : null, productColorId:(product.productColor) ? this.colors.find(p => p.name == product.productColor)!.id : 0, 
+      gender : (product.productGender) ? product.productGender : null, productGenderId: (product.productGender) ? this.genders.find(p => p.name == product.productGender)!.id : 0,
+      fit: (product.productFit) ? product.productFit : null, productfitId: (product.productFit) ? this.fits.find(p => p.name == product.productFit)!.id : 0,
+      type: (product.productType) ? product.productType : null, producttypeId: (product.productType) ? this.types.find(p => p.name == product.productType)!.id : 0,
+      brand:(product.productBrand) ? product.productBrand : null, productbrandId: (product.productBrand) ? this.brands.find(p => p.name == product.productBrand)!.id : 0,
+      collection:(product.productCollection) ? product.productCollection : null, collectionId: (product.productCollection) ? this.collections.find(p => p.name == product.productCollection)!.id : 0
+    });
+  }
   selectColor(name: any) {
     if(name === "")
     {

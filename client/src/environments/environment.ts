@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'https://localhost:5001/api/'
+  apiUrl: 'https://localhost:5001/api/',
+  imageALt: 'https://res.cloudinary.com/alejandroscloud/image/upload/v1680102891/no_image_product_nctina.png'
 };
 
 /*

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Core.Entities.Discount
+namespace Core.Entities
 {
     public class ProductDiscount : BaseEntity
     {
@@ -11,7 +11,7 @@ namespace Core.Entities.Discount
         public int? ProductId { get; set; }
         public Discount Discount { get; set; }
         public int? DiscountId { get; set; }
-        public DateTime? StartingDate { get; set; }
-        public DateTime? EndDate { get; set; }
+        public DateTime StartingDate { get; set; }
+        public DateTime EndDate { get; set; }
     }
 }

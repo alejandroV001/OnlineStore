@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Core.Entities.Discount
+namespace API.Dtos
 {
-    public class Discount : BaseEntity
+    public class DiscountsDto
     {
+        public int Id { get; set; }
         public int Value { get; set; }
     }
 }

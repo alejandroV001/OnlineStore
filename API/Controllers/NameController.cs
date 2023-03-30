@@ -10,7 +10,7 @@ namespace API.Controllers
 {
     public class NameController : BaseApiController
     {
-         private readonly IGenericRepository<ProductName> _productNameRepo;
+        private readonly IGenericRepository<ProductName> _productNameRepo;
 
         public NameController(IGenericRepository<ProductName> productNameRepo)
         {

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BasketService } from 'src/app/basket/basket.service';
 import { IProduct } from 'src/app/shared/models/product';
+import { environment } from 'src/environments/environment';
 import { BreadcrumbService } from 'xng-breadcrumb';
 import { ShopService } from '../shop.service';
 
@@ -40,7 +41,12 @@ export class ProductDetailsComponent implements OnInit {
     this.shopService.getProduct(+this.activateRoute.snapshot.paramMap.get('id')!).subscribe(product => {
       this.product = product;
       var mainPhotoData = this.product.pictures.filter(ph =>ph.isMain == true);
-      this.product.pictureUrl = mainPhotoData[0].url;
+      if(mainPhotoData.length > 0)
+      {
+        this.product.pictureUrl = mainPhotoData[0].url;
+      }
+      else
+      this.product.pictureUrl = environment.imageALt;
       this.bcService.set('@productDetails', product.productName)
     }, error => {
       console.log(error);
