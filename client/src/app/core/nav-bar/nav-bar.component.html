@@ -6,6 +6,8 @@
     <a class="me-3 py-2 " [routerLink]="['/']" routerLinkActive="active"
       [routerLinkActiveOptions]="{exact: true}">Home</a>
     <a class="me-3 py-2 " routerLink="/shop" routerLinkActive="active">Shop</a>
+    <a class="me-3 py-2 " routerLink="/shop/men" routerLinkActive="active">Men</a>
+    <a class="me-3 py-2 " routerLink="/shop/woman" routerLinkActive="active">Woman</a>
     <a class="me-3 py-2 " routerLink="/test-error" routerLinkActive="active">Errors</a>
     <a class="me-3 py-2 " *ngIf="role === 'Admin'" routerLink="/admin" routerLinkActive="active">Admin</a>
   </nav>

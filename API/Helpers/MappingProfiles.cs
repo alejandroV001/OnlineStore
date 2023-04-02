@@ -51,8 +51,7 @@ namespace API.Helpers
                 .ForMember(d => d.EndDate, o => o.MapFrom(s => s.EndDate.ToString("MM/dd/yyyy HH:mm:ss")))
                 .ForMember(d => d.Value, o => o.MapFrom(s => s.Discount.Value));
 
-            CreateMap<Discount, DiscountsDto>();
-
+            CreateMap<DiscountDto, ProductDiscount>();
         }
     }
 }

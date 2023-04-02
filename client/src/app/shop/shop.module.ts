@@ -6,13 +6,17 @@ import { SharedModule } from '../shared/shared.module';
 import { ProductDetailsComponent } from './product-details/product-details.component';
 import { ShopRoutingModule } from './shop-routing.module';
 import { AdminModule } from '../admin/admin.module';
+import { ShopMenComponent } from './shop-men/shop-men.component';
+import { ShopWomanComponent } from './shop-woman/shop-woman.component';
 
 
 @NgModule({
   declarations: [
     ShopComponent,
     ProductItemComponent,
-    ProductDetailsComponent
+    ProductDetailsComponent,
+    ShopMenComponent,
+    ShopWomanComponent
   ],
   imports: [
     CommonModule,

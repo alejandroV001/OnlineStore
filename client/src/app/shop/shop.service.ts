@@ -6,6 +6,7 @@ import { IBrand } from '../shared/models/brand';
 import { ICollection } from '../shared/models/collection';
 import { IColor } from '../shared/models/color';
 import { IDeliveryMethod } from '../shared/models/deliveryMethod';
+import { IDiscount } from '../shared/models/discount';
 import { IFit } from '../shared/models/fit';
 import { IName } from '../shared/models/name';
 import { IPagination, Pagination } from '../shared/models/pagination';
@@ -50,6 +51,9 @@ export class ShopService {
     }
     if(this.shopParams.typeId !== 0) {
       params = params.append('typeId', this.shopParams.typeId.toString());
+    }
+    if(this.shopParams.genderId !== 0) {
+      params = params.append('genderId', this.shopParams.genderId.toString());
     }
     if(this.shopParams.search) {
       params = params.append('search', this.shopParams.search);
@@ -235,6 +239,10 @@ export class ShopService {
     return this.http.delete(this.baseUrl + 'Name/'+ id);
   }
 
+  deleteProductDiscount(id: number)
+  {
+    return this.http.delete(this.baseUrl + 'Discount/'+ id);
+  }
   deletePhoto(id: number) {
     return this.http.delete(this.baseUrl + 'photos/'+ 1 +'/photos/' + id);
   }
@@ -250,6 +258,15 @@ export class ShopService {
     });
 
     return this.http.request(req);
+  }
+
+  addDiscountForProduct(values:any)
+  {
+    return this.http.post<IDiscount>(this.baseUrl + 'Discount', values).pipe(
+      map(response => {
+        return response;
+      })
+    );
   }
 
 }

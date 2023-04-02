@@ -11,7 +11,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    public class DiscountController : BaseApiController
+    [ApiController]
+    [Route("api/[controller]")]
+    public class DiscountController : ControllerBase
     {
         private readonly IGenericRepository<ProductDiscount> _productDiscountRepo;
         private readonly IGenericRepository<Discount> _discountRepo;
@@ -25,21 +27,19 @@ namespace API.Controllers
             _mapper = mapper;
             _discountRepo = discountRepo;
         }
-        
-        [HttpGet("discounts")]
-        public async Task<IReadOnlyList<Discount>> GetDiscounts()
+
+        [HttpGet("getDiscounts")]
+        public async Task<ActionResult<IReadOnlyList<Discount>>> GetDiscounts()
         {
             var list = await _discountRepo.ListAllSync();
-            // var data = _mapper.
-            // Map<IReadOnlyList<Discount>, IReadOnlyList<DiscountsDto>>(list);
-            return list;
+            return Ok(list);
 
         }
         [HttpGet("{id}")]
         public async Task<ActionResult<IReadOnlyList<DiscountDto>>> GetDiscount(int id)
         {
             var spec = new DiscountWithSpec(id);
-            var list2 = await _discountRepo.ListAllSync();
+
             var list = await _productDiscountRepo.ListAsync(spec);
             
             var data = _mapper.
@@ -48,12 +48,12 @@ namespace API.Controllers
             return Ok(data);
         }
 
-
-
         [HttpPost()]
-        public async Task<ActionResult<ProductDiscount>> AddSize(ProductDiscount disc)
+        public async Task<ActionResult<ProductDiscount>> AddDiscountToProduct(DiscountDto disc)
         {
-            _productDiscountRepo.Add(disc);
+            var mapped = _mapper.Map<DiscountDto, ProductDiscount>(disc);
+
+            _productDiscountRepo.Add(mapped);
 
             if(await _productDiscountRepo.SaveAll())
             {
@@ -64,7 +64,7 @@ namespace API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteSize(int id)
+        public async Task<IActionResult> DeleteDiscount(int id)
         {
             var disc = await _productDiscountRepo.GetById(id);
 

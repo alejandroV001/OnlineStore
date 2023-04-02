@@ -1,16 +1,17 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { IBrand } from '../shared/models/brand';
-import { IProduct } from '../shared/models/product';
-import { IType } from '../shared/models/productType';
-import { ShopParams } from '../shared/models/shopParams';
-import { ShopService } from './shop.service';
+import { IBrand } from 'src/app/shared/models/brand';
+import { IProduct } from 'src/app/shared/models/product';
+import { IType } from 'src/app/shared/models/productType';
+import { ShopParams } from 'src/app/shared/models/shopParams';
+import { ShopService } from '../shop.service';
 
 @Component({
-  selector: 'app-shop',
-  templateUrl: './shop.component.html',
-  styleUrls: ['./shop.component.scss']
+  selector: 'app-shop-men',
+  templateUrl: './shop-men.component.html',
+  styleUrls: ['./shop-men.component.scss']
 })
-export class ShopComponent implements OnInit {
+export class ShopMenComponent implements OnInit {
+
   @ViewChild('search', {static: false}) searchTerm!: ElementRef;
   products: IProduct[] = [];
   brands: IBrand[] = [];
@@ -22,10 +23,9 @@ export class ShopComponent implements OnInit {
     {name: 'Price: Low to Hight', value: 'priceAsc'},
     {name: 'price: High to Low', value: 'priceDesc'}
   ];
-
   constructor(private shopService: ShopService) { 
     this.shopParams = this.shopService.getShopParams();
-    this.shopParams.brandId = 0;
+    this.shopParams.genderId = 1;
   }
 
   ngOnInit(): void {
@@ -33,11 +33,10 @@ export class ShopComponent implements OnInit {
     this.getBrands();
     this.getTypes();
   }
-
   getProducts(useCache = false) {
     this.shopService.getProducts(useCache).subscribe(response => {
       this.products = response!.data;
-      this.totalCount = response!.count;
+      this.totalCount = this.products!.length;
     }, error => {
       console.log(error);
     });
