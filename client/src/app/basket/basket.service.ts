@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 import { Basket, IBasket, IBasketItem, IBasketTotals } from '../shared/models/basket';
 import { IDeliveryMethod } from '../shared/models/deliveryMethod';
 import { IProduct } from '../shared/models/product';
+import { IWhishlist, IWhishlistItem, Whishlist } from '../shared/models/whishlist';
 
 @Injectable({
   providedIn: 'root'
@@ -14,11 +15,11 @@ export class BasketService {
   baseUrl = environment.apiUrl;
   private basketSource = new BehaviorSubject<IBasket>(null!);
   basket$ = this.basketSource.asObservable();
+  private whislistSource = new BehaviorSubject<IWhishlist>(null!);
+  whishlist$ = this.whislistSource.asObservable();
   private basketTotalSource = new BehaviorSubject<IBasketTotals>(null!);
   basketTotal$ = this.basketTotalSource.asObservable();
   shipping = 0;
-
-
 
   constructor(private http: HttpClient) { }
 
@@ -53,6 +54,16 @@ export class BasketService {
       );
   }
 
+  getWhishlist(id: string) {
+    return this.http.get<IWhishlist>(this.baseUrl + 'Whishlist?id=' + id)
+      .pipe(
+        map((whishlist: IWhishlist) => {
+          this.whislistSource.next(whishlist);
+        })
+      );
+  }
+
+
   setBasket(basket: IBasket) {
     return this.http.post<IBasket>(this.baseUrl + 'basket', basket).subscribe((response: IBasket) => {
       this.basketSource.next(response);
@@ -62,8 +73,21 @@ export class BasketService {
     })
   }
 
+  setWhishlist(whishlist: IWhishlist) {
+    console.log(whishlist);
+    return this.http.post<IWhishlist>(this.baseUrl + 'Whishlist', whishlist).subscribe((response: IWhishlist) => {
+      this.whislistSource.next(response);
+    }, error => {
+      console.log(error);
+    })
+  }
+
   getCurrentBasketValue() {
     return this.basketSource.value;
+  }
+
+  getCurrentWhishlistValue() {
+    return this.whislistSource.value;
   }
 
   addItemToBasket(item: IProduct, quantity = 1) {
@@ -72,6 +96,16 @@ export class BasketService {
     basket.items = this.addOrUpdateItem(basket.items, itemToAdd, quantity);
 
     this.setBasket(basket);
+  }
+
+  addItemToWhishlist(item: IProduct) {
+    const itemToAdd: IWhishlistItem = this.mapProductItemToWhishlistItem(item);
+    console.log(itemToAdd);
+    console.log(this.getCurrentWhishlistValue());
+    const whishlist = this.getCurrentWhishlistValue() ?? this.createWhishlist();
+    whishlist.items = this.addOrUpdateItemWhishlist(whishlist.items, itemToAdd);
+
+    this.setWhishlist(whishlist);
   }
 
   incrementItemQuantity(item: IBasketItem){
@@ -92,7 +126,6 @@ export class BasketService {
     }
   }
 
-
    removeItemFromBasket(item: IBasketItem) {
     const basket = this.getCurrentBasketValue();
     if (basket.items.some(x => x.id === item.id)){
@@ -105,10 +138,27 @@ export class BasketService {
     }
   }
 
+  removeItemFromWhishlist(item: IWhishlistItem) {
+    const whishlist = this.getCurrentWhishlistValue();
+    if (whishlist.items.some(x => x.id === item.id)){
+      whishlist.items = whishlist.items.filter(i => i.id !== item.id);
+      if(whishlist.items.length > 0){
+        this.setWhishlist(whishlist);
+      }else{
+        this.deleteWhishlist(whishlist);
+      }
+    }
+  }
+
   deleteLocalBasket(id: string){
     this.basketSource.next(null!);
     this.basketTotalSource.next(null!);
     localStorage.removeItem('basket_id');
+  }
+
+  deleteLocalWhishlist(id: string){
+    this.whislistSource.next(null!);
+    localStorage.removeItem('whishlist_id');
   }
 
    deleteBasket(basket: IBasket) {
@@ -116,6 +166,15 @@ export class BasketService {
       this.basketSource.next(null!);
       this.basketTotalSource.next(null!);
       localStorage.removeItem('basket_id');
+    }, error => {
+      console.log(error);
+    })
+  }
+
+  deleteWhishlist(whishlist: IWhishlist) {
+    return this.http.delete(this.baseUrl + 'Whishlist?id=' + whishlist.id).subscribe(() => {
+      this.whislistSource.next(null!);
+      localStorage.removeItem('whishlist_id');
     }, error => {
       console.log(error);
     })
@@ -139,11 +198,28 @@ export class BasketService {
     }
     return items;
   }
+
+  private addOrUpdateItemWhishlist(items: IWhishlistItem[], itemToAdd: IWhishlistItem): IWhishlistItem[] {
+    const index = items.findIndex(i => i.id === itemToAdd.id);
+    if (index === -1) {
+      items.push(itemToAdd);
+    }
+    return items;
+  }
+
+
   private createBasket(): IBasket {
     const basket = new Basket();
     localStorage.setItem('basket_id', basket.id);
     return basket;
   }
+
+  private createWhishlist(): IWhishlist {
+    const whishlist = new Whishlist();
+    localStorage.setItem('whishlist_id', whishlist.id);
+    return whishlist;
+  }
+
   private mapProductItemToBasketItem(item: IProduct, quantity: number): IBasketItem {
     return {
       id: item.id,
@@ -151,6 +227,17 @@ export class BasketService {
       price: item.price,
       pictureUrl: item.pictureUrl,
       quantity,
+      brand: item.productBrand,
+      type: item.productType
+    };
+  }
+
+  private mapProductItemToWhishlistItem(item: IProduct): IWhishlistItem {
+    return {
+      id: item.id,
+      name: item.productName,
+      price: item.price,
+      pictureUrl: item.pictureUrl,
       brand: item.productBrand,
       type: item.productType
     };

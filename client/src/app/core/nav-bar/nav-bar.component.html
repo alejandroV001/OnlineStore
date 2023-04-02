@@ -12,6 +12,10 @@
     <a class="me-3 py-2 " *ngIf="role === 'Admin'" routerLink="/admin" routerLinkActive="active">Admin</a>
   </nav>
   <div class="d-flex align-items-center">
+    <a routerLink="/whishlist" class="position-relative">
+      <i class="fa fa-heart fa-2x me-5 text-dark"></i>
+      <div *ngIf="(whishlist$ | async) as whishlist" class="cart-no">{{whishlist.items.length}}</div>
+    </a>
     <a routerLink="/basket" class="position-relative">
       <i class="fa fa-shopping-cart fa-2x me-5 text-dark"></i>
       <div *ngIf="(basket$ | async) as basket" class="cart-no">{{basket.items.length}}</div>

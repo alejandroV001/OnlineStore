@@ -14,6 +14,7 @@ export class AppComponent implements OnInit{
 
   ngOnInit(): void {
     this.loadBasket();
+    this.loadWhishlist();
     this.loadCurrentUser();
   }
 
@@ -32,6 +33,18 @@ export class AppComponent implements OnInit{
     {
       this.basketService.getBasket(basketId).subscribe(() => {
         console.log('initialised basket');
+      }, error => {
+        console.log(error);
+      });
+    }
+  }
+
+  loadWhishlist(){
+    const whishlistId = localStorage.getItem('whishlist_id');
+    if(whishlistId)
+    {
+      this.basketService.getWhishlist(whishlistId).subscribe(() => {
+        console.log('initialised whishlistId');
       }, error => {
         console.log(error);
       });

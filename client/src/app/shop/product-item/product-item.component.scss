@@ -11,6 +11,11 @@
         opacity: 1;
     }
 }
+#whishlist {
+    width: 45px;
+    height: 40px;
+    border-radius: 50%;
+}
 
 .hover-overlay {
     position: absolute;
@@ -18,7 +23,7 @@
     height: 100%;
     top: 0;
     left: 0;
-    background: rgba(255,255,255, 0.5);
+    
     opacity: 0;
     transition: all 0.5;
 

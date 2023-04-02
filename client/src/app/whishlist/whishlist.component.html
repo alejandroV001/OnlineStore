@@ -1,0 +1,27 @@
+<div class="container mt-2">
+    <div *ngIf="(whishlist$ | async) === null">
+        <p>No items in the basket</p>
+    </div>
+    
+    <div *ngIf="(whishlist$ | async) as whishlist" >
+        <div class="pb-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 py-5 mb-1">
+                        <app-whishlist-summary
+                        (remove)="removeWhishlistItem($event)"
+                        [items]="(whishlist$ | async)!.items"
+                        >
+                        </app-whishlist-summary>
+                           
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+

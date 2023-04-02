@@ -34,4 +34,8 @@ export class ProductItemComponent implements OnInit {
   addItemToBasket(){
     this.basketService.addItemToBasket(this.product);
   }
+
+  addItemToWhishlist(){
+    this.basketService.addItemToWhishlist(this.product);
+  }
 }
