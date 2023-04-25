@@ -13,6 +13,7 @@ import { StepperComponent } from './components/stepper/stepper.component';
 import { BasketSummaryComponent } from './components/basket-summary/basket-summary.component';
 import { RouterModule } from '@angular/router';
 import { WhishlistSummaryComponent } from './components/whishlist-summary/whishlist-summary.component';
+import { ShopModule } from '../shop/shop.module';
 
 
 @NgModule({

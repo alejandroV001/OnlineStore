@@ -17,6 +17,7 @@ namespace Core.Specifications
                 (!productParams.SizeId.HasValue || x.ProductSizeId == productParams.SizeId) &&
                 (!productParams.ColorId.HasValue || x.ProductColorId == productParams.ColorId) &&
                 (!productParams.FitId.HasValue || x.ProductFitId == productParams.FitId) &&
+                (!productParams.CollectionId.HasValue || x.CollectionId == productParams.CollectionId) &&
                 (!productParams.TypeId.HasValue || x.ProductTypeId == productParams.TypeId)
             )
         {

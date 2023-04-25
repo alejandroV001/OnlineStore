@@ -4,3 +4,7 @@ dotnet ef migrations add InitialCreate -p .\Infrastructure\ -s .\API\ -c StoreCo
 dotnet ef migrations remove -p .\Infrastructure\ -s .\API\ -c StoreContext
 
 dotnet ef database drop -p .\Infrastructure\ -s .\API\ -c StoreContext 
+
+stripe login
+stripe listen
+stripe listen -f https://localhost:5001/api/payments/webhook

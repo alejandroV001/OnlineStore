@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { BasketService } from 'src/app/basket/basket.service';
-import { Photo } from 'src/app/shared/models/photo';
-import { PhotoPicture } from 'src/app/shared/models/photoPicture';
 import { IProduct } from 'src/app/shared/models/product';
 import { environment } from 'src/environments/environment';
 
@@ -14,7 +13,7 @@ export class ProductItemComponent implements OnInit {
   @Input() product!: IProduct;
   mainPhoto: string;
 
-  constructor(private basketService: BasketService) { }
+  constructor(private basketService: BasketService, private router: Router) { }
 
   ngOnInit(): void {
     var mainPhotoData = this.product.pictures.filter(ph =>ph.isMain == true);
@@ -37,5 +36,10 @@ export class ProductItemComponent implements OnInit {
 
   addItemToWhishlist(){
     this.basketService.addItemToWhishlist(this.product);
+  }
+
+  goTo(id: number)
+  {
+    this.router.navigateByUrl("/shop/"+ id);
   }
 }

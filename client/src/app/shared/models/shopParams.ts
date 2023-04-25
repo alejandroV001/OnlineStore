@@ -6,4 +6,8 @@ export class ShopParams {
     pageSize = 6;
     search!: string;
     genderId = 0;
+    colorId = 0;
+    sizeId = 0;
+    collectionId = 0;
+    fitId = 0;
 }

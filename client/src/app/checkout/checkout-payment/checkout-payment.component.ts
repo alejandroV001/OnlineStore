@@ -24,6 +24,7 @@ export class CheckoutPaymentComponent implements AfterViewInit, OnDestroy {
   cardExpiry: any;
   cardCvc: any;
   cardErrors: any;
+  cardType: string;
   cardHandler = this.onChange.bind(this);
   loading = false;
   cardNumberValid = false;
@@ -41,6 +42,7 @@ export class CheckoutPaymentComponent implements AfterViewInit, OnDestroy {
     this.cardNumber = elements.create('cardNumber');
     this.cardNumber.mount(this.cardNumberElement.nativeElement);
     this.cardNumber.addEventListener('change', this.cardHandler);
+    console.log(this.cardNumber);
 
     this.cardExpiry = elements.create('cardExpiry');
     this.cardExpiry.mount(this.cardExpiryElement.nativeElement);
@@ -58,7 +60,7 @@ export class CheckoutPaymentComponent implements AfterViewInit, OnDestroy {
   }
 
   onChange(event: { error: { message: any; }; elementType: any; complete: boolean; }) {
-    //console.log(event);
+    console.log(event);
     if (event.error) {
       this.cardErrors = event.error.message;
     } else {
@@ -122,4 +124,6 @@ export class CheckoutPaymentComponent implements AfterViewInit, OnDestroy {
       shipToAddress: this.checkoutForm.get('addressForm')?.value
     };
   }
+
+
 }

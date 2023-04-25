@@ -23,6 +23,8 @@ namespace Core.Specifications
         public int? GenderId { get; set; }
         public int? ColorId { get; set; }
         public int? FitId { get; set; }
+        public int? CollectionId { get; set; }
+
         public string PictureUrl {get;set;}
 
 

@@ -29,7 +29,9 @@ namespace Infrastructure.Services
 
             foreach (var item in basket.items)
             {
-                var productItem = await _unitOfWork.Repository<Product>().GetByIdAsync(item.Id);
+                var specific = new ProductSpecification(item.Id);
+                var productItem = await _unitOfWork.Repository<Product>().GetEntityWithSpec(specific);
+                
                 var mainPhoto = productItem.Photos.Where(photo => photo.IsMain == true).FirstOrDefault();
                 var itemOrdered = new ProductItemOrdered(productItem.Id, productItem.ProductName.Name, mainPhoto.Url);
                 var orderItem = new OrderItem(itemOrdered, productItem.Price, item.Quantity);

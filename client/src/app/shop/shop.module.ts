@@ -8,6 +8,7 @@ import { ShopRoutingModule } from './shop-routing.module';
 import { AdminModule } from '../admin/admin.module';
 import { ShopMenComponent } from './shop-men/shop-men.component';
 import { ShopWomanComponent } from './shop-woman/shop-woman.component';
+import { MaterialModule } from '../material.module';
 
 
 @NgModule({
@@ -22,6 +23,7 @@ import { ShopWomanComponent } from './shop-woman/shop-woman.component';
     CommonModule,
     SharedModule,
     ShopRoutingModule,
+    MaterialModule
   ]
 })
 export class ShopModule { }

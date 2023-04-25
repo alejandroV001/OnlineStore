@@ -25,6 +25,10 @@ export class ShopService {
   products: IProduct[] = [];
   brands: IBrand[] = [];
   types: IType[] = [];
+  fits: IFit[] = [];
+  colors: IColor[] = [];
+  sizes: ISize[] = [];
+  collections: ICollection[] = [];
   photos: PhotoPicture[] = [];
   pagination = new Pagination();
   shopParams = new ShopParams();
@@ -54,6 +58,18 @@ export class ShopService {
     }
     if(this.shopParams.genderId !== 0) {
       params = params.append('genderId', this.shopParams.genderId.toString());
+    }
+    if(this.shopParams.fitId !== 0) {
+      params = params.append('fitId', this.shopParams.fitId.toString());
+    }
+    if(this.shopParams.colorId !== 0) {
+      params = params.append('colorId', this.shopParams.colorId.toString());
+    }
+    if(this.shopParams.sizeId !== 0) {
+      params = params.append('sizeId', this.shopParams.sizeId.toString());
+    }
+    if(this.shopParams.collectionId !== 0) {
+      params = params.append('collectionId', this.shopParams.collectionId.toString());
     }
     if(this.shopParams.search) {
       params = params.append('search', this.shopParams.search);
@@ -117,6 +133,54 @@ export class ShopService {
     return this.http.get<IType[]>(this.baseUrl + 'products/types').pipe(
       map(response => {
         this.types = response;
+        return response;
+      })
+    )
+  }
+
+  getSizes(){
+    if(this.sizes.length > 0){
+      return of(this.sizes);
+    }
+    return this.http.get<ISize[]>(this.baseUrl + 'Size/sizes').pipe(
+      map(response => {
+        this.sizes = response;
+        return response;
+      })
+    )
+  }
+
+  getColors(){
+    if(this.colors.length > 0){
+      return of(this.colors);
+    }
+    return this.http.get<IColor[]>(this.baseUrl + 'Color/colors').pipe(
+      map(response => {
+        this.colors = response;
+        return response;
+      })
+    )
+  }
+
+  getFits(){
+    if(this.fits.length > 0){
+      return of(this.fits);
+    }
+    return this.http.get<IFit[]>(this.baseUrl + 'Fit/fits').pipe(
+      map(response => {
+        this.fits = response;
+        return response;
+      })
+    )
+  }
+
+  getCollections(){
+    if(this.collections.length > 0){
+      return of(this.collections);
+    }
+    return this.http.get<ICollection[]>(this.baseUrl + 'Collection/collections').pipe(
+      map(response => {
+        this.fits = response;
         return response;
       })
     )

@@ -16,7 +16,7 @@
                         ></app-basket-summary>
                     </div>
                 </div>
-
+                <div style="border-top: 2px solid grey ;margin-top: 1%; margin-bottom: 2%;"></div>
                 <div class="row">
                     <div class="col-6 offset-6">
                         <app-order-totals
@@ -26,7 +26,9 @@
                             [total]="(basketTotals$ | async)!.total"
                         >
                         </app-order-totals>
-                        <a routerLink="/checkout" class="btn btn-outline-primary py-2 btn-block">Checkout</a>
+                        <div class="container-button">
+                            <a routerLink="/checkout" class="center-button btn btn-primary">Checkout</a>
+                        </div>
                     </div>
                 </div>
             </div>

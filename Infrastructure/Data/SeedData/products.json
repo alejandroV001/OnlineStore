@@ -9,7 +9,8 @@
       "ProductFitId": 1,
       "ProductColorId": 1,
       "ProductSizeId": 1,
-      "ProductGenderId": 1
+      "ProductGenderId": 1,
+      "CollectionId": 1
     },
     {
       "Description": "Tricou de calitate superioara cu un material de calitate",
@@ -21,8 +22,8 @@
       "ProductFitId": 1,
       "ProductColorId": 2,
       "ProductSizeId": 2,
-      "ProductGenderId": 1
-
+      "ProductGenderId": 1,
+      "CollectionId": 1
     },
     {
       "Description": "waitting",
@@ -34,6 +35,7 @@
       "ProductFitId": 3,
       "ProductColorId": 2,
       "ProductSizeId": 3,
-      "ProductGenderId": 2
+      "ProductGenderId": 2,
+      "CollectionId": 2
     }
   ]

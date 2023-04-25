@@ -3,17 +3,109 @@
 
         <section class="col-3">
             <ng-container *ngIf="types && brands">
-                <h5 class="text-warning ml-3 mt-4 mb-3">Sort</h5>
-                <select class="custom-select mb-4" (change)="onSortSelected($event.target.value)">
+                <!-- <select class="custom-select mb-4" (change)="onSortSelected($event.target.value)">
                     <option *ngFor="let sort of sortOptions" 
                         [selected]="shopParams.sort === sort.value"
                         [value]="sort.value">
                         {{sort.name}}
                     </option>
 
-                </select>
+                </select> -->
+                <form [formGroup]="form">
+                <mat-form-field appearance="fill">
+                    <mat-label>Sort</mat-label>
+                    <mat-select formControlName="sort"
+                    (selectionChange)="onSortSelected($event.value)">
+                      <mat-option class="list-group-item" *ngFor="let sort of sortOptions" 
+                      
+                      [value]="sort.value">
+                        {{sort.name}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                
+                  
+                    <!-- <mat-form-field appearance="fill">
+                        <mat-label>Gender</mat-label>
+                        <mat-select formControlName="gender"
+                        (selectionChange)="onSortSelected($event.value)">
+                          <mat-option *ngFor="let sort of sortOptionsGender" 
+                          [value]="sort.value">
+                            {{sort.name}}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field> -->
 
-                <h5 class="text-warning ml-3">Brands</h5>
+                      <mat-form-field appearance="fill">
+                        <mat-label>Type</mat-label>
+                        <mat-select formControlName="type"
+                        (selectionChange)="onTypeSelected($event.value)">
+                          <mat-option class="list-group-item" *ngFor="let type of types" 
+                          [value]="type.id">
+                            {{type.name}}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+
+                      <mat-form-field appearance="fill">
+                        <mat-label>Brand</mat-label>
+                        <mat-select formControlName="brand"
+                        (selectionChange)="onBrandSelected($event.value)">
+                          <mat-option class="list-group-item" *ngFor="let sort of brands" 
+                          [value]="sort.id">
+                            {{sort.name}}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+
+                      <mat-form-field appearance="fill">
+                        <mat-label>Size</mat-label>
+                        <mat-select formControlName="size"
+                        (selectionChange)="onSizeSelected($event.value)">
+                          <mat-option class="list-group-item" *ngFor="let sort of sizes" 
+                          [value]="sort.id">
+                            {{sort.name}}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+
+                      <mat-form-field appearance="fill">
+                        <mat-label>Colors</mat-label>
+                        <mat-select formControlName="color"
+                        (selectionChange)="onColorSelected($event.value)">
+                          <mat-option class="list-group-item" *ngFor="let sort of colors" 
+                          [value]="sort.id">
+                            {{sort.name}}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+
+                      <mat-form-field appearance="fill">
+                        <mat-label>Fits</mat-label>
+                        <mat-select formControlName="fit"
+                        (selectionChange)="onFitSelected($event.value)">
+                          <mat-option class="list-group-item" *ngFor="let sort of fits" 
+                          [value]="sort.id">
+                            {{sort.name}}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+
+                      <mat-form-field appearance="fill">
+                        <mat-label>Collections</mat-label>
+                        <mat-select formControlName="collection"
+                        (selectionChange)="onCollectionSelected($event.value)">
+                          <mat-option class="list-group-item" *ngFor="let sort of collections" 
+                          [class.active]="sort.id === this.shopParams.collectionId"
+                          [value]="sort.id">
+                            {{sort.name}}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                  </form>
+                  
+
+                <!-- <h5 class="text-warning ml-3">Brands</h5>
 
                 <ul class="list-group my-3">
                     <li class="list-group-item" *ngFor="let brand of brands"
@@ -31,7 +123,7 @@
                         (click)="onTypeSelected(type.id)">
                         {{type.name}}
                     </li>
-                </ul>
+                </ul> -->
             </ng-container>
         </section>
 
@@ -43,10 +135,11 @@
                         [pageNumber]="this.shopParams.pageNumber"></app-paging-header>
 
                     <div>
-                        <input (keyup.enter)="onSearch()" class="me-2" style="width: 200px;" #search
-                            placeholder="Search" type="text">
-                        <button (click)="onSearch()" class="btn btn-outline-primary my-2 me-2">Search</button>
-                        <button (click)="onReset()" class="btn btn-outline-success ml-2 my-2">Reset</button>
+                        <input (keyup.enter)="onSearch()" class="me-2" #search
+                            placeholder="Search" type="text" id="searchBox">
+                        
+                        <button (click)="onSearch()" class="btn btn-primary my-2 me-2">Search</button>
+                        <button (click)="onReset()" class="btn btn-success ml-2 my-2">Reset</button>
                     </div>
 
                 </div>
