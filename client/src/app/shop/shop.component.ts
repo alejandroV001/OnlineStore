@@ -59,7 +59,6 @@ export class ShopComponent implements OnInit {
     this.getFits();
     this.getSizes();
     this.getCollections();
-    console.log("intrat");
 
     this.form = this.fb.group({
       gender: ["all", [Validators.required]],

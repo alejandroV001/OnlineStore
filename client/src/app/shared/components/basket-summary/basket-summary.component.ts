@@ -21,7 +21,13 @@ export class BasketSummaryComponent implements OnInit {
   constructor(private router: Router) { }
 
   ngOnInit(): void {
-   
+   this.items.forEach(element => {
+    console.log(element);
+      if(element.pictureUrl == null)
+      {
+        element.pictureUrl = "https://res.cloudinary.com/alejandroscloud/image/upload/v1680102891/no_image_product_nctina.png";
+      }
+   });
   }
 
   goTo(id: number)

@@ -1,0 +1,28 @@
+.list-group-item {
+    cursor: pointer;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1.1em;
+
+    &:focus {
+        outline: none;
+    }
+
+    &.active {
+        border-radius: 10px;
+    }
+
+    &:not(.active):hover {
+        color: #fff;
+        background-color: #e95620c8;
+        border-radius: 10px;
+    }
+}
+
+
+#searchBox {
+    border-color: aqua;
+    border-width: 2.5px;
+    height: 30px;
+    width: 200px;
+}
