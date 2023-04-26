@@ -4,15 +4,64 @@
             <img src="{{product.pictureUrl}}" alt="{{product.productName}}" class="img-fluid w-100">
         </div>
     
-        <div class="col-6">
-            <h3>{{product.productName}}</h3>
+        <div class="col-6" id="details">
+            <h3 style="margin-left: 30px;">{{product.productName}}</h3>
+            <h2>{{product.productBrand}} {{product.productGender}}</h2>
+            <h2>{{product.productFit}}</h2>
+
             <p style="font-size: 2em;">{{product.price | currency}}</p>
-            <div class="d-flex justify-content-start align-items-center">
+            <div class="colors">
+                <h2>Color: {{selectedColor}}</h2>
+                <div class="row">
+                    <div class="col">
+                        <div class="d-flex flex-row flex-wrap">
+                            <div *ngFor="let color of productChilds" class="p-2">
+                                <div class="card shadow-sm" (mouseover)="selectedColor = color.productColor" (mouseout)="selectedColor = product.productColor">
+                                    <div class="image position-relative" style="cursor: pointer;">
+                                        <img src="{{color.pictureUrl}}" alt="{{color.productName}}" class="img-colors" style="width: 80px; height: 90px;" (click)="goTo(color.id)">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sizes">
+                <button (click)="openSizeGuideDialog()">Check sizes</button>
+                <h2>Select Size</h2>
+
+                <div class="size-container">
+                    <div class="size-item" *ngFor="let size of availableSizes" 
+                    [class.selected]="selectedSize === size"
+                    (click)="selectSize(size)">
+                      <span>{{ size.name }}</span>
+                    </div>
+                  </div>
+            </div>
+
+
+            <div class="d-flex justify-content-start align-items-center mt-3">
                 <i (click)="decrementQuantity()" class="fa fa-minus-circle text-warning me-2" style="cursor: pointer; font-size: 2em;"></i>
                 <span class="font-weight: bold; " style="font-size: 1.5em;">{{quantity}}</span>
                 <i (click)="incrementQuantity()" class="fa fa-plus-circle text-warning mx-2" style="cursor: pointer; font-size: 2em;"></i>
-                <button (click)="addItemToBasket()" class="btn btn-outline-primary btn-lg ml-4">Add to Cart</button>
+                <button (click)="addItemToBasket()" class="btn btn-primary btn-lg ml-4">Add to Cart</button>
             </div>
+
+            <div>
+                <section class="delivery-section">
+                    <h2 class="delivery-title">DELIVERED TO YOUR DOOR.</h2>
+                    <ul class="delivery-list">
+                      <li class="delivery-item">
+                        Free Standard delivery over €75*
+                      </li>
+                      <li class="delivery-item">
+                        Free 30-Day Return Policy!
+                      </li>
+                    </ul>
+                  </section>
+            </div>
+            
         </div>
     
         <div class="row mt-5">

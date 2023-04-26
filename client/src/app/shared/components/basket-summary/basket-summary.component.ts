@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IBasket, IBasketItem } from '../../models/basket';
 import { IOrderItem } from '../../models/order';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-basket-summary',
@@ -17,10 +18,15 @@ export class BasketSummaryComponent implements OnInit {
 
   mainPhoto: string;
   
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
    
+  }
+
+  goTo(id: number)
+  {
+    this.router.navigateByUrl("/shop/"+ id);
   }
 
   decrementItemQuantity(item: IBasketItem){

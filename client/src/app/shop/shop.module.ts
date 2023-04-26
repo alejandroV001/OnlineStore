@@ -9,6 +9,7 @@ import { AdminModule } from '../admin/admin.module';
 import { ShopMenComponent } from './shop-men/shop-men.component';
 import { ShopWomanComponent } from './shop-woman/shop-woman.component';
 import { MaterialModule } from '../material.module';
+import { SizeGuideComponent } from './size-guide/size-guide.component';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { MaterialModule } from '../material.module';
     ProductItemComponent,
     ProductDetailsComponent,
     ShopMenComponent,
-    ShopWomanComponent
+    ShopWomanComponent,
+    SizeGuideComponent
   ],
   imports: [
     CommonModule,

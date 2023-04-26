@@ -3,7 +3,7 @@
         <h4>Shipping address</h4>
         <button (click)="saveUserAddress()"
             [disabled]="!checkoutForm.get('addressForm')?.valid || !checkoutForm.get('addressForm')?.dirty"
-            class="btn btn-outline-success mb-3">
+            class="btn btn-success mb-3">
             Save as default address
         </button>
     </div>
@@ -30,7 +30,7 @@
 </div>
 
 <div class="float-none d-flex justify-content-between flex-column flex-lg-row mb-5">
-    <button class="btn btn-outline-primary" routerLink="/basket">
+    <button class="btn btn-primary" routerLink="/basket">
         <i class="fa fa-angle-left"></i> Back to Basket
     </button>
     <button [disabled]="checkoutForm.get('addressForm')!.invalid" class="btn btn-primary" cdkStepperNext>

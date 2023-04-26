@@ -74,7 +74,6 @@ export class BasketService {
   }
 
   setWhishlist(whishlist: IWhishlist) {
-    console.log(whishlist);
     return this.http.post<IWhishlist>(this.baseUrl + 'Whishlist', whishlist).subscribe((response: IWhishlist) => {
       this.whislistSource.next(response);
     }, error => {
@@ -100,8 +99,6 @@ export class BasketService {
 
   addItemToWhishlist(item: IProduct) {
     const itemToAdd: IWhishlistItem = this.mapProductItemToWhishlistItem(item);
-    console.log(itemToAdd);
-    console.log(this.getCurrentWhishlistValue());
     const whishlist = this.getCurrentWhishlistValue() ?? this.createWhishlist();
     whishlist.items = this.addOrUpdateItemWhishlist(whishlist.items, itemToAdd);
 
@@ -228,7 +225,8 @@ export class BasketService {
       pictureUrl: item.pictureUrl,
       quantity,
       brand: item.productBrand,
-      type: item.productType
+      type: item.productType,
+      size: item.productSize
     };
   }
 

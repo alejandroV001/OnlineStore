@@ -8,6 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
         pictureUrl: string;
         brand: string;
         type: string;
+        size: string;
     }
 
     export interface IBasket {

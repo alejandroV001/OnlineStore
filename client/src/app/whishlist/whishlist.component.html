@@ -10,17 +10,12 @@
                     <div class="col-12 py-5 mb-1">
                         <app-whishlist-summary
                         (remove)="removeWhishlistItem($event)"
-                        [items]="(whishlist$ | async)!.items"
-                        >
+                        [items]="(whishlist$ | async)!.items">
                         </app-whishlist-summary>
-                           
                     </div>
                 </div>
-
-
             </div>
         </div>
-
     </div>
 </div>
 

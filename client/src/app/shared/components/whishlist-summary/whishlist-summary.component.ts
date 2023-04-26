@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { IProduct } from '../../models/product';
 import { environment } from 'src/environments/environment';
 import { IProductAdd } from '../../models/productToAdd';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-whishlist-summary',
@@ -17,7 +18,8 @@ export class WhishlistSummaryComponent implements OnInit {
   product: IProduct;
   baseUrl = environment.apiUrl;
   
-  constructor(private basketService: BasketService, private http:HttpClient) { }
+  constructor(private basketService: BasketService, private http:HttpClient,
+    private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -26,6 +28,10 @@ export class WhishlistSummaryComponent implements OnInit {
     this.remove.emit(item);
   }
 
+  goTo(id: number)
+  {
+    this.router.navigateByUrl("/shop/"+ id);
+  }
 
 
 

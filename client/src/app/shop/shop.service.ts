@@ -150,6 +150,7 @@ export class ShopService {
     )
   }
 
+
   getColors(){
     if(this.colors.length > 0){
       return of(this.colors);

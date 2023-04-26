@@ -24,5 +24,7 @@ namespace API.Dtos
         public string Brand { get; set; }
         [Required]
         public string Type { get; set; }
+        [Required]
+        public string Size { get; set; }
     }
 }
