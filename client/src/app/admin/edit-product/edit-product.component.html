@@ -3,14 +3,14 @@
   <div class="col-sm-2" *ngFor="let photo of photos">
     <img class="thumbnail" src="{{photo.url}}" alt="">
     <div class="text-center">
-        <button type="button" class="btn btn-xs btn-primary">Main</button>
-        <button type="button" (click)="deletePhoto(photo.id)" class="btn btn-xs btn-danger"><i class="fa fa-trash-o"></i></button>
+        <button type="button" [disabled]="photo.isMain" (click)="setMain(photo.id)" class="btn btn-xs btn-primary">Main</button>
+        <button type="button" [disabled]="photo.isMain" (click)="deletePhoto(photo.id)" class="btn btn-xs btn-danger"><i class="fa fa-trash-o"></i></button>
     </div>
   </div>
 </div>
 
-<div class="row">
-  <div class="col-8">
+<div class="row" style="margin-top: 20px;">
+  <div class="col-4">
     <label class="btn btn-default p-0">
       <input type="file" multiple (change)="selectFiles($event)" />
     </label>
@@ -49,11 +49,18 @@
   </ul>
 </div>
 
-<div class="card mt-3">
+<div class="card mt-3" style="width: 40%;">
   <div class="card-header">List of Files</div>
   <ul class="list-group list-group-flush">
-    <li *ngFor="let file of fileInfos | async" class="list-group-item">
-      <a href="{{ file.url }}">{{ file.name }}</a>
+    <li *ngFor="let file of fileInfos | async;let i = index" class="list-group-item">
+      <div class="row">
+        <div class="col-9">
+          <a>{{ file.name }}</a>
+        </div>
+        <div class="col-2">
+          <button (click)="removeFile(i)" class="btn btn-danger">Remove</button>
+        </div>
+      </div>
     </li>
   </ul>
 </div>
@@ -125,6 +132,7 @@
         <div class="form-group mb-3 mt-3">
           <label for="gender">Gender:</label>
           <select id="gender" (change)="selectGender($event.target.value)" formControlName="gender" class="form-control">
+            <option [value]="''"></option>
             <option [value]="gender.name" *ngFor="let gender of genders">{{ gender.name }}</option>
           </select>
         </div>

@@ -6,6 +6,7 @@ import { Basket, IBasket, IBasketItem, IBasketTotals } from '../shared/models/ba
 import { IDeliveryMethod } from '../shared/models/deliveryMethod';
 import { IProduct } from '../shared/models/product';
 import { IWhishlist, IWhishlistItem, Whishlist } from '../shared/models/whishlist';
+import { IDiscount } from '../shared/models/discount';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +21,7 @@ export class BasketService {
   private basketTotalSource = new BehaviorSubject<IBasketTotals>(null!);
   basketTotal$ = this.basketTotalSource.asObservable();
   shipping = 0;
+  discount = 0;
 
   constructor(private http: HttpClient) { }
 
@@ -38,6 +40,16 @@ export class BasketService {
     const basket = this.getCurrentBasketValue();
     basket.deliveryMethodId = deliveryMethod.id;
     basket.shippingPrice = deliveryMethod.price;
+    this.calculateTotals();
+    this.setBasket(basket);
+  }
+
+  setDiscountValue(discount: number)
+  {
+    this.discount = discount;
+    const basket = this.getCurrentBasketValue();
+    if(discount)
+      basket.discount = (discount) ? discount : 0;
     this.calculateTotals();
     this.setBasket(basket);
   }
@@ -73,6 +85,7 @@ export class BasketService {
     })
   }
 
+
   setWhishlist(whishlist: IWhishlist) {
     return this.http.post<IWhishlist>(this.baseUrl + 'Whishlist', whishlist).subscribe((response: IWhishlist) => {
       this.whislistSource.next(response);
@@ -101,7 +114,7 @@ export class BasketService {
     const itemToAdd: IWhishlistItem = this.mapProductItemToWhishlistItem(item);
     const whishlist = this.getCurrentWhishlistValue() ?? this.createWhishlist();
     whishlist.items = this.addOrUpdateItemWhishlist(whishlist.items, itemToAdd);
-
+    console.log(whishlist.items);
     this.setWhishlist(whishlist);
   }
 
@@ -179,18 +192,29 @@ export class BasketService {
 
   private calculateTotals() {
     const basket = this.getCurrentBasketValue();
+    console.log(basket);
     const shipping = this.shipping;
-    const subtotal = basket.items.reduce((a, b) => (b.price * b.quantity) + a, 0);
+    const subtotal = basket.items.reduce((a, b) => ((b.discountedPrice ? b.discountedPrice : b.price) * b.quantity) + a, 0) - basket.discount!;
     const total = subtotal + shipping;
-    this.basketTotalSource.next({shipping, total, subtotal});
+    const discount = (basket.discount) ? basket.discount : 0;
+
+    this.basketTotalSource.next({shipping, total, subtotal,discount});
   }
 
   private addOrUpdateItem(items: IBasketItem[], itemToAdd: IBasketItem, quantity: number): IBasketItem[] {
     const index = items.findIndex(i => i.id === itemToAdd.id);
+    const discountForProduct = itemToAdd.discountedPrice;
+
     if (index === -1) {
       itemToAdd.quantity = quantity;
       items.push(itemToAdd);
-    } else {
+    } else if(index !== -1 && discountForProduct != null)
+    {
+      itemToAdd.quantity = items[index].quantity + itemToAdd.quantity;
+      items = items.filter(i => i.id !== itemToAdd.id);
+      items.push(itemToAdd);
+    }
+    else {
       items[index].quantity += quantity;
     }
     return items;
@@ -222,11 +246,13 @@ export class BasketService {
       id: item.id,
       name: item.productName,
       price: item.price,
+      discountedPrice: item.priceDiscounted,
       pictureUrl: item.pictureUrl,
       quantity,
       brand: item.productBrand,
       type: item.productType,
-      size: item.productSize
+      size: item.productSize,
+      color: item.productColor
     };
   }
 
@@ -235,9 +261,12 @@ export class BasketService {
       id: item.id,
       name: item.productName,
       price: item.price,
+      discountedPrice: item.priceDiscounted,
       pictureUrl: item.pictureUrl,
       brand: item.productBrand,
       type: item.productType
     };
   }
+
+
 }

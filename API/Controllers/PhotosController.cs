@@ -71,7 +71,6 @@ namespace API.Controllers
                     {
                         File = new FileDescription(file.Name, stream)
                     };
-
                     uploadResult = _cloudinary.Upload(uploadParamas);
                 }
             }
@@ -94,15 +93,13 @@ namespace API.Controllers
 
             if(await _productRepository.SaveAll())
             {
-                // return CreatedAtRoute("GetPhoto",new {id = photoMapped.Id}, photoToReturn);
                 return Ok(photoToReturn);
             }
-
             return BadRequest("Could not add the photo");
         }
 
 
-         [HttpDelete("{id}")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePhoto(int id)
         {
 
@@ -137,6 +134,26 @@ namespace API.Controllers
                 return Ok();
             }            
             return BadRequest("Failed to delete the photo");
+
+        }
+
+        [HttpPost("/api/photos/setmain")]
+        public async Task<IActionResult> SetMainPhoto([FromBody]SetMainDto set)
+        {
+            var photoFromRepo = await _picturesRepo.GetById(set.Id);
+            var photoFromRepoMain = await _picturesRepo.GetById(set.IdMain);
+
+            photoFromRepo.IsMain = true;
+            photoFromRepoMain.IsMain = false;
+
+            _picturesRepo.Update(photoFromRepo);
+            _picturesRepo.Update(photoFromRepoMain);
+
+            if (await _picturesRepo.SaveAll()) 
+            {
+                return Ok();
+            }            
+            return BadRequest("Failed to set main photo");
 
         }
     }

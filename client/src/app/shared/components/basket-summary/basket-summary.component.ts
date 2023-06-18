@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IBasket, IBasketItem } from '../../models/basket';
-import { IOrderItem } from '../../models/order';
 import { Router } from '@angular/router';
 
 @Component({
@@ -21,8 +20,8 @@ export class BasketSummaryComponent implements OnInit {
   constructor(private router: Router) { }
 
   ngOnInit(): void {
+    console.log(this.items);
    this.items.forEach(element => {
-    console.log(element);
       if(element.pictureUrl == null)
       {
         element.pictureUrl = "https://res.cloudinary.com/alejandroscloud/image/upload/v1680102891/no_image_product_nctina.png";
@@ -36,7 +35,8 @@ export class BasketSummaryComponent implements OnInit {
   }
 
   decrementItemQuantity(item: IBasketItem){
-    this.decrement.emit(item);
+    if(item.quantity >= 2)
+      this.decrement.emit(item);
   }
   incrementItemQuantity(item: IBasketItem){
     this.increment.emit(item);

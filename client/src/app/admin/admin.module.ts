@@ -17,6 +17,18 @@ import { EditFitsComponent } from './edit-fits/edit-fits.component';
 import { AddDiscountComponent } from './add-discount/add-discount.component';
 import { EditCollectionComponent } from './edit-collection/edit-collection.component';
 import { EditNameComponent } from './edit-name/edit-name.component';
+import { MaterialModule } from '../material.module';
+import { EditCuponComponent } from './edit-cupon/edit-cupon.component';
+import { UpdateNameComponent } from './edit-name/update-name/update-name.component';
+import { UpdateSizesComponent } from './edit-sizes/update-sizes/update-sizes.component';
+import { UpdateTypeComponent } from './edit-types/update-type/update-type.component';
+import { UpdateFitComponent } from './edit-fits/update-fit/update-fit.component';
+import { UpdateColorComponent } from './edit-colors/update-color/update-color.component';
+import { UpdateColectionComponent } from './edit-collection/update-colection/update-colection.component';
+import { UpdateCuponComponent } from './edit-cupon/update-cupon/update-cupon.component';
+import { UpdateDeliveryComponent } from './edit-delivery-methods/update-delivery/update-delivery.component';
+import { UpdateBrandComponent } from './edit-brands/update-brand/update-brand.component';
+import { UpdateDiscountComponent } from './add-discount/update-discount/update-discount.component';
 
 
 
@@ -35,13 +47,25 @@ import { EditNameComponent } from './edit-name/edit-name.component';
   AddDiscountComponent,
   EditCollectionComponent,
   EditNameComponent,
+  EditCuponComponent,
+  UpdateNameComponent,
+  UpdateSizesComponent,
+  UpdateTypeComponent,
+  UpdateFitComponent,
+  UpdateColorComponent,
+  UpdateColectionComponent,
+  UpdateCuponComponent,
+  UpdateDeliveryComponent,
+  UpdateBrandComponent,
+  UpdateDiscountComponent,
   ],
   imports: [
     CommonModule,
     SharedModule,
     AdminRoutingModule,
     ToastrModule,
-    FileUploadModule
+    FileUploadModule,
+    MaterialModule
     ]
 })
 export class AdminModule { }

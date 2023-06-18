@@ -12,6 +12,8 @@ namespace Core.Specifications
         {
             AddInclude(o => o.Photos);
             AddInclude(o => o.ProductName);
+            AddInclude(o => o.ProductColor);
+            AddInclude(o => o.ProductSize);
         }
 
     }

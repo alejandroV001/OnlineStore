@@ -13,6 +13,8 @@ import { EditDeliveryMethodsComponent } from './edit-delivery-methods/edit-deliv
 import { AddDiscountComponent } from './add-discount/add-discount.component';
 import { EditCollectionComponent } from './edit-collection/edit-collection.component';
 import { EditNameComponent } from './edit-name/edit-name.component';
+import { EditCuponComponent } from './edit-cupon/edit-cupon.component';
+import { UpdateNameComponent } from './edit-name/update-name/update-name.component';
 
 const routes: Routes = [
   {path: '', component: AdminComponent},
@@ -27,7 +29,9 @@ const routes: Routes = [
   {path: 'edit-colors', component: EditColorsComponent, data: {breadcrumb: {alias: 'editColors'}}},
   {path: 'edit-fits', component: EditFitsComponent, data: {breadcrumb: {alias: 'editFits'}}},
   {path: 'edit-sizes', component: EditSizesComponent, data: {breadcrumb: {alias: 'editSizes'}}},
+  {path: 'edit-cupon', component: EditCuponComponent, data: {breadcrumb: {alias: 'editCupons'}}},
   {path: 'edit-delivery-methods', component: EditDeliveryMethodsComponent, data: {breadcrumb: {alias: 'editDeliveryMethods'}}},
+  {path: 'update-name/:id', component: UpdateNameComponent, data: {breadcrumb: {alias: 'editDeliveryMethods'}}},
 
 ];
 

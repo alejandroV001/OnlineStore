@@ -32,7 +32,7 @@ namespace Core.Specifications
             AddInclude(x => x.ProductCollection);
 
             AddOrderBy(x => x.ProductName.Name);
-            ApplyPaging(productParams.PageSize * (productParams.PageIndex - 1),
+            ApplyPaging(productParams.Max * (productParams.PageIndex - 1),
                 productParams.PageSize);
 
             if(!string.IsNullOrEmpty(productParams.Sort))

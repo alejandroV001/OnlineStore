@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using API.Dtos;
+using API.Helpers;
 using AutoMapper;
 using Core.Entities;
 using Core.Interfaces;
@@ -28,6 +29,7 @@ namespace API.Controllers
             _discountRepo = discountRepo;
         }
 
+        // [Cached(600)]
         [HttpGet("getDiscounts")]
         public async Task<ActionResult<IReadOnlyList<Discount>>> GetDiscounts()
         {
@@ -78,6 +80,20 @@ namespace API.Controllers
             }
 
             return BadRequest("Could not delete the size");
+        }
+
+         [HttpPut("update")]
+        public async Task<ActionResult> Update(DiscountDto productData)
+        { 
+            var mapped = _mapper.Map<DiscountDto, ProductDiscount>(productData);
+
+            _productDiscountRepo.Update(mapped);
+            if(await _productDiscountRepo.SaveAll())
+            {
+                return Ok();
+            }
+
+            return BadRequest();
         }
     }
 }

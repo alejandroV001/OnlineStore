@@ -22,6 +22,8 @@
             [shippingPrice]="(basketTotals$ | async)!.shipping"
             [subtotal]="(basketTotals$ | async)!.subtotal"
             [total]="(basketTotals$ | async)!.total"
+            [discount]="1"
+
             ></app-order-totals>
         </div>
     </div>

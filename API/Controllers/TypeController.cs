@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using API.Helpers;
 using Core.Entities;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -16,7 +17,8 @@ namespace API.Controllers
         {
             _productsTypeRepo = productTypeRepo;
         }
-
+        
+        // [Cached(600)]
         [HttpGet("types")]
         public async Task<ActionResult<IReadOnlyList<ProductType>>> GetTypes()
         {
@@ -51,6 +53,18 @@ namespace API.Controllers
             }
 
             return BadRequest("Could not delete the size");
+        }
+
+        [HttpPut("update")]
+        public async Task<ActionResult> Update(ProductType productData)
+        { 
+            _productsTypeRepo.Update(productData);
+            if(await _productsTypeRepo.SaveAll())
+            {
+                return Ok();
+            }
+
+            return BadRequest();
         }
     }
 }

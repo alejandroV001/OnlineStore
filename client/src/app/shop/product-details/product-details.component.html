@@ -1,17 +1,24 @@
 <div class="container mt-5">
     <div class="row" *ngIf="product">
         <div class="col-6">
-            <img src="{{product.pictureUrl}}" alt="{{product.productName}}" class="img-fluid w-100">
+            <img src="{{product.pictureUrl}}" alt="{{product.productName}}" style="height: 600px;width: 600px;" class="img-fluid">
         </div>
     
-        <div class="col-6" id="details">
-            <h3 style="margin-left: 30px;">{{product.productName}}</h3>
-            <h2>{{product.productBrand}} {{product.productGender}}</h2>
-            <h2>{{product.productFit}}</h2>
+        <div class="col-6 align-items-center" id="details" >
+            <h3 >{{product.productName}}</h3>
+            <h2 > {{product.productBrand}} {{product.productGender}}</h2>
+            <h2 >{{product.productFit}}</h2>
 
-            <p style="font-size: 2em;">{{product.price | currency}}</p>
+            <div class="d-flex align-items-baseline">
+                <span class="original-price" *ngIf="discountedPrice">
+                    {{product.price | currency}}
+                </span>
+                <span class="discounted-price">
+                    {{discountedPrice ? (discountedPrice | currency) : (product.price | currency)}}
+                </span>
+            </div>
             <div class="colors">
-                <h2>Color: {{selectedColor}}</h2>
+                <h2 >Color: {{selectedColor}}</h2>
                 <div class="row">
                     <div class="col">
                         <div class="d-flex flex-row flex-wrap">
@@ -27,21 +34,26 @@
                 </div>
             </div>
 
-            <div class="sizes">
-                <button (click)="openSizeGuideDialog()">Check sizes</button>
-                <h2>Select Size</h2>
+            <div *ngIf="product.productSize" class="sizes">
+                <button  (click)="openSizeGuideDialog()">Check sizes</button>
+                <h2 >Select Size</h2>
 
                 <div class="size-container">
                     <div class="size-item" *ngFor="let size of availableSizes" 
                     [class.selected]="selectedSize === size"
                     (click)="selectSize(size)">
-                      <span>{{ size.name }}</span>
+                      <span >{{ size.name }}</span>
                     </div>
                   </div>
             </div>
 
+            <div class="description">
+                <h4>Description</h4>
+                <p>{{product.description}}</p>
+            </div>
 
-            <div class="d-flex justify-content-start align-items-center mt-3">
+
+            <div class="d-flex justify-content-start align-items-center mt-3" style="margin-bottom: 10px;">
                 <i (click)="decrementQuantity()" class="fa fa-minus-circle text-warning me-2" style="cursor: pointer; font-size: 2em;"></i>
                 <span class="font-weight: bold; " style="font-size: 1.5em;">{{quantity}}</span>
                 <i (click)="incrementQuantity()" class="fa fa-plus-circle text-warning mx-2" style="cursor: pointer; font-size: 2em;"></i>
@@ -64,11 +76,6 @@
             
         </div>
     
-        <div class="row mt-5">
-            <div class="col-12 ml-3">
-                <h4>Description</h4>
-                <p>{{product.description}}</p>
-            </div>
-        </div>
+        
     </div>
 </div>

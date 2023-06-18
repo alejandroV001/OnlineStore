@@ -4,6 +4,7 @@ export interface IWhishlistItem {
     id: number;
     name: string;
     price: number;
+    discountedPrice: number;
     pictureUrl: string;
     brand: string;
     type: string;

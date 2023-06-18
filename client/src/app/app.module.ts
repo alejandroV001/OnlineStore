@@ -25,7 +25,7 @@ import { AdminModule } from './admin/admin.module';
     CoreModule,
     HomeModule,
     NgxSpinnerModule,
-    AdminModule
+    AdminModule,
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},

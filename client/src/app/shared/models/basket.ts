@@ -4,11 +4,13 @@ import { v4 as uuidv4 } from 'uuid';
         id: number;
         name: string;
         price: number;
+        discountedPrice: number;
         quantity: number;
         pictureUrl: string;
         brand: string;
         type: string;
         size: string;
+        color: string;
     }
 
     export interface IBasket {
@@ -18,6 +20,7 @@ import { v4 as uuidv4 } from 'uuid';
         paymentIntentId?: string;
         deliveryMethodId?: number;
         shippingPrice?: number;
+        discount?: number;
     }
 
 export class Basket implements IBasket {
@@ -30,4 +33,5 @@ export interface IBasketTotals {
     shipping: number;
     subtotal: number;
     total: number;
+    discount: number;
 }

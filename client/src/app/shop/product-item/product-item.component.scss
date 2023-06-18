@@ -43,6 +43,16 @@
     }
 }
 
+.original-price {
+    text-decoration: line-through;
+    color: grey;
+    margin-right: 1em;
+  }
+  
+  .discounted-price {
+    color: black;
+  }
+
 .fa-heart {
     color: red;
     height: 0px;

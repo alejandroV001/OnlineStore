@@ -33,6 +33,22 @@ namespace Infrastructure.Data
             .ToListAsync();
         }
 
+        public async Task<List<Product>> ListAll()
+        {
+            return await _context.Set<T>().OfType<Product>()
+                .Include(x => x.ProductType)
+                .Include(x => x.ProductBrand)
+                .Include(x => x.ProductColor)
+                .Include(x => x.ProductSize)
+                .Include(x => x.ProductGender)
+                .Include(x => x.ProductFit)
+                .Include(x => x.Photos)
+                .Include(x => x.ProductName)
+                .Include(x => x.ProductCollection)
+                .OrderBy(x => x.ProductName.Name)
+                .ToListAsync();
+        }
+
         public async Task<T> GetEntityWithSpec(ISpecification<T> spec)
         {
             return await ApplySpecification(spec).FirstOrDefaultAsync();

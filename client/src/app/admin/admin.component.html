@@ -19,57 +19,120 @@
         Collections</button>
       <button id="editButtons" class="btn btn-sm btn-primary " routerLink="/admin/edit-name">
         Product Names</button>
+        <button id="editButtons" class="btn btn-sm btn-primary " routerLink="/admin/edit-cupon">
+          Cupons</button>
     </div>
 
   </div>
   <div class="row" style="margin-top: 1.5%;">
     <section class="col-2">
-      <ng-container *ngIf="types && brands">
-        <h5 class="text-warning ml-3 mt-4 mb-3">Sort</h5>
-        <select class="custom-select mb-4" (change)="onSortSelected($event.target.value)">
-          <option *ngFor="let sort of sortOptions" [selected]="shopParams.sort === sort.value" [value]="sort.value">
-            {{sort.name}}
-          </option>
+      <form [formGroup]="form">
+        <mat-form-field appearance="fill">
+          <mat-label>Sort</mat-label>
+          <mat-select formControlName="sort" (selectionChange)="onSortSelected($event.value)">
+            <mat-option class="list-group-item" *ngFor="let sort of sortOptions" [value]="sort.value">
+              {{sort.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
 
-        </select>
 
-        <h5 class="text-warning ml-3">Brands</h5>
 
-        <ul class="list-group my-3">
-          <li class="list-group-item" *ngFor="let brand of brands" [class.active]="brand.id === this.shopParams.brandId"
-            [value]="brand.id" (click)="onBrandSelected(brand.id)">
-            {{brand.name}}
-          </li>
+        <mat-form-field appearance="fill">
+          <mat-label>Type</mat-label>
+          <mat-select formControlName="type" (selectionChange)="onTypeSelected($event.value)">
+            <mat-option class="list-group-item" *ngFor="let type of types" [value]="type.id">
+              {{type.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
 
-        </ul>
+        <mat-form-field appearance="fill">
+          <mat-label>Brand</mat-label>
+          <mat-select formControlName="brand" (selectionChange)="onBrandSelected($event.value)">
+            <mat-option class="list-group-item" *ngFor="let sort of brands" [value]="sort.id">
+              {{sort.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
 
-        <h5 class="text-warning ml-3">Types</h5>
-        <ul class="list-group my-3">
-          <li class="list-group-item" *ngFor="let type of types" [class.active]="type.id === this.shopParams.typeId"
-            [value]="type.id" (click)="onTypeSelected(type.id)">
-            {{type.name}}
-          </li>
-        </ul>
-      </ng-container>
+        <mat-form-field appearance="fill">
+          <mat-label>Size</mat-label>
+          <mat-select formControlName="size" (selectionChange)="onSizeSelected($event.value)">
+            <mat-option class="list-group-item" *ngFor="let sort of sizes" [value]="sort.id">
+              {{sort.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Colors</mat-label>
+          <mat-select formControlName="color" (selectionChange)="onColorSelected($event.value)">
+            <mat-option class="list-group-item" *ngFor="let sort of colors" [value]="sort.id">
+              {{sort.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Fits</mat-label>
+          <mat-select formControlName="fit" (selectionChange)="onFitSelected($event.value)">
+            <mat-option class="list-group-item" *ngFor="let sort of fits" [value]="sort.id">
+              {{sort.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Collections</mat-label>
+          <mat-select formControlName="collection" (selectionChange)="onCollectionSelected($event.value)">
+            <mat-option class="list-group-item" *ngFor="let sort of collections"
+              [class.active]="sort.id === this.shopParams.collectionId" [value]="sort.id">
+              {{sort.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Genders</mat-label>
+          <mat-select formControlName="gender" (selectionChange)="onGenderSelected($event.value)">
+            <mat-option class="list-group-item" *ngFor="let sort of genders"
+              [class.active]="sort.id === this.shopParams.genderId" [value]="sort.id">
+              {{sort.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </form>
     </section>
+
+
     <section class="col-10">
-      <div class="product-list" style="margin-top: 4%;">
-        <h3 class="text-center mb-3">Product List</h3>
+      <div class="product-list align-items-center" style="margin-top: 4%;">
+        <h3 class="text-center mb-3" style="font-weight:700;font-size: 30px;">Product List</h3>
         <div style="display:flex; flex-direction:row;">
           <div style="flex: 1;">
-            <button class="btn btn-sm btn-primary "
-              style="width: 180px; height: 45px; border-radius: 5%; margin-left: 4%;" routerLink="/admin/add-product">
-              Add product to Store</button>
+            <div class="row">
+              <div class="col-12">
+                <button class="btn btn-sm btn-primary"
+                style="width: 180px; height: 45px; border-radius: 5%; margin-left: 4%;" routerLink="/admin/add-product">
+                Add product to Store</button>
+              </div>
+              <div class="col-12" style="margin-left: 80%;">
+                <app-paging-header [totalCount]="totalCount" [pageSize]="this.shopParams.pageSize"
+                [pageNumber]="this.shopParams.pageNumber"></app-paging-header>
+              </div>
+            </div>
+            
           </div>
           <div style="flex: 1; margin-left: 25%;">
+            
             <div>
               <input (keyup.enter)="onSearch()" class="me-2" style="width: 150px; height: 45px; border-radius: 5%;"
-                #search placeholder="Search" type="text">
-              <button (click)="onSearch()" class="btn btn-outline-primary my-2 me-2">Search</button>
-              <button (click)="onReset()" class="btn btn-outline-success ml-2 my-2">Reset</button>
+                #search placeholder="Search" type="text" id="searchBox">
+              <button (click)="onSearch()" class="btn btn-primary my-2 me-2">Search</button>
+              <button (click)="onReset()" class="btn btn-success ml-2 my-2">Reset</button>
             </div>
           </div>
-
         </div>
 
         <table class="table table-striped" style="margin-top: 4%;">
@@ -89,7 +152,7 @@
               <td>{{ product.price }}</td>
               <td>{{ product.quantity }}</td>
               <td>
-                <button routerLink="/admin/edit-product/{{product.id}}" routerLinkActive="active"
+                <button (click)="openEditTab(product.id)"
                   class="btn btn-sm btn-primary me-2">Edit</button>
                 <button (click)="deleteProduct(product.id)" routerLink="/product-management" routerLinkActive="active"
                   class="btn btn-sm btn-danger me-2">Delete</button>
@@ -102,6 +165,7 @@
       </div>
 
       <div class="d-flex justify-content-center" *ngIf="totalCount > 0">
+        
         <app-pager [pageSize]="shopParams.pageSize" [totalCount]="totalCount" [pageNumber]="shopParams.pageNumber"
           (pageChanged)="onPageChanged($event)"></app-pager>
       </div>

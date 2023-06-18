@@ -9,6 +9,8 @@ import { IFit } from 'src/app/shared/models/fit';
 import { IColor } from 'src/app/shared/models/color';
 import { ISize } from 'src/app/shared/models/size';
 import { ICollection } from 'src/app/shared/models/collection';
+import { BreadcrumbService } from 'xng-breadcrumb';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-shop-men',
@@ -29,22 +31,37 @@ export class ShopMenComponent implements OnInit {
   totalCount: number=0;
   form: FormGroup = new FormGroup({});
 
-
-  
   sortOptions = [
     {name: 'Alphabetical', value: 'name'},
     {name: 'Price: Low to Hight', value: 'priceAsc'},
-    {name: 'price: High to Low', value: 'priceDesc'}
+    {name: 'Price: High to Low', value: 'priceDesc'}
   ];
-  constructor(private shopService: ShopService, private fb:FormBuilder) { 
+  constructor(private shopService: ShopService, private fb:FormBuilder,private bcService: BreadcrumbService) { 
     this.shopParams = this.shopService.getShopParams();
     this.shopParams.genderId = 1;
     this.shopParams.brandId = 0;
     this.shopParams.sizeId = 0;
+    this.shopParams.collectionId = 0;
+    this.shopParams.typeId = 0;
+    this.shopParams.colorId = 0;
+    this.shopParams.fitId = 0;
+    this.shopParams.pageNumber = 1;
     this.shopParams.sort = "name";
   }
 
   ngOnInit(): void {
+
+    this.shopParams.genderId = 1;
+    this.shopParams.brandId = 0;
+    this.shopParams.sizeId = 0;
+    this.shopParams.collectionId = 0;
+    this.shopParams.typeId = 0;
+    this.shopParams.colorId = 0;
+    this.shopParams.fitId = 0;
+    this.shopParams.pageNumber = 1;
+    this.shopParams.sort = "name";
+    this.shopParams.search = "";
+    
     this.getProducts(true);
     this.getBrands();
     this.getTypes();
@@ -53,9 +70,16 @@ export class ShopMenComponent implements OnInit {
     this.getSizes();
     this.getCollections();
 
+    this.bcService.set('@shopMen', 'Men')
+
+    this.bcService.breadcrumbs$ = this.bcService.breadcrumbs$.pipe(
+      map(response => response.filter(crumb => crumb.alias !== 'Shop'))
+    );
+    
+
     this.form = this.fb.group({
       gender: ["all", [Validators.required]],
-       sort: [this.shopParams.sort, [Validators.required]],
+      sort: [this.shopParams.sort, [Validators.required]],
       size: [0, [Validators.required]],
       collection: [0, [Validators.required]],
       color: [0, [Validators.required]],
@@ -68,7 +92,7 @@ export class ShopMenComponent implements OnInit {
   getProducts(useCache = false) {
     this.shopService.getProducts(useCache).subscribe(response => {
       this.products = response!.data;
-      this.totalCount = this.products!.length;
+      this.totalCount = response.count;
     }, error => {
       console.log(error);
     });
@@ -132,7 +156,10 @@ export class ShopMenComponent implements OnInit {
     params.brandId = brandId;
     params.pageNumber = 1;
     this.shopService.setShopParams(params);
-    this.getProducts();
+    if(brandId == 0)
+      this.getProducts();
+    else  
+      this.getProducts(true);
   }
 
   onTypeSelected(typeId: number) {
@@ -140,7 +167,10 @@ export class ShopMenComponent implements OnInit {
     params.typeId = typeId;
     params.pageNumber = 1;
     this.shopService.setShopParams(params);
-    this.getProducts();
+    if(typeId == 0)
+      this.getProducts();
+    else  
+      this.getProducts(true);
   }
 
   onSizeSelected(sizeId: number) {
@@ -148,7 +178,10 @@ export class ShopMenComponent implements OnInit {
     params.sizeId = sizeId;
     params.pageNumber = 1;
     this.shopService.setShopParams(params);
-    this.getProducts();
+    if(sizeId == 0)
+      this.getProducts();
+    else  
+      this.getProducts(true);
   }
 
   onColorSelected(colorId: number) {
@@ -156,7 +189,10 @@ export class ShopMenComponent implements OnInit {
     params.colorId = colorId;
     params.pageNumber = 1;
     this.shopService.setShopParams(params);
-    this.getProducts();
+    if(colorId == 0)
+      this.getProducts();
+    else  
+      this.getProducts(true);
   }
 
   onFitSelected(fitId: number) {
@@ -164,7 +200,10 @@ export class ShopMenComponent implements OnInit {
     params.fitId = fitId;
     params.pageNumber = 1;
     this.shopService.setShopParams(params);
-    this.getProducts();
+    if(fitId == 0)
+      this.getProducts();
+    else  
+      this.getProducts(true);
   }
 
   onCollectionSelected(collectionId: number) {
@@ -172,19 +211,22 @@ export class ShopMenComponent implements OnInit {
     params.collectionId = collectionId;
     params.pageNumber = 1;
     this.shopService.setShopParams(params);
-    this.getProducts();
+    if(collectionId == 0)
+      this.getProducts();
+    else  
+      this.getProducts(true);
   }
 
   onSortSelected(sort: string) {
     const params = this.shopService.getShopParams();
     params.sort = sort;
     this.shopService.setShopParams(params);
-    this.getProducts();
+    this.getProducts(true);
   }
 
   onPageChanged(event: any) {
     const params = this.shopService.getShopParams();
-
+    window.scrollTo(0,0);
     if(params.pageNumber !== event){
       params.pageNumber = event;
       this.shopService.setShopParams(params);
@@ -197,13 +239,19 @@ export class ShopMenComponent implements OnInit {
     params.search = this.searchTerm.nativeElement.value;
     params.pageNumber = 1;
     this.shopService.setShopParams(params);
-    this.getProducts();
+    this.getProducts(true);
   }
 
   onReset()
   {
     this.searchTerm.nativeElement.value = '';
     this.shopParams = new ShopParams();
+    this.shopParams.genderId = 1;
+    this.shopParams.brandId = 0;
+    this.shopParams.sizeId = 0;
+    this.shopParams.collectionId = 0;
+    this.shopParams.pageNumber = 1;
+    this.shopParams.sort = "name";
     this.shopService.setShopParams(this.shopParams);
     this.form = this.fb.group({
       gender: ["all", [Validators.required]],
@@ -216,6 +264,6 @@ export class ShopMenComponent implements OnInit {
       brand: [0, [Validators.required]],
 
     })
-    this.getProducts();
+    this.getProducts(true);
   }
 }

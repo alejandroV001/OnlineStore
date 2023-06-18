@@ -13,6 +13,7 @@ import { AdSectionComponent } from './ad-section/ad-section.component';
 import { FooterComponent } from './footer/footer.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { AdminModule } from '../admin/admin.module';
+import { FAQComponent } from './footer/faq/faq.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { AdminModule } from '../admin/admin.module';
     SectionHeaderComponent,
     AdSectionComponent,
     FooterComponent,
+    FAQComponent,
   ],
   imports: [
     CommonModule,

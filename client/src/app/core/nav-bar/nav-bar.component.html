@@ -5,24 +5,26 @@
   <nav class="my-2 my-md-0 me-md-3 text-uppercase" style="font-size: larger;">
     <a class="me-3 py-2 " [routerLink]="['/']" routerLinkActive="active"
       [routerLinkActiveOptions]="{exact: true}">Home</a>
-    <a class="me-3 py-2 " routerLink="/shop" routerLinkActive="active">All Products</a>
+    <!-- <a class="me-3 py-2 " routerLink="/shop" routerLinkActive="active">All Products</a> -->
     <a class="me-3 py-2 " routerLink="/shop/men" routerLinkActive="active">Men</a>
     <a class="me-3 py-2 " routerLink="/shop/woman" routerLinkActive="active">Woman</a>
+    <a class="me-3 py-2 " routerLink="/shop/accessories" routerLinkActive="active">Accessories</a>
+
     <!-- <a class="me-3 py-2 " routerLink="/test-error" routerLinkActive="active">Errors</a> -->
     <a class="me-3 py-2 " *ngIf="role === 'Admin'" routerLink="/admin" routerLinkActive="active">Admin</a>
   </nav>
   <div class="d-flex align-items-center">
     <a routerLink="/whishlist" class="position-relative">
-      <i class="fa fa-heart fa-2x me-5 text-dark"></i>
+      <i class="fa fa-heart fa-2x me-5"></i>
       <div *ngIf="(whishlist$ | async) as whishlist" class="cart-no">{{whishlist.items.length}}</div>
     </a>
     <a routerLink="/basket" class="position-relative">
-      <i class="fa fa-shopping-cart fa-2x me-5 text-dark"></i>
-      <div *ngIf="(basket$ | async) as basket" class="cart-no">{{basket.items.length}}</div>
+      <i class="fa fa-shopping-cart fa-2x me-5"></i>
+      <div *ngIf="(basket$ | async) as basket" class="cart-no">{{count}}</div>
     </a>
     <ng-container *ngIf="(currentUser$ |async) === null">
-      <a routerLink="/account/login" class="btn btn-outline-secondary me-2">Login</a>
-      <a routerLink="/account/register" class="btn btn-outline-secondary me-3">Sign Up</a>
+      <a routerLink="/account/login" class="btn btn-secondary me-2">Login</a>
+      <a routerLink="/account/register" class="btn btn-secondary me-3">Sign Up</a>
     </ng-container>
 
     <ng-container *ngIf="currentUser$ | async">

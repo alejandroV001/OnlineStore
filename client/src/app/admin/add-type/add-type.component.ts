@@ -28,9 +28,6 @@ export class AddTypeComponent implements OnInit {
   }
 
   onSubmit(){
-    var formVal = this.typeForm.value;
-
-    console.log(formVal);
 
     this.shopService.addProduct(this.typeForm.value).subscribe(response => {
       this.router.navigateByUrl('/product-management');

@@ -9,6 +9,8 @@ import { IColor } from 'src/app/shared/models/color';
 import { ISize } from 'src/app/shared/models/size';
 import { ICollection } from 'src/app/shared/models/collection';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { BreadcrumbService } from 'xng-breadcrumb';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-shop-woman',
@@ -35,15 +37,33 @@ export class ShopWomanComponent implements OnInit {
     {name: 'price: High to Low', value: 'priceDesc'}
   ];
   
-  constructor(private shopService: ShopService, private fb: FormBuilder) { 
+  constructor(private shopService: ShopService, private fb: FormBuilder,private bcService: BreadcrumbService) { 
     this.shopParams = this.shopService.getShopParams();
     this.shopParams.genderId = 2;
     this.shopParams.brandId = 0;
     this.shopParams.sizeId = 0;
+    this.shopParams.collectionId = 0;
+    this.shopParams.typeId = 0;
+    this.shopParams.colorId = 0;
+    this.shopParams.fitId = 0;
+    this.shopParams.pageNumber = 1;
+
     this.shopParams.sort = "name";
   }
 
   ngOnInit(): void {
+    this.shopParams = this.shopService.getShopParams();
+    this.shopParams.genderId = 2;
+    this.shopParams.brandId = 0;
+    this.shopParams.sizeId = 0;
+    this.shopParams.collectionId = 0;
+    this.shopParams.typeId = 0;
+    this.shopParams.colorId = 0;
+    this.shopParams.fitId = 0;
+    this.shopParams.pageNumber = 1;
+    this.shopParams.search = "";
+
+    this.shopParams.sort = "name";
     this.getProducts(true);
     this.getBrands();
     this.getTypes();
@@ -51,7 +71,11 @@ export class ShopWomanComponent implements OnInit {
     this.getFits();
     this.getSizes();
     this.getCollections();
-
+    this.bcService.set('@shopWoman', 'Woman')
+    this.bcService.breadcrumbs$ = this.bcService.breadcrumbs$.pipe(
+      map(response => response.filter(crumb => crumb.alias !== 'Shop'))
+    );
+    
     this.form = this.fb.group({
       gender: ["all", [Validators.required]],
        sort: [this.shopParams.sort, [Validators.required]],
@@ -66,9 +90,11 @@ export class ShopWomanComponent implements OnInit {
   }
 
   getProducts(useCache = false) {
+    useCache = false;
+
     this.shopService.getProducts(useCache).subscribe(response => {
       this.products = response!.data;
-      this.totalCount = this.products!.length;
+      this.totalCount = response.count;
     }, error => {
       console.log(error);
     });
@@ -132,7 +158,10 @@ export class ShopWomanComponent implements OnInit {
     params.brandId = brandId;
     params.pageNumber = 1;
     this.shopService.setShopParams(params);
-    this.getProducts();
+    if(brandId == 0)
+      this.getProducts();
+    else  
+      this.getProducts(true);
   }
 
   onTypeSelected(typeId: number) {
@@ -140,7 +169,10 @@ export class ShopWomanComponent implements OnInit {
     params.typeId = typeId;
     params.pageNumber = 1;
     this.shopService.setShopParams(params);
-    this.getProducts();
+    if(typeId == 0)
+      this.getProducts();
+    else  
+      this.getProducts(true);
   }
 
   onSizeSelected(sizeId: number) {
@@ -148,7 +180,10 @@ export class ShopWomanComponent implements OnInit {
     params.sizeId = sizeId;
     params.pageNumber = 1;
     this.shopService.setShopParams(params);
-    this.getProducts();
+    if(sizeId == 0)
+      this.getProducts();
+    else  
+      this.getProducts(true);
   }
 
   onColorSelected(colorId: number) {
@@ -156,7 +191,10 @@ export class ShopWomanComponent implements OnInit {
     params.colorId = colorId;
     params.pageNumber = 1;
     this.shopService.setShopParams(params);
-    this.getProducts();
+    if(colorId == 0)
+      this.getProducts();
+    else  
+      this.getProducts(true);
   }
 
   onFitSelected(fitId: number) {
@@ -164,7 +202,10 @@ export class ShopWomanComponent implements OnInit {
     params.fitId = fitId;
     params.pageNumber = 1;
     this.shopService.setShopParams(params);
+    if(fitId == 0)
     this.getProducts();
+  else  
+    this.getProducts(true);
   }
 
   onCollectionSelected(collectionId: number) {
@@ -172,19 +213,22 @@ export class ShopWomanComponent implements OnInit {
     params.collectionId = collectionId;
     params.pageNumber = 1;
     this.shopService.setShopParams(params);
-    this.getProducts();
+    if(collectionId == 0)
+      this.getProducts();
+    else  
+      this.getProducts(true);
   }
 
   onSortSelected(sort: string) {
     const params = this.shopService.getShopParams();
     params.sort = sort;
     this.shopService.setShopParams(params);
-    this.getProducts();
+    this.getProducts(true);
   }
 
   onPageChanged(event: any) {
     const params = this.shopService.getShopParams();
-
+    window.scrollTo(0,0);
     if(params.pageNumber !== event){
       params.pageNumber = event;
       this.shopService.setShopParams(params);
@@ -197,14 +241,30 @@ export class ShopWomanComponent implements OnInit {
     params.search = this.searchTerm.nativeElement.value;
     params.pageNumber = 1;
     this.shopService.setShopParams(params);
-    this.getProducts();
+    this.getProducts(true);
   }
 
   onReset()
   {
     this.searchTerm.nativeElement.value = '';
     this.shopParams = new ShopParams();
+    this.shopParams.genderId = 2;
+    this.shopParams.brandId = 0;
+    this.shopParams.sizeId = 0;
+    this.shopParams.collectionId = 0;
+    this.shopParams.pageNumber = 1;
     this.shopService.setShopParams(this.shopParams);
-    this.getProducts();
+    this.form = this.fb.group({
+      gender: ["all", [Validators.required]],
+       sort: [this.shopParams.sort, [Validators.required]],
+      size: [0, [Validators.required]],
+      collection: [0, [Validators.required]],
+      color: [0, [Validators.required]],
+      fit: [0, [Validators.required]],
+      type: [0, [Validators.required]],
+      brand: [0, [Validators.required]],
+
+    })
+    this.getProducts(true);
   }
 }

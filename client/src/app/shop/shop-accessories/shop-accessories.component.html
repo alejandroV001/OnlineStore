@@ -1,0 +1,109 @@
+<div class="container mt-3">
+    <div class="row">
+  
+      <section class="col-3">
+        <ng-container *ngIf="types && brands">
+  
+          <form [formGroup]="form">
+            <mat-form-field appearance="fill">
+              <mat-label>Sort</mat-label>
+              <mat-select formControlName="sort" (selectionChange)="onSortSelected($event.value)">
+                <mat-option class="list-group-item" *ngFor="let sort of sortOptions" [value]="sort.value">
+                  {{sort.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+  
+  
+  
+            <mat-form-field appearance="fill">
+              <mat-label>Type</mat-label>
+              <mat-select formControlName="type" (selectionChange)="onTypeSelected($event.value)">
+                <mat-option class="list-group-item" *ngFor="let type of types" [value]="type.id">
+                  {{type.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+  
+            <mat-form-field appearance="fill">
+              <mat-label>Brand</mat-label>
+              <mat-select formControlName="brand" (selectionChange)="onBrandSelected($event.value)">
+                <mat-option class="list-group-item" *ngFor="let sort of brands" [value]="sort.id">
+                  {{sort.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+  
+            <mat-form-field appearance="fill">
+              <mat-label>Size</mat-label>
+              <mat-select formControlName="size" (selectionChange)="onSizeSelected($event.value)">
+                <mat-option class="list-group-item" *ngFor="let sort of sizes" [value]="sort.id">
+                  {{sort.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+  
+            <mat-form-field appearance="fill">
+              <mat-label>Colors</mat-label>
+              <mat-select formControlName="color" (selectionChange)="onColorSelected($event.value)">
+                <mat-option class="list-group-item" *ngFor="let sort of colors" [value]="sort.id">
+                  {{sort.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+  
+            <mat-form-field appearance="fill">
+              <mat-label>Fits</mat-label>
+              <mat-select formControlName="fit" (selectionChange)="onFitSelected($event.value)">
+                <mat-option class="list-group-item" *ngFor="let sort of fits" [value]="sort.id">
+                  {{sort.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+  
+            <mat-form-field appearance="fill">
+              <mat-label>Genders</mat-label>
+              <mat-select formControlName="gender" (selectionChange)="onGenderSelected($event.value)">
+                <mat-option class="list-group-item" *ngFor="let sort of genders"
+                  [class.active]="sort.id === this.shopParams.genderId" [value]="sort.id">
+                  {{sort.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            
+          </form>
+        </ng-container>
+      </section>
+  
+      <ng-container *ngIf="products">
+        <section class="col-9">
+          <div class="d-flex justify-content-between align-items-center pb-2">
+  
+            <app-paging-header [totalCount]="totalCount" [pageSize]="this.shopParams.pageSize"
+              [pageNumber]="this.shopParams.pageNumber"></app-paging-header>
+  
+            <div>
+              <input (keyup.enter)="onSearch()" class="me-2" style="width: 200px;" #search placeholder="Search"
+                type="text" id="searchBox">
+              <button (click)="onSearch()" class="btn btn-primary my-2 me-2">Search</button>
+              <button (click)="onReset()" class="btn btn-success ml-2 my-2">Reset</button>
+            </div>
+  
+          </div>
+  
+  
+          <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            <div class="col mb-4" *ngFor="let item of products">
+              <app-product-item [product]="item"></app-product-item>
+            </div>
+          </div>
+          <div class="d-flex justify-content-center" *ngIf="totalCount > 0">
+            <app-pager [pageSize]="shopParams.pageSize" [totalCount]="totalCount" [pageNumber]="shopParams.pageNumber"
+              (pageChanged)="onPageChanged($event)"></app-pager>
+          </div>
+  
+        </section>
+      </ng-container>
+  
+    </div>
+  </div>

@@ -33,7 +33,11 @@ namespace Infrastructure.Services
                 var productItem = await _unitOfWork.Repository<Product>().GetEntityWithSpec(specific);
                 
                 var mainPhoto = productItem.Photos.Where(photo => photo.IsMain == true).FirstOrDefault();
-                var itemOrdered = new ProductItemOrdered(productItem.Id, productItem.ProductName.Name, mainPhoto.Url);
+                var size = productItem.ProductSize != null ? productItem.ProductSize.Name : "";
+                var color = productItem.ProductColor != null ? productItem.ProductColor.Name : "";
+
+
+                var itemOrdered = new ProductItemOrdered(productItem.Id, productItem.ProductName.Name, mainPhoto.Url,  size, color);
                 var orderItem = new OrderItem(itemOrdered, productItem.Price, item.Quantity);
 
                 items.Add(orderItem);
@@ -41,7 +45,7 @@ namespace Infrastructure.Services
 
             var deliveryMethod = await _unitOfWork.Repository<DeliveryMethod>().GetByIdAsync(deliveryMethodId);
 
-            var subtotal = items.Sum(item => item.Price * item.Quantity);
+            var subtotal = items.Sum(item => item.Price * item.Quantity) - basket.Discount;
 
             //check if order exists
             var spec = new OrderByPaymentIntentIdSpecification(basket.PaymentIntentId);

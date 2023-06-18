@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using API.Helpers;
 using Core.Entities.OrderAggregate;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -17,6 +18,7 @@ namespace API.Controllers
             _deliveryMethodRepo = deliveryMethodRepo;
         }
 
+        // [Cached(600)]
         [HttpGet("deliveryMethods")]
         public async Task<ActionResult<IReadOnlyList<DeliveryMethod>>> GetDeliveryMethods()
         {
@@ -51,6 +53,18 @@ namespace API.Controllers
             }
 
             return BadRequest("Could not delete delivery type");
+        }
+
+         [HttpPut("update")]
+        public async Task<ActionResult> Update(DeliveryMethod productData)
+        { 
+            _deliveryMethodRepo.Update(productData);
+            if(await _deliveryMethodRepo.SaveAll())
+            {
+                return Ok();
+            }
+
+            return BadRequest();
         }
     }
 }

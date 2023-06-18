@@ -44,6 +44,8 @@ namespace API.Helpers
             CreateMap<OrderItem, OrderItemDto>()
                 .ForMember(d => d.ProductId, o => o.MapFrom(s => s.ItemOrdered.ProductItemId))
                 .ForMember(d => d.ProductName, o => o.MapFrom(s => s.ItemOrdered.ProductName))
+                .ForMember(d => d.ProductColor, o => o.MapFrom(s => s.ItemOrdered.ProductColor))
+                .ForMember(d => d.ProductSize, o => o.MapFrom(s => s.ItemOrdered.ProductSize))
                 .ForMember(d => d.PictureUrl, o => o.MapFrom(s => s.ItemOrdered.PictureUrl));
                 // .ForMember(d => d.PictureUrl, o => o.MapFrom<OrderItemResolver>());
 
@@ -56,6 +58,12 @@ namespace API.Helpers
                 .ForMember(d => d.Value, o => o.MapFrom(s => s.Discount.Value));
 
             CreateMap<DiscountDto, ProductDiscount>();
+
+            CreateMap<Cupon, CuponDataDto>()
+                .ForMember(d => d.EndDate,o => o.MapFrom(s => s.EndDate.ToString("MM/dd/yyyy HH:mm:ss")))
+                .ForMember(d => d.StartingDate,o => o.MapFrom(s => s.StartingDate.ToString("MM/dd/yyyy HH:mm:ss")));
+
+
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using API.Helpers;
 using Core.Entities;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -19,6 +20,7 @@ namespace API.Controllers
             _productGenderRepo = productGenderRepo;
         }
 
+        // [Cached(600)]
         [HttpGet("gender")]
         public async Task<ActionResult<IReadOnlyList<ProductGender>>> GetGenders()
         {

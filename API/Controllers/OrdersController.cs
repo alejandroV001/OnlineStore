@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using API.Dtos;
 using API.Errors;
 using API.Extensions;
+using API.Helpers;
 using AutoMapper;
 using Core.Entities.OrderAggregate;
 using Core.Interfaces;
@@ -38,6 +39,7 @@ namespace API.Controllers
             return Ok(order);
         }
 
+        // [Cached(600)]
         [HttpGet]
         public async Task<ActionResult<IReadOnlyList<OrderDto>>> GetOrdersForUser (){
             var email = HttpContext.User.RetriveEmailFromPrincipal();

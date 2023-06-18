@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using API.Helpers;
 using Core.Entities;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -17,6 +18,7 @@ namespace API.Controllers
             _productsColorRepo = productColorRepo;
         }
 
+        // [Cached(600)]
         [HttpGet("colors")]
         public async Task<ActionResult<IReadOnlyList<ProductColor>>> GetColors()
         {
@@ -51,6 +53,18 @@ namespace API.Controllers
             }
 
             return BadRequest("Could not delete the color");
+        }
+
+        [HttpPut("update")]
+        public async Task<ActionResult> Update(ProductColor productData)
+        { 
+            _productsColorRepo.Update(productData);
+            if(await _productsColorRepo.SaveAll())
+            {
+                return Ok();
+            }
+
+            return BadRequest();
         }
     }
 }

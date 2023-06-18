@@ -10,6 +10,7 @@ import { ShopMenComponent } from './shop-men/shop-men.component';
 import { ShopWomanComponent } from './shop-woman/shop-woman.component';
 import { MaterialModule } from '../material.module';
 import { SizeGuideComponent } from './size-guide/size-guide.component';
+import { ShopAccessoriesComponent } from './shop-accessories/shop-accessories.component';
 
 
 @NgModule({
@@ -19,13 +20,14 @@ import { SizeGuideComponent } from './size-guide/size-guide.component';
     ProductDetailsComponent,
     ShopMenComponent,
     ShopWomanComponent,
-    SizeGuideComponent
+    SizeGuideComponent,
+    ShopAccessoriesComponent
   ],
   imports: [
     CommonModule,
     SharedModule,
     ShopRoutingModule,
-    MaterialModule
+    MaterialModule,
   ]
 })
 export class ShopModule { }

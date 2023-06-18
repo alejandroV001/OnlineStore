@@ -47,6 +47,8 @@ export class ShopComponent implements OnInit {
     this.shopParams.brandId = 0;
     this.shopParams.genderId =0;
     this.shopParams.sizeId = 0;
+    this.shopParams.collectionId = 0;
+
     this.shopParams.sort = "name";
   }
 
@@ -75,8 +77,11 @@ export class ShopComponent implements OnInit {
   }
 
   getProducts(useCache = false) {
+    useCache = false;
+
     this.shopService.getProducts(useCache).subscribe(response => {
       this.products = response!.data;
+      console.log(response!.data);
       this.totalCount = response!.count;
     }, error => {
       console.log(error);

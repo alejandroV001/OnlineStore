@@ -1,0 +1,14 @@
+[
+    {
+        "CuponName": "subscription10",
+        "Value": 10,
+        "StartingDate": "2023-01-01",
+        "EndDate": "2024-12-12"
+    },
+    {
+        "CuponName": "firstbuy",
+        "Value": 25,
+        "StartingDate": "2023-01-01",
+        "EndDate": "2024-12-12"
+    }
+]

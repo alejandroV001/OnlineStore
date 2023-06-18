@@ -15,6 +15,8 @@ namespace API.Dtos
         [Required]
         [Range(0.1, double.MaxValue,ErrorMessage = "Price must be greater than 0")]
         public decimal Price { get; set; }
+        public decimal DiscountedPrice { get; set; }
+
         [Required]
         [Range(1, double.MaxValue, ErrorMessage = "Quantity must be at least 1")]
         public int Quantity { get; set; }
@@ -23,7 +25,7 @@ namespace API.Dtos
         public string Brand { get; set; }
         [Required]
         public string Type { get; set; }
-        [Required]
         public string Size { get; set; }
+        public string Color { get; set; }
     }
 }

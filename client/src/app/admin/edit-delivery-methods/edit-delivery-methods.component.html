@@ -19,6 +19,7 @@
                     <td>{{ type.price }}</td>
 
                     <td class="actions">
+                      <button (click)="updateDelivery(type)" class="btn btn-sm btn-primary me-2" >Update</button>
                       <button (click)="deleteType(type.id)" class="btn btn-sm btn-danger" >Delete</button>
                     </td>
                   </tr>
@@ -32,19 +33,31 @@
             <div class="form-group">
               <label for="shortname">Short Name:</label>
               <input type="text" id="shortname" formControlName="shortname" class="form-control">
+              <div *ngIf="typeForm.get('shortname')!.invalid && showErrors== true" class="error-message">
+                Name is required.
+              </div>
             </div>
             <div class="form-group">
                 <label for="deliverytime">Delivery Time:</label>
                 <input type="text" id="deliverytime" formControlName="deliverytime" class="form-control">
-            </div>
+                <div *ngIf="typeForm.get('deliverytime')!.invalid && showErrors== true" class="error-message">
+                  Delivery time is required .
+                </div>
+              </div>
             <div class="form-group">
                 <label for="description">Description:</label>
                 <input type="text" id="description" formControlName="description" class="form-control">
-            </div>
+                <div *ngIf="typeForm.get('description')!.invalid && showErrors== true" class="error-message">
+                  Description is required.
+                </div>
+              </div>
             <div class="form-group">
                 <label for="price">Price:</label>
                 <input type="number" min="0" id="price" formControlName="price" class="form-control">
-            </div>
+                <div *ngIf="typeForm.get('price')!.invalid && showErrors== true" class="error-message">
+                  Price is required.
+                </div>
+              </div>
             <div class="container-button" style="margin-top: 2%;">
                 <button type="submit" (click)="onSubmit()" class="center-button btn btn-primary">Submit</button>
               </div>

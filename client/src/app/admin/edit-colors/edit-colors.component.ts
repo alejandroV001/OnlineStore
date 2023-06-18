@@ -4,6 +4,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IColor } from 'src/app/shared/models/color';
 import { ShopService } from 'src/app/shop/shop.service';
 import { environment } from 'src/environments/environment';
+import { MatDialog } from '@angular/material/dialog';
+import { UpdateColorComponent } from './update-color/update-color.component';
+import { BreadcrumbService } from 'xng-breadcrumb';
 
 @Component({
   selector: 'app-edit-colors',
@@ -15,14 +18,17 @@ export class EditColorsComponent implements OnInit {
   baseUrl = environment.apiUrl;
   types: IColor[] = [];
   colorForm!:FormGroup;
+  showErrors: boolean = false;
 
   constructor(private http:HttpClient, private fb: FormBuilder,
-    private shopService: ShopService) { }
+    private shopService: ShopService,private bcService:BreadcrumbService,
+    private dialog:MatDialog) { }
 
   ngOnInit(): void {
     this.http.get<IColor>(this.baseUrl +'color/colors').subscribe((types: any) => {
       this.types = types;
     });
+    this.bcService.set('@editColors', 'Colors');
     this.createForm();
   }
 
@@ -45,6 +51,8 @@ export class EditColorsComponent implements OnInit {
   }
 
   onSubmit(){
+    if (this.colorForm.valid) {
+
     this.shopService.addColors(this.colorForm.value).subscribe(response => {
       this.http.get<IColor>(this.baseUrl +'color/colors').subscribe((types: any) => {
         this.types = types;
@@ -52,5 +60,17 @@ export class EditColorsComponent implements OnInit {
     }, error => {
       console.log(error);
     });
+  }else{
+    this.showErrors = true;
+  }
+  }
+
+  updateColor(id: number, name: string){
+    let dialogRef = this.dialog.open(UpdateColorComponent, {
+      data: {id:id, name: name},
+      height: '400px',
+      width: '600px',
+    });
+    // this.router.navigateByUrl("admin/update-name/"+ id);
   }
 }

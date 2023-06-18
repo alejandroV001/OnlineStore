@@ -4,7 +4,8 @@
     min-width: 25px;
     border-radius: 50%;
     font-size: 1em;
-    background: blue;
+    background-color: green;
+
     color: white;
     text-align: center;
     top: -12px;
@@ -26,4 +27,30 @@ a {
     &:focus {
         outline: none;
     }
+}
+
+.fa-heart {
+    color: black;
+  }
+
+.fa-shopping-cart{
+    color: black;
+}
+
+.btn
+{
+    background: #5E5DF0;
+    opacity: 1;
+    outline: 0 solid transparent;
+    padding: 8px 22px;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    word-break: break-word;
+    border: 0;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 24px;
+    box-shadow: #5E5DF0 0 10px 20px -10px;
+
 }

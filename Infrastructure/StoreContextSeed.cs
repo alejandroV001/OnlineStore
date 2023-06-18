@@ -138,6 +138,16 @@ namespace Infrastructure
                     }
                     await context.SaveChangesAsync();
                 }
+                if(!context.Cupons.Any())
+                {
+                    var cupon = File.ReadAllText(path + @"/Data/SeedData/cupon.json");
+                    var cupons = JsonSerializer.Deserialize<List<Cupon>>(cupon);
+                    foreach (var item in cupons)
+                    {
+                        context.Cupons.Add(item);
+                    }
+                    await context.SaveChangesAsync();
+                }
                 
             }catch(Exception ex)
             {

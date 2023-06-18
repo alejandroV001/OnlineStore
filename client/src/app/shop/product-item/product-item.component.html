@@ -15,6 +15,14 @@
         <a routerLink="/shop/{{product.id}}">
             <h6 id="productName">{{product.productName}}</h6>
         </a>
-        <span class="mb-2">{{product.price | currency}}</span>
+        <div class="d-flex align-items-baseline">
+            <span class="original-price" *ngIf="discountedPrice">
+                {{product.price | currency}}
+            </span>
+            <span class="discounted-price">
+                {{discountedPrice ? (discountedPrice | currency) : (product.price | currency)}}
+            </span>
+        </div>
+        
     </div>
 </div>

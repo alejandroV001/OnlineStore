@@ -5,6 +5,14 @@ import { IProduct } from '../shared/models/product';
 import { IType } from '../shared/models/productType';
 import { ShopParams } from '../shared/models/shopParams';
 import { ShopService } from '../shop/shop.service';
+import { IFit } from '../shared/models/fit';
+import { IColor } from '../shared/models/color';
+import { ISize } from '../shared/models/size';
+import { ICollection } from '../shared/models/collection';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { IGender } from '../shared/models/gender';
+import { BreadcrumbService } from 'xng-breadcrumb';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-admin',
@@ -16,28 +24,61 @@ export class AdminComponent implements OnInit {
   products: IProduct[] = [];
   brands: IBrand[] = [];
   types: IType[] = [];
+  fits: IFit[] = [];
+  colors: IColor[] = [];
+  sizes: ISize[] = [];
+  collections: ICollection[] = [];
+  genders: IGender[] = [];
   totalCount: number=0;
   shopParams!: ShopParams;
+  form: FormGroup = new FormGroup({});
+
   sortOptions = [
     {name: 'Alphabetical', value: 'name'},
     {name: 'Price: Low to Hight', value: 'priceAsc'},
     {name: 'price: High to Low', value: 'priceDesc'}
   ];
 
-  constructor(private shopService: ShopService, private router: Router) { 
+  constructor(private shopService: ShopService, private router: Router,
+    private fb:FormBuilder,private bcService: BreadcrumbService) { 
     this.shopParams = this.shopService.getShopParams();
+    this.shopParams.brandId = 0;
+    this.shopParams.sizeId = 0;
+    this.shopParams.collectionId = 0;
+
+    this.shopParams.sort = "name";
   }
 
   ngOnInit(): void {
     this.getProducts();
     this.getBrands();
     this.getTypes();
+    this.getColors();
+    this.getFits();
+    this.getSizes();
+    this.getGenders();
+    this.getCollections();
+
+    this.bcService.breadcrumbs$ = this.bcService.breadcrumbs$.pipe(
+      map(response => response.filter(crumb => crumb.alias !== 'Shop'))
+    );
+
+    this.form = this.fb.group({
+      gender: [0, [Validators.required]],
+      sort: [this.shopParams.sort, [Validators.required]],
+      size: [0, [Validators.required]],
+      collection: [0, [Validators.required]],
+      color: [0, [Validators.required]],
+      fit: [0, [Validators.required]],
+      type: [0, [Validators.required]],
+      brand: [0, [Validators.required]],
+    })
   }
 
   getProducts(useCache = false) {
     this.shopService.getProducts(useCache).subscribe(response => {
       this.products = response!.data;
-      console.log(this.products);
+
       this.totalCount = response!.count ;
     }, error => {
       console.log(error);
@@ -60,6 +101,51 @@ export class AdminComponent implements OnInit {
     });
   }
 
+  getGenders() {
+    this.shopService.getGenders().subscribe(response => {
+      this.genders =  [{id: 0, name: 'All'}, ...response];
+    }, error => {
+      console.log(error);
+    });
+  }
+
+  getSizes()
+  {
+    this.shopService.getSizes().subscribe(response => {
+      this.sizes =  [{id: 0, name: 'All'}, ...response];
+    }, error => {
+      console.log(error);
+    });
+  }
+
+  getColors()
+  {
+    this.shopService.getColors().subscribe(response => {
+      this.colors =  [{id: 0, name: 'All'}, ...response];
+    }, error => {
+      console.log(error);
+    });
+  }
+
+
+  getFits()
+  {
+    this.shopService.getFits().subscribe(response => {
+      this.fits =  [{id: 0, name: 'All'}, ...response];
+    }, error => {
+      console.log(error);
+    });
+  }
+
+  getCollections()
+  {
+    this.shopService.getCollections().subscribe(response => {
+      this.collections =  [{id: 0, name: 'All'}, ...response];
+    }, error => {
+      console.log(error);
+    });
+  }
+
   onSearch() {
     const params = this.shopService.getShopParams();
     params.search = this.searchTerm.nativeElement.value;
@@ -73,6 +159,17 @@ export class AdminComponent implements OnInit {
     this.searchTerm.nativeElement.value = '';
     this.shopParams = new ShopParams();
     this.shopService.setShopParams(this.shopParams);
+    this.form = this.fb.group({
+      gender: ["all", [Validators.required]],
+      sort: [this.shopParams.sort, [Validators.required]],
+      size: [0, [Validators.required]],
+      collection: [0, [Validators.required]],
+      color: [0, [Validators.required]],
+      fit: [0, [Validators.required]],
+      type: [0, [Validators.required]],
+      brand: [0, [Validators.required]],
+
+    })
     this.getProducts();
   }
 
@@ -93,6 +190,46 @@ export class AdminComponent implements OnInit {
     this.getProducts();
   }
 
+  onSizeSelected(sizeId: number) {
+    const params = this.shopService.getShopParams();
+    params.sizeId = sizeId;
+    params.pageNumber = 1;
+    this.shopService.setShopParams(params);
+    this.getProducts();
+  }
+
+  onColorSelected(colorId: number) {
+    const params = this.shopService.getShopParams();
+    params.colorId = colorId;
+    params.pageNumber = 1;
+    this.shopService.setShopParams(params);
+    this.getProducts();
+  }
+
+  onFitSelected(fitId: number) {
+    const params = this.shopService.getShopParams();
+    params.fitId = fitId;
+    params.pageNumber = 1;
+    this.shopService.setShopParams(params);
+    this.getProducts();
+  }
+
+  onCollectionSelected(collectionId: number) {
+    const params = this.shopService.getShopParams();
+    params.collectionId = collectionId;
+    params.pageNumber = 1;
+    this.shopService.setShopParams(params);
+    this.getProducts();
+  }
+
+  onGenderSelected(genderId: number) {
+    const params = this.shopService.getShopParams();
+    params.genderId = genderId;
+    params.pageNumber = 1;
+    this.shopService.setShopParams(params);
+    this.getProducts();
+  }
+
   onSortSelected(sort: string) {
     const params = this.shopService.getShopParams();
     params.sort = sort;
@@ -106,7 +243,7 @@ export class AdminComponent implements OnInit {
     if(params.pageNumber !== event){
       params.pageNumber = event;
       this.shopService.setShopParams(params);
-      this.getProducts(true);
+      this.getProducts(false);
     } 
   }
 
@@ -115,9 +252,13 @@ export class AdminComponent implements OnInit {
     this.shopService.deleteProduct(id).subscribe(() => {
       this.router.navigateByUrl('/admin');
     }, error => {
+      console.log(error);
     });
   }
+  }
 
-
+  openEditTab(id: number) {
+    const url = '/admin/edit-product/' + id;
+    const newTab = window.open(url, '_blank')?.blur();
   }
 }

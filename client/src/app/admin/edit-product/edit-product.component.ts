@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FileItem, FileUploader } from 'ng2-file-upload';
 import { ToastrService } from 'ngx-toastr';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { IBrand } from 'src/app/shared/models/brand';
 import { ICollection } from 'src/app/shared/models/collection';
 import { IColor } from 'src/app/shared/models/color';
@@ -49,7 +49,9 @@ export class EditProductComponent implements OnInit {
   progressInfos: any[] = [];
   message: string[] = [];
 
-  fileInfos?: Observable<any>;
+  fileInfos?: Subject<File[]> = new Subject();
+  fileInfos$: Observable<File[]> = this.fileInfos!.asObservable();
+  files: File[] = [];
 
   constructor(private shopService: ShopService, private activateRoute: ActivatedRoute, 
     private bcService: BreadcrumbService,private fb: FormBuilder,
@@ -84,14 +86,6 @@ export class EditProductComponent implements OnInit {
     this.http.get<ICollection>(this.baseUrl +'Collection/collections').subscribe((collections: any) => {
       this.collections = collections;
     });
-    console.log(this.names);
-    console.log(this.collections);
-    console.log(this.genders);
-    console.log(this.types);
-    console.log(this.brands);
-    console.log(this.fits);
-    console.log(this.sizes);
-    console.log(this.colors);
 
     this.createAddProductForm();
     this.loadProduct();
@@ -101,7 +95,6 @@ export class EditProductComponent implements OnInit {
   loadProduct() {
     var id = +this.activateRoute.snapshot.paramMap.get('id')!;
     this.shopService.getProduct(id).subscribe(product => {
-      console.log(product);
       this.product = product;
       this.photos = product.pictures;
       this.bcService.set('@productDetails', product.productName)
@@ -279,6 +272,14 @@ selectFiles(event: any): void {
   this.message = [];
   this.progressInfos = [];
   this.selectedFiles = event.target.files;
+
+  this.files = [];
+  for (let i = 0; i < this.selectedFiles!.length; i++) {
+    this.files.push(this.selectedFiles!.item(i)!);
+  }
+
+  this.fileInfos!.next(this.files);
+
 }
 
 upload(idx: number, file: File): void {
@@ -306,9 +307,33 @@ uploadFiles(): void {
   this.message = [];
 
   if (this.selectedFiles) {
-    for (let i = 0; i < this.selectedFiles.length; i++) {
-      this.upload(i, this.selectedFiles[i]);
+    for (let i = 0; i < this.files.length; i++) {
+      this.upload(i, this.files[i]);
     }
   }
+}
+
+removeFile(index: number): void {
+  this.files.splice(index, 1);
+
+  // Emit the updated files array
+  this.fileInfos?.next(this.files);
+}
+
+setMain(id: number) {
+  var idMain = 0;
+  console.log(this.photos);
+  this.photos.forEach(element => {
+    if(element.isMain == true)
+      idMain = element.id;
+  });
+
+  if (confirm('Are you sure you want to make this photo main?')) {
+    this.shopService.setPhotoMain(id , idMain).subscribe(() => {
+      window.location.reload();
+    }, error => {
+      this.toastr.error("Photo is main");
+    });
+  }    
 }
 }

@@ -16,6 +16,8 @@ import { IProductAdd } from '../shared/models/productToAdd';
 import { IType } from '../shared/models/productType';
 import { ShopParams } from '../shared/models/shopParams';
 import { ISize } from '../shared/models/size';
+import { IGender } from '../shared/models/gender';
+import { ICupon } from '../shared/models/cupon';
 
 @Injectable({
   providedIn: 'root'
@@ -28,14 +30,17 @@ export class ShopService {
   fits: IFit[] = [];
   colors: IColor[] = [];
   sizes: ISize[] = [];
+  genders: IGender[] = [];
   collections: ICollection[] = [];
+  names: IName[] = [];
   photos: PhotoPicture[] = [];
+  cupons: ICupon[] = [];
+
   pagination = new Pagination();
   shopParams = new ShopParams();
   productCache = new Map();
 
   constructor(private http:HttpClient) { }
-
 
   getProducts(useCache: boolean) {
     if(useCache === false){
@@ -45,11 +50,10 @@ export class ShopService {
     if(this.productCache.size > 0 && useCache === true){
       if(this.productCache.has(Object.values(this.shopParams).join('-'))){
         this.pagination.data = this.productCache.get(Object.values(this.shopParams).join('-'));
-        return of(this.pagination);
-      }
-    }
+        this.pagination.count = this.pagination.data.length;
+        return of(this.pagination);}}
+        
     let params = new HttpParams();
-
     if(this.shopParams.brandId !== 0) {
       params = params.append('brandId', this.shopParams.brandId.toString());
     }
@@ -71,13 +75,15 @@ export class ShopService {
     if(this.shopParams.collectionId !== 0) {
       params = params.append('collectionId', this.shopParams.collectionId.toString());
     }
+    if(this.shopParams.genderId !== 0) {
+      params = params.append('genderId', this.shopParams.genderId.toString());
+    }
     if(this.shopParams.search) {
       params = params.append('search', this.shopParams.search);
     }
-
     params = params.append('sort', this.shopParams.sort);
     params = params.append('pageIndex', this.shopParams.pageNumber.toString());
-    params = params.append('pageSize', this.shopParams.pageSize.toString())
+    params = params.append('pageSize', this.shopParams.pageSize.toString());
 
     return this.http.get<IPagination>(this.baseUrl + 'products', {observe: 'response', params})
       .pipe(
@@ -99,16 +105,16 @@ export class ShopService {
   }
 
   getProduct(id: number) {
-    // let product!: IProduct;
+    let product!: IProduct;
+    this.productCache.forEach((products: IProduct[]) => {
+      product = products.find(p => p.id === id)!;
+    })
 
-    // this.productCache.forEach((products: IProduct[]) => {
-    //   product = products.find(p => p.id=== id)!;
-    // })
+    if(product)
+    {
+      return of(product);
+    }
 
-    // if(product)
-    // {
-    //   return of(product);
-    // }
     return this.http.get<IProduct>(this.baseUrl + 'products/' + id);
   }
   getPhotosForProduct(id: number) {
@@ -150,6 +156,18 @@ export class ShopService {
     )
   }
 
+  getGenders(){
+    if(this.genders.length > 0){
+      return of(this.genders);
+    }
+    return this.http.get<IGender[]>(this.baseUrl + 'Gender/gender').pipe(
+      map(response => {
+        this.genders = response;
+        return response;
+      })
+    )
+  }
+
 
   getColors(){
     if(this.colors.length > 0){
@@ -181,14 +199,13 @@ export class ShopService {
     }
     return this.http.get<ICollection[]>(this.baseUrl + 'Collection/collections').pipe(
       map(response => {
-        this.fits = response;
+        this.collections = response;
         return response;
       })
     )
   }
 
   addProduct(values: any) {
-    console.log(values);
     return this.http.post<IProductAdd>(this.baseUrl + 'Products/add-product', values).pipe(
       map(response => {
         return response;
@@ -220,6 +237,15 @@ export class ShopService {
     return this.http.delete(this.baseUrl + 'size/'+ id);
   }
 
+  updateSize(values: any)
+  {
+    return this.http.put<ISize>(this.baseUrl + 'Size/update', values).pipe(
+      map(response => {
+        return response;
+      })
+    );
+  }
+
   addType(values: any) {
     return this.http.post<ISize>(this.baseUrl + 'Type', values).pipe(
       map(response => {
@@ -230,6 +256,49 @@ export class ShopService {
 
   deleteType(id: number) {
     return this.http.delete(this.baseUrl + 'type/'+ id);
+  }
+
+  updateType(values: any)
+  {
+    return this.http.put<IType>(this.baseUrl + 'type/update', values).pipe(
+      map(response => {
+        return response;
+      })
+    );
+  }
+
+  deleteCupon(id: number) {
+    return this.http.delete(this.baseUrl + 'Cupon/'+ id);
+  }
+
+  addCupon(values: any) {
+    return this.http.post<ICupon>(this.baseUrl + 'Cupon', values).pipe(
+      map(response => {
+        return response;
+      })
+    );
+  }
+
+  updateCupon(values: any)
+  {
+    return this.http.put<ICupon>(this.baseUrl + 'Cupon/update', values).pipe(
+      map(response => {
+        return response;
+      })
+    );
+  }
+
+  getCupons()
+  {
+    if(this.cupons.length > 0){
+      return of(this.cupons);
+    }
+    return this.http.get<ICupon[]>(this.baseUrl +'Cupon/getCupons').pipe(
+      map(response => {
+        this.cupons = response;
+        return response;
+      })
+    );
   }
 
   addBrand(values: any) {
@@ -244,6 +313,15 @@ export class ShopService {
     return this.http.delete(this.baseUrl + 'brand/'+ id);
   }
 
+  updateBrand(values: any)
+  {
+    return this.http.put<IBrand>(this.baseUrl + 'Brand/update', values).pipe(
+      map(response => {
+        return response;
+      })
+    );
+  }
+
   addColors(values: any) {
     return this.http.post<IColor>(this.baseUrl + 'Color', values).pipe(
       map(response => {
@@ -254,6 +332,15 @@ export class ShopService {
 
   deleteColors(id: number) {
     return this.http.delete(this.baseUrl + 'color/'+ id);
+  }
+
+  updateColor(values: any)
+  {
+    return this.http.put<IColor>(this.baseUrl + 'color/update', values).pipe(
+      map(response => {
+        return response;
+      })
+    );
   }
 
   addFits(values: any) {
@@ -268,6 +355,15 @@ export class ShopService {
     return this.http.delete(this.baseUrl + 'fit/'+ id);
   }
 
+  updateFit(values: any)
+  {
+    return this.http.put<IFit>(this.baseUrl + 'fit/update', values).pipe(
+      map(response => {
+        return response;
+      })
+    );
+  }
+
   addDeliveryMethods(values: any) {
     return this.http.post<IDeliveryMethod>(this.baseUrl + 'DeliveryMethod', values).pipe(
       map(response => {
@@ -278,6 +374,15 @@ export class ShopService {
 
   deleteDeliveryMethods(id: number) {
     return this.http.delete(this.baseUrl + 'deliverymethod/'+ id);
+  }
+
+  updateDeliveryMethods(values: any)
+  {
+    return this.http.put<IDeliveryMethod>(this.baseUrl + 'DeliveryMethod/update', values).pipe(
+      map(response => {
+        return response;
+      })
+    );
   }
 
   addCollection(values: any) {
@@ -292,6 +397,15 @@ export class ShopService {
     return this.http.delete(this.baseUrl + 'collection/'+ id);
   }
 
+  updateCollection(values: any)
+  {
+    return this.http.put<ICollection>(this.baseUrl + 'collection/update', values).pipe(
+      map(response => {
+        return response;
+      })
+    );
+  }
+
   addName(values: any) {
     return this.http.post<IName>(this.baseUrl + 'Name', values).pipe(
       map(response => {
@@ -304,12 +418,40 @@ export class ShopService {
     return this.http.delete(this.baseUrl + 'Name/'+ id);
   }
 
+  updateName(values: any)
+  {
+    return this.http.put<IName>(this.baseUrl + 'Name/update', values).pipe(
+      map(response => {
+        return response;
+      })
+    );
+  }
+
+  getNames(){
+    if(this.names.length > 0){
+      return of(this.names);
+    }
+    return this.http.get<IName[]>(this.baseUrl + 'Name/names').pipe(
+      map(response => {
+        this.names = response;
+        return response;
+      })
+    )
+  }
+
   deleteProductDiscount(id: number)
   {
     return this.http.delete(this.baseUrl + 'Discount/'+ id);
   }
   deletePhoto(id: number) {
     return this.http.delete(this.baseUrl + 'photos/'+ 1 +'/photos/' + id);
+  }
+
+  setPhotoMain(id: number, idMain: number) {
+    const body = { Id:id, IdMain:idMain };
+    const headers = { 'Content-Type': 'application/json' };
+
+    return this.http.post(this.baseUrl + 'photos/setmain', body,  { headers });
   }
 
   upload(file: File, id: number): Observable<HttpEvent<any>> {
@@ -332,6 +474,24 @@ export class ShopService {
         return response;
       })
     );
+  }
+
+  updateDiscount(values: any)
+  {
+    return this.http.put<IDiscount>(this.baseUrl + 'Discount/update', values).pipe(
+      map(response => {
+        return response;
+      })
+    );
+  }
+
+  checkDiscountProduct(id: number)
+  {
+    return this.http.get<IDiscount[]>(this.baseUrl + 'Discount/'+ id).pipe(
+      map(response => {
+        return response;
+      })
+    )
   }
 
 }

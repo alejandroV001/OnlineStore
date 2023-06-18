@@ -1,5 +1,5 @@
 table {
-    width: 30%;
+    width: 40%;
     margin-left: 25%;
 }
   th.actions{
@@ -21,6 +21,15 @@ table {
   }
   
   .center-button {
-    width: 200px; /* Set the width of the button */
-    height: 50px; /* Set the height of the button */
+    width: 200px; 
+    height: 50px;
+  }
+  
+  .col-4 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .error-message {
+    color: red;
   }

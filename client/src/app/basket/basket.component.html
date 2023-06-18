@@ -1,6 +1,6 @@
 <div class="container mt-2">
     <div *ngIf="(basket$ | async) === null">
-        <p>No items in the basket</p>
+        <p style="font-size: 24px;"><strong>No items in the basket</strong></p>
     </div>
     
     <div *ngIf="(basket$ | async) as basket" >
@@ -24,6 +24,7 @@
                             [shippingPrice]="(basketTotals$ | async)!.shipping"
                             [subtotal]="(basketTotals$ | async)!.subtotal"
                             [total]="(basketTotals$ | async)!.total"
+                            [discount]="(basketTotals$ | async)!.discount"
                         >
                         </app-order-totals>
                         <div class="container-button">

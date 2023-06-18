@@ -6,10 +6,22 @@ import { NotFoundComponent } from './core/not-found/not-found.component';
 import { ServerErrorComponent } from './core/server-error/server-error.component';
 import { TestErrorComponent } from './core/test-error/test-error.component';
 import { HomeComponent } from './home/home.component';
+import { FAQComponent } from './core/footer/faq/faq.component';
+import { AboutComponent } from './core/footer/about/about.component';
+import { PricingComponent } from './core/footer/pricing/pricing.component';
+import { FeaturesComponent } from './core/footer/features/features.component';
+import { ReturnsPolicyComponent } from './core/footer/returns-policy/returns-policy.component';
+import { DeliveryInfoComponent } from './core/footer/delivery-info/delivery-info.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent, data: {breadcrumb: 'Home'}},
   {path: 'test-error', component: TestErrorComponent, data: {breadcrumb: 'Test Errors'}},
+  {path: 'faq', component: FAQComponent, data: {breadcrumb: 'FAQ'}},
+  {path: 'delivery-info', component: DeliveryInfoComponent, data: {breadcrumb: 'Delivery Information'}},
+  {path: 'returns-policy', component: ReturnsPolicyComponent, data: {breadcrumb: 'Returns Policy'}},
+  {path: 'features', component: FeaturesComponent, data: {breadcrumb: 'Features'}},
+  {path: 'pricing', component: PricingComponent, data: {breadcrumb: 'Pricing'}},
+  {path: 'about', component: AboutComponent, data: {breadcrumb: 'About'}},
   {path: 'admin',loadChildren: () => import('./admin/admin.module').then(mod => mod.AdminModule),canActivate:[AdminGuard], data: {breadcrumb: 'Admin'}},
   {path: 'server-error', component: ServerErrorComponent, data: {breadcrumb: 'Server Errors'}},
   {path: 'not-found', component: NotFoundComponent, data: {breadcrumb: 'Not Found'}},

@@ -35,6 +35,7 @@ builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection(
 
 builder.Services.AddSingleton<IResponseCacheService, ResponseCacheService>();
 
+
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped(typeof(IGenericRepository<>), (typeof(GenericRepository<>)));
@@ -63,15 +64,6 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 
 builder.Services.AddIdentityServices(builder.Configuration);
 
-// builder.Services.AddCors(opt =>
-// {
-//     opt.AddPolicy("CorsPolicy", policy => 
-//     {
-//         policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200","https://localhost:5001");
-
-//     });
-// });
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c => {
     var securitySchema = new OpenApiSecurityScheme
@@ -119,8 +111,6 @@ using(var scope = app.Services.CreateScope())
         logger.LogError(ex, "An error occured during migration");
     }
 }
-
-
 
 // Configure the HTTP request pipeline.
  app.UseMiddleware<ExceptionMiddleware>();

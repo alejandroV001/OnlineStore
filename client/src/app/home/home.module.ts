@@ -14,7 +14,6 @@ import { AppRoutingModule } from '../app-routing.module';
   imports: [
     CommonModule,
     SharedModule,
-    ShopModule,
     AppRoutingModule
   ],
   exports: [

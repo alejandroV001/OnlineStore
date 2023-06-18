@@ -1,0 +1,39 @@
+
+<div class="container d-flex justify-content-center align-items-center">
+    <section class="col-8" style="margin-top: 5%;">
+        <h2 mat-dialog-title>Update Type</h2>
+      <form [formGroup]="nameForm" style="width: 100%;">
+        <div class="form-group mt-3">
+            <label for="discount">Discount:</label>
+            <select id="discount" (change)="selectDiscount($event.target.value)" formControlName="discount" class="form-control">
+              <option [value]="disc.id" *ngFor="let disc of discounts">{{ disc.value }}</option>
+            </select>
+            <div *ngIf="nameForm.get('discount')!.value == null" class="error-message">
+              Discount is required.
+            </div>
+          </div>
+        <div class="form-group">
+          <label for="startingDate">Starting Date:</label>
+          <input type="date" id="startingDate" formControlName="startingDate" class="form-control">
+          <div *ngIf="nameForm.get('startingDate')!.invalid && nameForm.get('startingDate')!.touched" class="error-message">
+            Starting date is required.
+          </div>
+        </div> 
+        <div class="form-group">
+          <label for="endDate">End Date:</label>
+          <input type="date" id="endDate" formControlName="endDate" class="form-control">
+          <div *ngIf="nameForm.get('endDate')!.invalid && nameForm.get('endDate')!.touched" class="error-message">
+            End date is required.
+          </div>
+        </div>
+
+        
+        <div class="d-flex justify-content-center">
+            <mat-dialog-actions>
+                <button mat-button [disabled]="this.nameForm.invalid" [mat-dialog-close]="true" class="update-button" (click)="onSubmit()">Update</button>
+                <button mat-button mat-dialog-close class="cancel-button">Cancel</button>
+              </mat-dialog-actions>
+        </div>
+      </form>
+    </section>
+  </div>

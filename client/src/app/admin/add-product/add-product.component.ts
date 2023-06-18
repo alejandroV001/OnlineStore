@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpEventType, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IBrand } from 'src/app/shared/models/brand';
 import { ICollection } from 'src/app/shared/models/collection';
@@ -73,7 +73,7 @@ export class AddProductComponent implements OnInit {
       description: ["", [Validators.required]],
       price: [0, [Validators.required,Validators.min(0)]],
       quantity: [1, [Validators.required,Validators.min(1)]],
-      size: [null, [Validators.required]],
+      size: this.fb.array([], Validators.required),
       productSizeId: [0, [Validators.required]],
       productColorId: [0, [Validators.required]],
       color: [null, [Validators.required]],
@@ -103,7 +103,6 @@ export class AddProductComponent implements OnInit {
   }
 
   selectColor(id: any) {
-    console.log(id);
     if(id === null)
     {
       console.log(id);
@@ -112,9 +111,17 @@ export class AddProductComponent implements OnInit {
     else
     this.productForm.controls['productColorId'].setValue(id);
   }
-  selectSize(id: number) {
-    this.productForm.controls['productSizeId'].setValue(id);
-  }
+  selectSize(event: any) {
+    let selectedOptions = Array.from(event.target.selectedOptions).map((option: any) => option.value);
+    selectedOptions = selectedOptions.map(Number);
+    
+    const sizes = this.productForm.get('size') as FormArray;
+    while (sizes.length) {
+      sizes.removeAt(0);
+    }
+    selectedOptions.forEach(option => sizes.push(new FormControl(option)));
+
+}
   selectFit(id: number) {
     this.productForm.controls['productfitId'].setValue(id);
   }
@@ -133,4 +140,6 @@ export class AddProductComponent implements OnInit {
   selectCollection(id: number) {
     this.productForm.controls['collectionId'].setValue(id);
   }
+
+
 }
