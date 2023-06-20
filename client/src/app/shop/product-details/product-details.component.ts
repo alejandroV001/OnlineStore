@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { BasketService } from 'src/app/basket/basket.service';
 import { IProduct } from 'src/app/shared/models/product';
 import { environment } from 'src/environments/environment';
@@ -46,20 +46,23 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
-    this.route.params.subscribe(params => {
-      this.productId = +params['id'];
-      this.loadProduct();
-
-      this.shopService.getSizes().subscribe(s => {
-        this.sizes = s;
-      });
+      this.productId = +localStorage.getItem('productId')!;
 
       this.bcService.breadcrumbs$ = this.bcService.breadcrumbs$.pipe(
         map(response => response.filter(crumb => crumb.alias !== 'Shop'))
       );
+      
+      this.loadProduct();
+      window.scrollTo(0,0);
+      this.shopService.getSizes().subscribe(s => {
+        this.sizes = s;
+      });
 
-    });
+      this.selectedSize = this.sizes?.find(size => size?.name == this.product?.productSize);
+
+      this.bcService.breadcrumbs$ = this.bcService.breadcrumbs$.pipe(
+        map(response => response.filter(crumb => crumb.alias !== 'Shop'))
+      );
 
     this.checkDiscountForProduct();
 
@@ -100,10 +103,18 @@ export class ProductDetailsComponent implements OnInit {
 
   loadProduct() {
     this.availableSizes = [];
-    this.shopService.getProduct(+this.activateRoute.snapshot.paramMap.get('id')!).subscribe(product => {
-      this.product = product;
+    const productId = +localStorage.getItem('productId')!;
+    this.shopService.getProduct(productId).subscribe(product => {
+      console.log("test");
+      console.log(product);
 
-      this.selectedSize = this.size = this.sizes?.find(size => size?.name == this.product?.productSize);
+      this.product = product;
+      this.checkDiscountForProduct();
+
+      if(product.priceDiscounted == null)
+        this.discountedPrice = 0;
+      
+      this.selectedSize =  this.sizes?.find(size => size?.name == this.product?.productSize);
       if(this.product.productCollection == "Accessories")
         this.accesories = true;
 
@@ -121,11 +132,17 @@ export class ProductDetailsComponent implements OnInit {
 
       this.shopParams.search = this.product.productName;
       this.shopParams.pageNumber = 0;
+      this.shopParams.colorId = 0;
+      this.shopParams.sizeId = 0;
+
+      this.shopService.setShopParams(this.shopParams);
       this.shopService.getProducts(false).subscribe(response => {
+        console.log(response.data);
         this.productChilds = response!.data.filter(p => p.productName! == product?.productName! &&
           p.productGender! == product?.productGender! && p.productFit! == product?.productFit! && p.productColor != product.productColor);
         
         let colors: string[] = [];
+        console.log(this.productChilds);
 
         this.productChilds = this.productChilds.filter(item => {
           if (!colors.includes(item.productColor)) {
@@ -136,15 +153,26 @@ export class ProductDetailsComponent implements OnInit {
             return false;
           }
         });
+        console.log(this.productChilds);
         
         this.productSizes = response!.data.filter(p => p.productName! == product?.productName! &&
           p.productGender! == product?.productGender! && p.productFit == product?.productFit!
           && p.productColor! == product?.productColor!);
   
+
+        const sizeOrder = ["XS","S", "M", "L", "XL", "XXL"];
         for (let element of this.productSizes) {
           this.size = this.sizes?.find(size => size?.name == element?.productSize);
           this.availableSizes?.push(this.size!);
         }
+
+        this.availableSizes?.sort((a, b) => {
+          const indexA = sizeOrder.indexOf(a.name);
+          const indexB = sizeOrder.indexOf(b.name);
+          return indexA - indexB;
+        });
+
+        this.selectedSize = this.sizes?.find(size => size?.name == this.product?.productSize);
 
       }, error => {
         console.log(error);
@@ -155,13 +183,18 @@ export class ProductDetailsComponent implements OnInit {
     });
   }
 
-  goTo(id: number) {
-    this.router.navigate(['/shop', id]);
+  goTo(name: string,id: number)
+  {
+    const replacedName = name.replace(/\s+/g, '-');
+    this.shopService.setProductId(id);
+    const url = `/shop/${replacedName}`;
+
+    this.router.navigateByUrl(url, { skipLocationChange: true });
+    window.location.reload();
   }
 
   selectSize(size: ISize) {
     this.selectedSize = size;
-    console.log(this.selectedSize);
   }
 
   openSizeGuideDialog() {
@@ -173,7 +206,7 @@ export class ProductDetailsComponent implements OnInit {
 
   checkDiscountForProduct()
   {
-    this.shopService.checkDiscountProduct(+this.activateRoute.snapshot.paramMap.get('id')!).subscribe(response => {
+    this.shopService.checkDiscountProduct(+localStorage.getItem('productId')!).subscribe(response => {
       const currentDate = new Date();
       response.forEach(discount => {
         const discountStartingDate = new Date(discount.startingDate);

@@ -71,6 +71,5 @@ export class EditFitsComponent implements OnInit {
       height: '400px',
       width: '600px',
     });
-    // this.router.navigateByUrl("admin/update-name/"+ id);
   }
 }

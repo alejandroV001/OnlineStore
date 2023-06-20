@@ -47,9 +47,9 @@ export class BasketService {
   setDiscountValue(discount: number)
   {
     this.discount = discount;
+    console.log(discount);
     const basket = this.getCurrentBasketValue();
-    if(discount)
-      basket.discount = (discount) ? discount : 0;
+    basket.discount = (discount) ? discount : 0;
     this.calculateTotals();
     this.setBasket(basket);
   }

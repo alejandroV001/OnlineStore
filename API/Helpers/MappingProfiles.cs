@@ -47,7 +47,6 @@ namespace API.Helpers
                 .ForMember(d => d.ProductColor, o => o.MapFrom(s => s.ItemOrdered.ProductColor))
                 .ForMember(d => d.ProductSize, o => o.MapFrom(s => s.ItemOrdered.ProductSize))
                 .ForMember(d => d.PictureUrl, o => o.MapFrom(s => s.ItemOrdered.PictureUrl));
-                // .ForMember(d => d.PictureUrl, o => o.MapFrom<OrderItemResolver>());
 
             CreateMap<PhotoForCreationDto, ProductPictures>();
             CreateMap<ProductPictures, PhotoForReturnDto>();

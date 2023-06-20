@@ -62,8 +62,12 @@ export class ProductItemComponent implements OnInit {
     this.basketService.addItemToWhishlist(this.product);
   }
 
-  goTo(id: number)
+
+
+  goTo(name: string,id: number)
   {
-    this.router.navigateByUrl("/shop/"+ id);
+    const replacedName = name.replace(/\s+/g, '-');
+    this.shopService.setProductId(id);
+    this.router.navigateByUrl(`/shop/${replacedName}`);
   }
 }

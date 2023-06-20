@@ -22,12 +22,11 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> Subscribe([FromBody] SubscriptionRequest request)
         {
-            // // TODO: validate the email address
             var isEmail = EsteEmailValid(request.Email);
             var list = await _unitOfWork.Repository<SubscriptionEmails>().ListAllSync();
             var exista = list.Where(s =>s.Email == request.Email).FirstOrDefault();
             bool send = false;
-            // // TODO: save the email address to the database
+
             var emailFromRequest = new SubscriptionEmails();
             if (isEmail && exista == null)
             {
@@ -40,14 +39,10 @@ namespace API.Controllers
 
             string key = _config["SendinblueSettings:ApiKey"];
             if (Configuration.Default.ApiKey.TryGetValue("api-key", out string existingApiKey) && existingApiKey == key)
-            {
-            }
+            {}
             else
-            {
-                Configuration.Default.ApiKey.Add("api-key", key);
-            }
+            {    Configuration.Default.ApiKey.Add("api-key", key);}
 
-            //Configurează informațiile e-mail-ului
             var sendSmtpEmail = new SendSmtpEmail(
                 to: new List<SendSmtpEmailTo> { new SendSmtpEmailTo(request.Email) },
                 subject: "Welcome to our familly",
@@ -61,13 +56,12 @@ namespace API.Controllers
                                 subscription10
                                 </span>
                                     </p>");
-            // Adaugă informațiile tale de expediere (opțional)
+
             sendSmtpEmail.Sender = new SendSmtpEmailSender(
                 email: "alyvasilescu@gmail.com",
                 name: "GymsharkStore");
 
             var apiInstance = new TransactionalEmailsApi();
-            // Trimite e-mail-ul
             try
             {
                 var result = new CreateSmtpEmail();

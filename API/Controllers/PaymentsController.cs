@@ -52,7 +52,7 @@ namespace API.Controllers
                 case "payment_intent.succeeded":
                     intent = (PaymentIntent)stripeEvent.Data.Object;
                     _logger.LogInformation("Payment Succeeded: ", intent.Id);
-                    //Update order status
+                    
                     order = await _paymentServices.UpdateOrderPaymentSucceeded(intent.Id);
                     string key = _config["SendinblueSettings:ApiKey"];
                     if (Configuration.Default.ApiKey.TryGetValue("api-key", out string existingApiKey) && existingApiKey == key)
@@ -87,7 +87,7 @@ namespace API.Controllers
                 case "payment_intent.payment_failed":
                     intent = (PaymentIntent)stripeEvent.Data.Object;
                     _logger.LogInformation("Payment failed: ", intent.Id);
-                    //Update order status
+                    
                     order = await _paymentServices.UpdateOrderPaymentFailed(intent.Id);
                     _logger.LogInformation("Payment failed", order.Id);
                     

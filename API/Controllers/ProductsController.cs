@@ -45,35 +45,26 @@ namespace API.Controllers
         [Cached(600)]
         [HttpGet]
         public async Task<ActionResult<Pagination<ProductToReturnDto>>> GetProducts(
-                        [FromQuery]ProductSpecParams productParams)
+            [FromQuery]ProductSpecParams productParams)
         {
-            // var spec = new ProductsWithTypesAndBrandsSpecification(productParams);
-            // var countSpec = new ProductWithFiltersForCountSpecification(productParams);
-
-            // var totalItems = await _productsRepo.CountAsync(countSpec);
             var products = await unitOfWork.Repository<Product>().ListAll();
 
             if(productParams.Search != null)
                 products = products.Where(p => p.ProductName.Name.ToLower().Contains(productParams.Search)).ToList();
             if(productParams.FitId != null)
                 products = products.Where(p => p.ProductFitId == productParams.FitId).ToList();
-            
             if(productParams.BrandId != null)
                 products = products.Where(p => p.ProductBrandId == productParams.BrandId).ToList();
-
             if(productParams.TypeId != null)
                 products = products.Where(p => p.ProductTypeId == productParams.TypeId).ToList();
-
             if(productParams.SizeId != null)
                 products = products.Where(p => p.ProductSizeId == productParams.SizeId).ToList();
             if(productParams.GenderId != null)
                 products = products.Where(p => p.ProductGenderId == productParams.GenderId).ToList();
-
             if(productParams.ColorId != null)
                 products = products.Where(p => p.ProductColorId == productParams.ColorId).ToList();
             if(productParams.CollectionId != null)
                 products = products.Where(p => p.CollectionId == productParams.CollectionId).ToList();
-
             if(!string.IsNullOrEmpty(productParams.Sort))
             {
                 switch (productParams.Sort)
@@ -95,8 +86,8 @@ namespace API.Controllers
             }
             
             var totalItems = products.Count;
-
-            products = products.Skip(productParams.Max * (productParams.PageIndex - 1)).Take(productParams.PageSize).ToList();
+            products = products.Skip(productParams.Max * (productParams.PageIndex - 1))
+                        .Take(productParams.PageSize).ToList();
             var data = _mapper
                         .Map<IReadOnlyList<Product>, IReadOnlyList<ProductToReturnDto>>(products);
 
@@ -182,7 +173,6 @@ namespace API.Controllers
         [HttpPut("update-product")]
         public async Task<ActionResult> UpdateProduct(ProductDto product)
         {            
-            //var productMapped = _mapper.Map<ProductDto, Product>(product);
             var prod  = new Product{
                 Id = product.Id,
                 ProductNameId = (product.ProductNameId != 0) ? product.ProductNameId : null,

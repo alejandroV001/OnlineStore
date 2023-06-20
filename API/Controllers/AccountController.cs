@@ -72,6 +72,7 @@ namespace API.Controllers
         {
             var user = await _userManager.FindUserByClaimsPrincipleWithAddressAync(User);
             user.Address  = _mapper.Map<AddressDto, Address>(address);
+            user.Address.AppUserId = user.Id.ToString();
 
             var result = await _userManager.UpdateAsync(user);
 
@@ -124,14 +125,10 @@ namespace API.Controllers
 
             string key = _config["SendinblueSettings:ApiKey"];
             if (Configuration.Default.ApiKey.TryGetValue("api-key", out string existingApiKey) && existingApiKey == key)
-            {
-            }
+            {}
             else
-            {
-                Configuration.Default.ApiKey.Add("api-key", key);
-            }
-
-            //Configurează informațiile e-mail-ului
+            {Configuration.Default.ApiKey.Add("api-key", key);}
+            
             var sendSmtpEmail = new SendSmtpEmail(
                 to: new List<SendSmtpEmailTo> { new SendSmtpEmailTo(emailFromRequest.Email) },
                 subject: "Welcome to our familly",
@@ -145,13 +142,12 @@ namespace API.Controllers
                                 firstbuy
                                 </span>
                                     </p>");
-            // Adaugă informațiile tale de expediere (opțional)
+
             sendSmtpEmail.Sender = new SendSmtpEmailSender(
                 email: "alyvasilescu@gmail.com",
                 name: "GymsharkStore");
 
             var apiInstance = new TransactionalEmailsApi();
-            // Trimite e-mail-ul
             try
             {
                 CreateSmtpEmail resultEmail = apiInstance.SendTransacEmail(sendSmtpEmail);

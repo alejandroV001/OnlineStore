@@ -35,6 +35,7 @@ export class ShopService {
   names: IName[] = [];
   photos: PhotoPicture[] = [];
   cupons: ICupon[] = [];
+  productId: number;
 
   pagination = new Pagination();
   shopParams = new ShopParams();
@@ -43,16 +44,16 @@ export class ShopService {
   constructor(private http:HttpClient) { }
 
   getProducts(useCache: boolean) {
+    console.log(useCache);
+    console.log(this.shopParams);
     if(useCache === false){
       this.productCache = new Map();
     }
-
     if(this.productCache.size > 0 && useCache === true){
       if(this.productCache.has(Object.values(this.shopParams).join('-'))){
         this.pagination.data = this.productCache.get(Object.values(this.shopParams).join('-'));
         this.pagination.count = this.pagination.data.length;
         return of(this.pagination);}}
-        
     let params = new HttpParams();
     if(this.shopParams.brandId !== 0) {
       params = params.append('brandId', this.shopParams.brandId.toString());
@@ -84,7 +85,6 @@ export class ShopService {
     params = params.append('sort', this.shopParams.sort);
     params = params.append('pageIndex', this.shopParams.pageNumber.toString());
     params = params.append('pageSize', this.shopParams.pageSize.toString());
-
     return this.http.get<IPagination>(this.baseUrl + 'products', {observe: 'response', params})
       .pipe(
         map(response => {
@@ -492,6 +492,17 @@ export class ShopService {
         return response;
       })
     )
+  }
+
+  setProductId(id: number)
+  {
+    this.productId = id;
+    localStorage.setItem('productId', id.toString());
+  }
+
+  getProductId()
+  {
+    return this.productId;
   }
 
 }

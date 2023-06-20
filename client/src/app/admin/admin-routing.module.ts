@@ -19,7 +19,9 @@ import { UpdateNameComponent } from './edit-name/update-name/update-name.compone
 const routes: Routes = [
   {path: '', component: AdminComponent},
   {path: 'edit-product/:id', component: EditProductComponent, data: {breadcrumb: {alias: 'productDetails'}}},
+  {path: 'edit-product/:name', component: EditProductComponent, data: {breadcrumb: {alias: 'productDetails'}}},
   {path: 'add-discount/:id', component: AddDiscountComponent, data: {breadcrumb: {alias: 'addDiscount'}}},
+  {path: 'add-discount/:name', component: AddDiscountComponent, data: {breadcrumb: {alias: 'addDiscount'}}},
   {path: 'edit-collection', component: EditCollectionComponent, data: {breadcrumb: {alias: 'editCollection'}}},
   {path: 'edit-name', component: EditNameComponent, data: {breadcrumb: {alias: 'editNameProducts'}}},
   {path: 'add-product', component: AddProductComponent, data: {breadcrumb: {alias: 'productDetails'}}},

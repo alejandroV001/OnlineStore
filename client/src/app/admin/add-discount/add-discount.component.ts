@@ -21,15 +21,16 @@ export class AddDiscountComponent implements OnInit {
   discountForm!:FormGroup;
   discounts: IDiscount[] = [];
   showErrors: boolean = false;
+  productId: number;
 
   constructor(private http:HttpClient, private fb: FormBuilder,private activateRoute: ActivatedRoute,
     private shopService: ShopService, private dialog: MatDialog,
     private bcService: BreadcrumbService) { }
 
   ngOnInit(): void {
-    var id = +this.activateRoute.snapshot.paramMap.get('id')!;
-    this.loadProduct(id);
-    this.http.get<IDiscount>(this.baseUrl +'Discount/'+ id).subscribe((discounts: any) => {
+    this.productId = +localStorage.getItem('productId')!;
+    this.loadProduct(this.productId);
+    this.http.get<IDiscount>(this.baseUrl +'Discount/'+ this.productId).subscribe((discounts: any) => {
       this.discountsProduct = discounts;
     });
     this.http.get<IDiscount>(this.baseUrl +'Discount/getDiscounts', {responseType: 'json'}).subscribe((discounts: any) => {
@@ -40,7 +41,7 @@ export class AddDiscountComponent implements OnInit {
 
   createForm(){
     this.discountForm = this.fb.group({
-      productid:[+this.activateRoute.snapshot.paramMap.get('id')!],
+      productid:[+localStorage.getItem('productId')!],
       value: [0, [Validators.required,Validators.min(0)]],
       discount: [],
       discountId: [],
@@ -52,7 +53,7 @@ export class AddDiscountComponent implements OnInit {
   deleteDiscount(id: number){
     if (confirm('Are you sure you want to delete this type?')) {
       this.shopService.deleteProductDiscount(id).subscribe(() => {
-        this.http.get<IDiscount>(this.baseUrl +'Discount/'+ id).subscribe((discounts: any) => {
+        this.http.get<IDiscount>(this.baseUrl +'Discount/'+ this.productId).subscribe((discounts: any) => {
           this.discountsProduct = discounts;
         });
       }, error => {
@@ -64,9 +65,8 @@ export class AddDiscountComponent implements OnInit {
     if(this.discountForm.get('discount')!.value == null)
       this.showErrors = true;
     if(this.discountForm.valid){
-      var id = +this.activateRoute.snapshot.paramMap.get('id')!;
       this.shopService.addDiscountForProduct(this.discountForm.value).subscribe(response => {
-        this.http.get<IDiscount>(this.baseUrl +'Discount/'+ id).subscribe((discounts: any) => {
+        this.http.get<IDiscount>(this.baseUrl +'Discount/'+ +localStorage.getItem('productId')!).subscribe((discounts: any) => {
           this.discountsProduct = discounts;
         });
       }, error => {

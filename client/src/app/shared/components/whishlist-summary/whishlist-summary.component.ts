@@ -6,6 +6,7 @@ import { IProduct } from '../../models/product';
 import { environment } from 'src/environments/environment';
 import { IProductAdd } from '../../models/productToAdd';
 import { Router } from '@angular/router';
+import { ShopService } from 'src/app/shop/shop.service';
 
 @Component({
   selector: 'app-whishlist-summary',
@@ -19,7 +20,7 @@ export class WhishlistSummaryComponent implements OnInit {
   baseUrl = environment.apiUrl;
   
   constructor(private basketService: BasketService, private http:HttpClient,
-    private router: Router) { }
+    private router: Router,private shopService: ShopService) { }
 
   ngOnInit(): void {
   }
@@ -28,9 +29,11 @@ export class WhishlistSummaryComponent implements OnInit {
     this.remove.emit(item);
   }
 
-  goTo(id: number)
+  goTo(name: string,id: number)
   {
-    this.router.navigateByUrl("/shop/"+ id);
+    const replacedName = name.replace(/\s+/g, '-');
+    this.shopService.setProductId(id);
+    this.router.navigateByUrl(`/shop/${replacedName}`);
   }
 
 

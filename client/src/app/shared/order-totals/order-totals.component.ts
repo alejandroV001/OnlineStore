@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { BasketService } from 'src/app/basket/basket.service';
 import { ShopService } from 'src/app/shop/shop.service';
 import { IBasketTotals } from '../models/basket';
@@ -18,14 +18,14 @@ export class OrderTotalsComponent implements OnInit {
   couponDiscount: number | null = null;
   basketTotals$!: Observable<IBasketTotals>;
   sumary: number | null = 0;
+  error: boolean= false;
 
-  constructor(private basketService:BasketService, private shopService: ShopService) { }
+  constructor(private basketService:BasketService, private shopService: ShopService) {
+   }
 
   ngOnInit(): void {
     this.basketTotals$ = this.basketService.basketTotal$;
-    console.log(this.discount);
-    console.log(this.couponDiscount);
-    
+
     if(this.discount == -1)
     {
       this.sumary = null;
@@ -41,20 +41,24 @@ export class OrderTotalsComponent implements OnInit {
   }
   
   applyCoupon() {
-    console.log("test");
     var discount = 0;
     const discountValue = this.shopService.getCupons();
     discountValue.subscribe(response => {
       const foundCupon = response.find(item => item.cuponName === this.coupon);
       if (foundCupon) {
         discount = foundCupon.value;
+        this.couponDiscount = this.subtotal * discount / 100;
+        this.basketService.setDiscountValue(this.couponDiscount);
       }
+      else
+        this.error = true;
     });
+  }
 
-    if (discount) {
-      this.couponDiscount = this.subtotal * discount / 100;
-      this.basketService.setDiscountValue(this.couponDiscount);
-    }
+  resetCouponDiscount()
+  {
+    this.couponDiscount = null;
+    this.basketService.setDiscountValue(0);
   }
 
 }

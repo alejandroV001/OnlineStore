@@ -18,15 +18,17 @@ namespace API.Controllers
     {
         private readonly IGenericRepository<ProductDiscount> _productDiscountRepo;
         private readonly IGenericRepository<Discount> _discountRepo;
+        private readonly IUnitOfWork _unitOfWork;
 
         private readonly IMapper _mapper;
 
-        public DiscountController(IGenericRepository<ProductDiscount> productDiscountRepo,
+        public DiscountController(IUnitOfWork unitOfWork,IGenericRepository<ProductDiscount> productDiscountRepo,
         IMapper mapper, IGenericRepository<Discount> discountRepo)
         {
             _productDiscountRepo = productDiscountRepo;
             _mapper = mapper;
             _discountRepo = discountRepo;
+            _unitOfWork = unitOfWork;
         }
 
         // [Cached(600)]
@@ -54,8 +56,25 @@ namespace API.Controllers
         public async Task<ActionResult<ProductDiscount>> AddDiscountToProduct(DiscountDto disc)
         {
             var mapped = _mapper.Map<DiscountDto, ProductDiscount>(disc);
+            var list = await _unitOfWork.Repository<Product>().ListAllSync();
+            var prod = await _unitOfWork.Repository<Product>().GetById(disc.ProductId);
 
-            _productDiscountRepo.Add(mapped);
+            var products = list.Where(p =>p.ProductNameId == prod.ProductNameId);
+
+            foreach (var item in products)
+            {
+                var discount = new DiscountDto
+                {
+                    ProductId = item.Id,
+                    StartingDate = disc.StartingDate,
+                    EndDate = disc.EndDate,
+                    DiscountId = disc.DiscountId,
+                    Value = disc.Value
+                };
+                var mappedDiscount = _mapper.Map<DiscountDto, ProductDiscount>(discount);
+
+                _productDiscountRepo.Add(mappedDiscount);
+            }
 
             if(await _productDiscountRepo.SaveAll())
             {

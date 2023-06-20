@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { IOrder } from '../shared/models/order';
 import { OrdersService } from './orders.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-orders',
@@ -10,7 +11,7 @@ import { OrdersService } from './orders.service';
 export class OrdersComponent implements OnInit {
   orders!: IOrder[];
 
-  constructor(private ordersService: OrdersService) { }
+  constructor(private ordersService: OrdersService,private router:Router) { }
 
   ngOnInit(): void {
     this.getOrders();
@@ -19,10 +20,15 @@ export class OrdersComponent implements OnInit {
   getOrders(){
     this.ordersService.getOrdersForUser().subscribe((orders: any) => {
       this.orders = orders;
-      console.log(orders);
     }, error => {
       console.log(error);
     });
+  }
+
+  getOrderLink(id: number)
+  {
+    this.ordersService.setOrderId(id);
+    this.router.navigate(['/orders', 'order-details']);
   }
 
 }

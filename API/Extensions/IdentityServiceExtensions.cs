@@ -20,12 +20,6 @@ namespace API.Extensions
                         .AddRoleValidator<RoleValidator<AppRole>>()
                         .AddEntityFrameworkStores<AppIdentityDbContext>()
                         .AddSignInManager<SignInManager<AppUser>>();
-                
-
-            //builder = new IdentityBuilder(builder.UserType, builder.Services);
-
-            // services.AddEntityFrameworkStores<AppIdentityDbContext>();
-            // services.AddSignInManager<SignInManager<AppUser>>();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options => {

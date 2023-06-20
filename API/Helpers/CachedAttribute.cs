@@ -32,9 +32,9 @@ namespace API.Helpers
                 return;
             }
 
-            var executedContext = await next();//move to controller if nothing is on the cache mem
+            var executedContext = await next();
 
-            if(executedContext.Result is OkObjectResult okObjectResult)//if we have a response from controller we store the result in the cache for future use
+            if(executedContext.Result is OkObjectResult okObjectResult)
             {
                 await cacheService.CacheResponseAsync(cacheKey, okObjectResult.Value, TimeSpan.FromSeconds(_timeToLiveSeconds));
             }

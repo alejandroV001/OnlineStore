@@ -58,10 +58,6 @@ namespace API.Controllers
         [HttpPut("update")]
         public async Task<ActionResult> Update(ProductName productData)
         {
-            // var updateName = new ProductName{
-            //     Id = id,
-            //     Name = name
-            // };
             _productNameRepo.Update(productData);
             if(await _productNameRepo.SaveAll())
             {

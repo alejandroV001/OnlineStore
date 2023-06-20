@@ -3,6 +3,7 @@ import { AsyncValidatorFn, FormBuilder, FormGroup, Validators } from '@angular/f
 import { Router } from '@angular/router';
 import { map, of, switchMap, timer } from 'rxjs';
 import { AccountService } from '../account.service';
+import { BreadcrumbService } from 'xng-breadcrumb';
 
 @Component({
   selector: 'app-register',
@@ -14,10 +15,11 @@ export class RegisterComponent implements OnInit {
   errors!: string[];
 
   constructor(private fb: FormBuilder, private accountService: AccountService,
-      private router: Router) { }
+      private router: Router, private bcService:BreadcrumbService) { }
 
   ngOnInit(): void {
     this.createRegisterForm();
+    this.bcService.set('@Register', 'Register')
   }
 
   createRegisterForm(){
@@ -33,7 +35,7 @@ export class RegisterComponent implements OnInit {
 
   onSubmit(){
     this.accountService.register(this.registerForm.value).subscribe(response => {
-      this.router.navigateByUrl('/shop');
+      this.router.navigateByUrl('/');
     }, error => {
       console.log(error);
       this.errors = error.errors;

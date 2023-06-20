@@ -25,10 +25,10 @@
                 <tr *ngFor="let item of items" class="border-0">
                     <th scope="row">
                         <div class="p-0">
-                            <img src="{{item.pictureUrl}}" alt="{{item.name}}" class="img-fluid" style="max-height: 100px;cursor: pointer;" (click)="goTo(item.id)">
+                            <img src="{{item.pictureUrl}}" alt="{{item.name}}" class="img-fluid" style="max-height: 100px;cursor: pointer;" (click)="goTo(item.name,item.id)">
                             <div class="ml-2 d-inline-block align-middle">
                                 <h5 class="mb-0 ml-2" style="margin-left: 20px;font-size: medium;">
-                                    <a routerLink="/shop/{{item.id || item.productId}}" class="text-dark">{{item.name ? item.name : item.productName}}</a>
+                                    <a (click)="goTo(item.name,item.id)" class="text-dark">{{item.name ? item.name : item.productName}}</a>
                                 </h5>
                                 <span style="margin-left: 20px;" *ngIf="item.size" class="text-muted font-weight-normal font-italic d-block">Size: {{item.size}}</span>
                                 <span style="margin-left: 20px;" *ngIf="item.color" class="text-muted font-weight-normal font-italic d-block">Color: {{item.color}}</span>

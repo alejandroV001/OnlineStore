@@ -25,7 +25,7 @@
                             <div *ngFor="let color of productChilds" class="p-2">
                                 <div class="card shadow-sm" (mouseover)="selectedColor = color.productColor" (mouseout)="selectedColor = product.productColor">
                                     <div class="image position-relative" style="cursor: pointer;">
-                                        <img src="{{color.pictureUrl}}" alt="{{color.productName}}" class="img-colors" style="width: 80px; height: 90px;" (click)="goTo(color.id)">
+                                        <img src="{{color.pictureUrl}}" alt="{{color.productName}}" class="img-colors" style="width: 80px; height: 90px;" (click)="goTo(color.productName,color.id)">
                                     </div>
                                 </div>
                             </div>

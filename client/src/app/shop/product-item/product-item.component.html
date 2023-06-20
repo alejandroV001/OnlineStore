@@ -1,13 +1,14 @@
 <div class="card h-100 shadow-sm">
     <div class="image position-relative" style="cursor: pointer;">
-        <img src="{{mainPhoto}}" alt="{{product.productName}}" class="img-fluid bg-info" (click)="goTo(product.id)">
+        <img src="{{mainPhoto}}" alt="{{product.productName}}" class="img-fluid bg-info" (click)="goTo(product.productName,product.id)">
             <button id="whishlist" (click)="addItemToWhishlist()" type="button" 
             class="btn position-absolute top-0 end-0 mt-2 me-2 ml-3 bg-white">
                 <i class="fa fa-heart fa-lg"></i>
               </button>
         <div class="d-flex align-items-center justify-content-center mt-2">
             <button (click)="addItemToBasket()" type="button" class="button-style me-2"><i class="fa fa-shopping-cart"></i></button>
-            <button routerLink="/shop/{{product.id}}" type="button" class="button-style">View</button>
+            <!-- <button routerLink="/shop/{{product.id}}" type="button" class="button-style">View</button> -->
+            <button (click)="goTo(product.productName,product.id)" type="button" class="button-style">View</button>
         </div>
     </div>
 

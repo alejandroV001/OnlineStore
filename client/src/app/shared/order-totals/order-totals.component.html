@@ -9,13 +9,17 @@
             <li *ngIf="!couponDiscount" class="d-flex justify-content-between py-3 border-bottom">
                 <div class="d-flex justify-content-between">
                     <strong class="text-muted">Coupon</strong>
-                    <input style="margin-left: 20px;" type="text" [(ngModel)]="coupon" id="coupon" name="coupon" placeholder="Enter your coupon">
-                    <button style="margin-left: 5px;" (click)="applyCoupon()" id="apply-coupon" class="btn btn-primary ml-2">Apply</button>
+                    <input style="margin-left: 130px;" (keyup.enter)="applyCoupon()" type="text" [(ngModel)]="coupon" id="coupon" name="coupon" placeholder="Enter your coupon">
+                    <button style="margin-left: 15px;" (click)="applyCoupon()" id="apply-coupon" class="btn btn-primary ml-2">Apply</button>
+                </div>
+                <div *ngIf="error">
+                    <strong id="error">Cupon not valid</strong>
                 </div>
             </li>
             <li *ngIf="couponDiscount" class="d-flex justify-content-between py-3 border-bottom">
                 <strong class="text-muted">Discount</strong>
                 <strong>{{couponDiscount | currency}}</strong>
+                <button class="btn btn-primary ml-2" (click)="resetCouponDiscount()">Remove Discount</button>
             </li>
         </div>
         <li class="d-flex justify-content-between py-3 border-bottom">

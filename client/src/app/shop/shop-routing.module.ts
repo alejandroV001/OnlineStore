@@ -12,6 +12,7 @@ const routes: Routes = [
   {path: 'men', component: ShopMenComponent, data: {breadcrumb: {alias: 'shopMen'}}},
   {path: 'accessories', component: ShopAccessoriesComponent, data: {breadcrumb: {alias: 'accessories'}}},
   {path: ':id', component: ProductDetailsComponent, data: {breadcrumb: {alias: 'productDetails'}}},
+  {path: ':name', component: ProductDetailsComponent, data: {breadcrumb: {alias: 'productDetails'}}},
 
 
 ];

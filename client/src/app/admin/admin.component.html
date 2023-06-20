@@ -152,11 +152,11 @@
               <td>{{ product.price }}</td>
               <td>{{ product.quantity }}</td>
               <td>
-                <button (click)="openEditTab(product.id)"
+                <button (click)="openEditTab(product.productName,product.id)"
                   class="btn btn-sm btn-primary me-2">Edit</button>
                 <button (click)="deleteProduct(product.id)" routerLink="/product-management" routerLinkActive="active"
                   class="btn btn-sm btn-danger me-2">Delete</button>
-                <button routerLink="/admin/add-discount/{{product.id}}" routerLinkActive="active"
+                <button (click)="addDiscount(product.productName,product.id)" routerLinkActive="active"
                   class="btn btn-sm btn-primary me-2">Discount</button>
               </td>
             </tr>

@@ -60,6 +60,7 @@ export class EditProductComponent implements OnInit {
     }
 
   ngOnInit(): void {
+
     this.http.get<IColor>(this.baseUrl +'Color/colors').subscribe((colors: any) => {
       this.colors = colors;
     });
@@ -93,16 +94,13 @@ export class EditProductComponent implements OnInit {
 
 
   loadProduct() {
-    var id = +this.activateRoute.snapshot.paramMap.get('id')!;
+    var id = +localStorage.getItem('productId')!;
     this.shopService.getProduct(id).subscribe(product => {
       this.product = product;
       this.photos = product.pictures;
       this.bcService.set('@productDetails', product.productName)
       if(product)
       {
-        console.log(product);
-        console.log(this.names);
-
         this.productForm.setValue({ 
           description: product.description,
           id:product.id,
@@ -118,6 +116,9 @@ export class EditProductComponent implements OnInit {
           collection:(product.productCollection) ? product.productCollection : null, collectionId: (product.productCollection) ? this.collections.find(p => p.name == product.productCollection)?.id : 0
         });
       }
+
+    window.scrollTo(0,0);
+
     }, error => {
       console.log(error);
     });
@@ -151,7 +152,6 @@ export class EditProductComponent implements OnInit {
 
   initialiseFormValues(product: IProduct)
   {
-    console.log(product);
     this.productForm.setValue({ 
       description: product.description,
       id:product.id,
@@ -167,6 +167,7 @@ export class EditProductComponent implements OnInit {
       collection:(product.productCollection) ? product.productCollection : null, collectionId: (product.productCollection) ? this.collections.find(p => p.name == product.productCollection)!.id : 0
     });
   }
+
   selectColor(name: any) {
     if(name === "")
     {
@@ -251,7 +252,7 @@ export class EditProductComponent implements OnInit {
 
   onSubmit(){
     this.shopService.updateProduct(this.productForm.value).subscribe(response => {
-      this.router.navigateByUrl('/admin');
+      window.location.reload();
     }, error => {
       console.log(error);
       this.errors = error.errors;
@@ -316,13 +317,12 @@ uploadFiles(): void {
 removeFile(index: number): void {
   this.files.splice(index, 1);
 
-  // Emit the updated files array
   this.fileInfos?.next(this.files);
 }
 
 setMain(id: number) {
   var idMain = 0;
-  console.log(this.photos);
+
   this.photos.forEach(element => {
     if(element.isMain == true)
       idMain = element.id;

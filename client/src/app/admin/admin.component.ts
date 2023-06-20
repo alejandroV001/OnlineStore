@@ -257,8 +257,20 @@ export class AdminComponent implements OnInit {
   }
   }
 
-  openEditTab(id: number) {
-    const url = '/admin/edit-product/' + id;
+  openEditTab(name:string,id: number) {
+    const replacedName = name.replace(/\s+/g, '-');
+    this.shopService.setProductId(id);
+    const url = `/admin/edit-product/${replacedName}`
+
     const newTab = window.open(url, '_blank')?.blur();
   }
+
+  addDiscount(name:string,id:number)
+  {
+    const replacedName = name.replace(/\s+/g, '-');
+    this.shopService.setProductId(id);
+    this.router.navigateByUrl(`/admin/add-discount/${replacedName}`);
+  }
+
+
 }

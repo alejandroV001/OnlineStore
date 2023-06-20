@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IBasket, IBasketItem } from '../../models/basket';
 import { Router } from '@angular/router';
+import { ShopService } from 'src/app/shop/shop.service';
 
 @Component({
   selector: 'app-basket-summary',
@@ -17,10 +18,10 @@ export class BasketSummaryComponent implements OnInit {
 
   mainPhoto: string;
   
-  constructor(private router: Router) { }
+  constructor(private router: Router, private shopService: ShopService) { }
 
   ngOnInit(): void {
-    console.log(this.items);
+   
    this.items.forEach(element => {
       if(element.pictureUrl == null)
       {
@@ -29,9 +30,11 @@ export class BasketSummaryComponent implements OnInit {
    });
   }
 
-  goTo(id: number)
+  goTo(name: string,id: number)
   {
-    this.router.navigateByUrl("/shop/"+ id);
+    const replacedName = name.replace(/\s+/g, '-');
+    this.shopService.setProductId(id);
+    this.router.navigateByUrl(`/shop/${replacedName}`);
   }
 
   decrementItemQuantity(item: IBasketItem){

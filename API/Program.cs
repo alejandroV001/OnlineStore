@@ -12,13 +12,11 @@ using Infrastructure.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.FileProviders;
 using Microsoft.OpenApi.Models;
 using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 
 builder.Services.AddControllers();
 builder.Services.AddDbContext<StoreContext>(x => 
@@ -121,16 +119,6 @@ app.UseStatusCodePagesWithReExecute("/errors/{0}");
 
 app.UseHttpsRedirection();
 
-// app.UseStaticFiles();
-// app.UseStaticFiles(new StaticFileOptions
-// {
-//     FileProvider = new PhysicalFileProvider(
-//         Path.Combine(Directory.GetCurrentDirectory(), "Content")
-//     ), RequestPath ="/content"
-// });
-
-
-// app.UseCors("CorsPolicy");
 app.UseCors( builder =>
 {
     builder.WithOrigins("https://localhost:4200")
@@ -143,6 +131,5 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-// app.MapFallbackToController("Index", "Fallback");
 
 app.Run();
