@@ -139,18 +139,22 @@
           <thead>
             <tr>
               <th>Name</th>
-              <th>Description</th>
               <th>Price</th>
+              <th>Size</th>
+              <th>Color</th>
               <th>Quantity</th>
+
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let product of products">
               <td>{{ product.productName }}</td>
-              <td>{{ product.description }}</td>
               <td>{{ product.price }}</td>
+              <td>{{ product.productSize }}</td>
+              <td>{{ product.productColor }}</td>
               <td>{{ product.quantity }}</td>
+
               <td>
                 <button (click)="openEditTab(product.productName,product.id)"
                   class="btn btn-sm btn-primary me-2">Edit</button>

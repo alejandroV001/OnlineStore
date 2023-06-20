@@ -260,7 +260,7 @@ export class AdminComponent implements OnInit {
   openEditTab(name:string,id: number) {
     const replacedName = name.replace(/\s+/g, '-');
     this.shopService.setProductId(id);
-    const url = `/admin/edit-product/${replacedName}`
+    const url = `/admin/edit-product/${replacedName.toLowerCase()}`;
 
     const newTab = window.open(url, '_blank')?.blur();
   }
@@ -269,7 +269,7 @@ export class AdminComponent implements OnInit {
   {
     const replacedName = name.replace(/\s+/g, '-');
     this.shopService.setProductId(id);
-    this.router.navigateByUrl(`/admin/add-discount/${replacedName}`);
+    this.router.navigateByUrl(`/admin/add-discount/${replacedName.toLowerCase()}`);
   }
 
 

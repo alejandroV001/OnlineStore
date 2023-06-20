@@ -33,7 +33,7 @@ export class WhishlistSummaryComponent implements OnInit {
   {
     const replacedName = name.replace(/\s+/g, '-');
     this.shopService.setProductId(id);
-    this.router.navigateByUrl(`/shop/${replacedName}`);
+    this.router.navigateByUrl(`/shop/${replacedName.toLowerCase()}`);
   }
 
 

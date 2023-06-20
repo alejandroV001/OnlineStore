@@ -173,21 +173,44 @@ namespace API.Controllers
         [HttpPut("update-product")]
         public async Task<ActionResult> UpdateProduct(ProductDto product)
         {            
-            var prod  = new Product{
-                Id = product.Id,
-                ProductNameId = (product.ProductNameId != 0) ? product.ProductNameId : null,
-                Description = product.Description,
-                Price = product.Price,
-                Quantity = product.Quantity,
-                ProductTypeId = (product.ProductTypeId != 0) ? product.ProductTypeId : null,
-                ProductBrandId = (product.ProductBrandId != 0) ? product.ProductBrandId : null,
-                ProductFitId = (product.ProductFitId != 0) ? product.ProductFitId : null,
-                ProductGenderId = (product.ProductGenderId != 0) ? product.ProductGenderId : null,
-                ProductColorId = (product.ProductColorId != 0) ? product.ProductColorId : null,
-                ProductSizeId =(product.ProductSizeId != 0) ? product.ProductSizeId : null,
-                CollectionId = (product.CollectionId != 0) ? product.CollectionId : null,
-            };
-            _productsRepo.Update(prod);
+            var list = await _productsRepo.ListAllSync();
+            var productData = await _productsRepo.GetById(product.Id);
+
+            var products = list.Where(p =>p.ProductNameId == productData.ProductNameId);
+
+            foreach (var item in products)
+            {
+                if(item.Id == product.Id)
+                {
+                    item.ProductNameId = (product.ProductNameId != 0) ? product.ProductNameId : null;
+                    item.Description = product.Description;
+                    item.Price = product.Price;
+                    item.Quantity = product.Quantity;
+                    item.ProductTypeId = (product.ProductTypeId != 0) ? product.ProductTypeId : null;
+                    item.ProductBrandId = (product.ProductBrandId != 0) ? product.ProductBrandId : null;
+                    item.ProductFitId = (product.ProductFitId != 0) ? product.ProductFitId : null;
+                    item.ProductGenderId = (product.ProductGenderId != 0) ? product.ProductGenderId : null;
+                    item.ProductColorId = (product.ProductColorId != 0) ? product.ProductColorId : null;
+                    item.ProductSizeId = (product.ProductSizeId != 0) ? product.ProductSizeId : null;
+                    item.CollectionId = (product.CollectionId != 0) ? product.CollectionId : null;
+                    _productsRepo.Update(item);
+                }
+                else
+                {
+                    item.ProductNameId = (product.ProductNameId != 0) ? product.ProductNameId : null;
+                    item.Description = product.Description;
+                    item.Price = product.Price;
+                    item.ProductTypeId = (product.ProductTypeId != 0) ? product.ProductTypeId : null;
+                    item.ProductBrandId = (product.ProductBrandId != 0) ? product.ProductBrandId : null;
+                    item.ProductFitId = (product.ProductFitId != 0) ? product.ProductFitId : null;
+                    item.ProductGenderId = (product.ProductGenderId != 0) ? product.ProductGenderId : null;
+                    item.CollectionId = (product.CollectionId != 0) ? product.CollectionId : null;
+                    _productsRepo.Update(item);
+                }
+                
+            }
+
+
 
             if(await _productsRepo.SaveAll())
             {

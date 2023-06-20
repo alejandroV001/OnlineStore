@@ -187,7 +187,7 @@ export class ProductDetailsComponent implements OnInit {
   {
     const replacedName = name.replace(/\s+/g, '-');
     this.shopService.setProductId(id);
-    const url = `/shop/${replacedName}`;
+    const url = `/shop/${replacedName.toLowerCase()}`;
 
     this.router.navigateByUrl(url, { skipLocationChange: true });
     window.location.reload();

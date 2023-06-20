@@ -40,20 +40,25 @@ export class ShopService {
   pagination = new Pagination();
   shopParams = new ShopParams();
   productCache = new Map();
+  productCacheTotal = new Map();
+
 
   constructor(private http:HttpClient) { }
 
   getProducts(useCache: boolean) {
-    console.log(useCache);
-    console.log(this.shopParams);
     if(useCache === false){
       this.productCache = new Map();
+      this.productCacheTotal = new Map();
     }
+
     if(this.productCache.size > 0 && useCache === true){
       if(this.productCache.has(Object.values(this.shopParams).join('-'))){
         this.pagination.data = this.productCache.get(Object.values(this.shopParams).join('-'));
-        this.pagination.count = this.pagination.data.length;
+        var total = this.productCacheTotal.get(Object.values(this.shopParams).join('-'));
+        this.pagination.count = total;
+        console.log("cache");
         return of(this.pagination);}}
+
     let params = new HttpParams();
     if(this.shopParams.brandId !== 0) {
       params = params.append('brandId', this.shopParams.brandId.toString());
@@ -89,6 +94,7 @@ export class ShopService {
       .pipe(
         map(response => {
           this.productCache.set(Object.values(this.shopParams).join('-'), response.body!.data);
+          this.productCacheTotal.set(Object.values(this.shopParams).join('-'), response.body?.count);
           this.pagination = response.body!;
           return this.pagination;
         })

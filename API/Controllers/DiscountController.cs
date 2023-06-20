@@ -39,6 +39,7 @@ namespace API.Controllers
             return Ok(list);
 
         }
+        [Cached(600)]
         [HttpGet("{id}")]
         public async Task<ActionResult<IReadOnlyList<DiscountDto>>> GetDiscount(int id)
         {
